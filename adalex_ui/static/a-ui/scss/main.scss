@@ -1,0 +1,35 @@
+/**
+ * Adalex UI - Main Stylesheet
+ *
+ * This file imports all SCSS modules in the correct order.
+ * Compile this file to generate the final CSS bundle.
+ *
+ * Build commands:
+ *   npm run css:build  - Production build (compressed)
+ *   npm run css:watch  - Development watch mode
+ *   npm run css:dev    - Development build (expanded with source maps)
+ */
+
+/* === Foundation === */
+/* Design tokens must be loaded first */
+@import 'tokens';
+
+/* Reset browser defaults */
+@import 'reset';
+
+/* Utility classes */
+@import 'utilities';
+
+/* === Components === */
+/* Component styles will be imported here as they are created */
+/* Example: @import 'components/button'; */
+
+/**
+ * Import Order Guidelines:
+ * 1. tokens - CSS variables (must be first)
+ * 2. reset - Browser reset
+ * 3. utilities - Helper classes
+ * 4. components - UI component styles
+ *
+ * When adding new components, import them below in alphabetical order.
+ */
