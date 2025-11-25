@@ -1,0 +1,16 @@
+<div class="a-checkbox{% if disabled %} a-checkbox--disabled{% endif %}">
+  <input 
+    type="checkbox" 
+    id="{{ id }}" 
+    name="{{ name }}"
+    class="a-checkbox__input"
+    {% if value %}value="{{ value }}"{% endif %}
+    {% if checked %}checked{% endif %}
+    {% if disabled %}disabled{% endif %}
+  />
+  {% if label %}
+    <label for="{{ id }}" class="a-checkbox__label">
+      {{ label }}
+    </label>
+  {% endif %}
+</div>

@@ -1,166 +1,226 @@
-/**
- * Form Component
- *
- * A comprehensive form container that handles field groups, validation,
- * error messages, and action buttons with consistent styling.
- */
-
 .a-form {
-  // Base styles
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-lg);
-  padding: var(--spacing-xl);
-  background: var(--neutral-white);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-
-  // Title
+  max-width: 600px;
+  
   &__title {
-    margin: 0 0 var(--spacing-md) 0;
+    margin-bottom: var(--spacing-lg);
+    color: var(--text-primary);
     font-size: var(--font-size-2xl);
     font-weight: var(--font-weight-semibold);
-    line-height: var(--line-height-tight);
-    color: var(--text-primary);
-    padding-bottom: var(--spacing-md);
-    border-bottom: 2px solid var(--border-light);
   }
-
-  // Fields container
+  
   &__fields {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
   }
-
-  // Field group wrapper
-  &__field-group {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xs);
-    position: relative;
-
-    // Error state
+  
+  &__group {
+    margin-bottom: var(--spacing-md);
+    
     &--error {
       .a-form__label {
-        color: var(--error-main, #dc2626);
+        color: var(--error-main);
       }
-    }
-
-    // Focus within animation
-    &:focus-within {
-      .a-form__label {
-        color: var(--secondary-main);
+      
+      .a-form__input,
+      .a-form__textarea,
+      .a-form__select {
+        border-color: var(--error-main);
+        
+        &:focus {
+          border-color: var(--error-main);
+          box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
       }
     }
   }
-
-  // Actions container (buttons)
-  &__actions {
+  
+  &__label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    color: var(--text-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+  }
+  
+  &__required {
+    color: var(--error-main);
+    margin-left: var(--spacing-xs);
+  }
+  
+  &__input,
+  &__textarea,
+  &__select {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--border-main);
+    border-radius: var(--radius-md);
+    background-color: var(--neutral-white);
+    color: var(--text-primary);
+    font-size: var(--font-size-base);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    
+    &:focus {
+      outline: none;
+      border-color: var(--primary-main);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    
+    &:disabled {
+      background-color: var(--neutral-100);
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    
+    &::placeholder {
+      color: var(--text-tertiary);
+    }
+  }
+  
+  &__textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+  
+  &__select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--spacing-md) center;
+    padding-right: var(--spacing-xl);
+  }
+  
+  &__checkbox-wrapper,
+  &__radio-wrapper {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  &__checkbox,
+  &__radio {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-right: var(--spacing-sm);
+    margin-top: 2px;
+    border: 1px solid var(--border-main);
+    background-color: var(--neutral-white);
+    cursor: pointer;
+    
+    &:checked {
+      background-color: var(--primary-main);
+      border-color: var(--primary-main);
+    }
+    
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+  
+  &__checkbox {
+    border-radius: var(--radius-sm);
+    
+    &:checked {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='white' d='M10.3 3.7L5 9 1.7 5.7l1.4-1.4L5 6.2l3.9-3.9z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  }
+  
+  &__radio {
+    border-radius: 50%;
+    
+    &:checked {
+      background-image: radial-gradient(circle, white 40%, transparent 40%);
+    }
+  }
+  
+  &__checkbox-label,
+  &__radio-label {
+    color: var(--text-primary);
+    font-size: var(--font-size-base);
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  &__radio-group {
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  &__help {
+    display: block;
+    margin-top: var(--spacing-xs);
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+  }
+  
+  &__error {
     display: flex;
     align-items: center;
+    margin-top: var(--spacing-xs);
+    color: var(--error-main);
+    font-size: var(--font-size-sm);
+  }
+  
+  &__error-icon {
+    margin-right: var(--spacing-xs);
+    font-size: var(--font-size-base);
+  }
+  
+  &__actions {
+    display: flex;
     gap: var(--spacing-md);
     padding-top: var(--spacing-md);
     border-top: 1px solid var(--border-light);
-
-    // Stack buttons on mobile
+    
     @media (max-width: 640px) {
       flex-direction: column;
-
-      .a-button {
+      
+      .a-btn {
         width: 100%;
       }
     }
   }
-
-  // Feedback message area (for success/error messages)
+  
   &__feedback {
     padding: var(--spacing-md);
     border-radius: var(--radius-md);
     font-size: var(--font-size-sm);
-    line-height: var(--line-height-normal);
-    display: none; // Hidden by default, shown via JS
-
+    margin-bottom: var(--spacing-md);
+    display: none;
+    transition: opacity 0.3s ease;
+    
     &--visible {
       display: block;
     }
-
+    
     &--success {
-      background: var(--success-light, #dcfce7);
-      color: var(--success-dark, #166534);
-      border: 1px solid var(--success-main, #22c55e);
+      background: var(--success-50);
+      color: var(--success-900);
+      border: 1px solid var(--success-200);
     }
-
+    
     &--error {
-      background: var(--error-light, #fee2e2);
-      color: var(--error-dark, #991b1b);
-      border: 1px solid var(--error-main, #dc2626);
+      background: var(--error-50);
+      color: var(--error-900);
+      border: 1px solid var(--error-200);
     }
-
+    
     &--warning {
-      background: var(--warning-light, #fef3c7);
-      color: var(--warning-dark, #92400e);
-      border: 1px solid var(--warning-main, #f59e0b);
+      background: var(--warning-50);
+      color: var(--warning-900);
+      border: 1px solid var(--warning-200);
     }
-
+    
     &--info {
       background: var(--neutral-100);
       color: var(--text-primary);
       border: 1px solid var(--border-main);
     }
-  }
-
-  // Compact variant
-  &--compact {
-    padding: var(--spacing-lg);
-    gap: var(--spacing-md);
-
-    .a-form__fields {
-      gap: var(--spacing-md);
-    }
-
-    .a-form__title {
-      font-size: var(--font-size-xl);
-      margin-bottom: var(--spacing-sm);
-      padding-bottom: var(--spacing-sm);
-    }
-  }
-
-  // Inline variant (horizontal layout for simple forms)
-  &--inline {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    gap: var(--spacing-md);
-
-    .a-form__title {
-      width: 100%;
-    }
-
-    .a-form__fields {
-      flex: 1;
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: var(--spacing-md);
-    }
-
-    .a-form__field-group {
-      flex: 1;
-      min-width: 200px;
-    }
-
-    .a-form__actions {
-      flex-shrink: 0;
-      border-top: none;
-      padding-top: 0;
-    }
-  }
-
-  // Borderless variant
-  &--borderless {
-    border: none;
-    box-shadow: none;
-    padding: 0;
   }
 }

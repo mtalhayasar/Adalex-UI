@@ -1,10 +1,3 @@
-{# Sidebar Component #}
-{# Parameters:
-  - items (required): List of sidebar items
-    [{'url': '/dashboard/', 'text': 'Dashboard', 'icon': 'star', 'active': True}, ...]
-  - collapsible (optional): Boolean, if True sidebar can be collapsed
-  - collapsed (optional): Boolean, initial collapsed state
-#}
 <aside
   class="a-sidebar{% if collapsed %} a-sidebar--collapsed{% endif %}"
   data-sidebar
@@ -12,7 +5,6 @@
   role="navigation"
   aria-label="Sidebar navigation"
 >
-  {# Collapse Toggle (if collapsible) #}
   {% if collapsible %}
     <button
       type="button"
@@ -25,7 +17,6 @@
     </button>
   {% endif %}
 
-  {# Sidebar Content #}
   <div class="a-sidebar__content">
     <nav class="a-sidebar__nav">
       <ul class="a-sidebar__list">

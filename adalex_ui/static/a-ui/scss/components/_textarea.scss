@@ -57,12 +57,12 @@
 
   // Error state
   &--error {
-    border-color: #dc2626;
-    background-color: #fef2f2;
+    border-color: var(--error-main);
+    background-color: var(--error-light);
 
     &:focus {
-      border-color: #dc2626;
-      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+      border-color: var(--error-main);
+      box-shadow: var(--focus-ring-error);
     }
   }
 
@@ -72,7 +72,7 @@
     margin-top: var(--spacing-xs);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-normal);
-    color: #dc2626;
+    color: var(--error-main);
     line-height: var(--line-height-normal);
   }
 }

@@ -93,13 +93,37 @@
   <div class="component-grid">
     <!-- Forms Basic -->
     <a href="{% url 'demo:forms_basic' %}" class="component-card">
-      <h2>Form Components</h2>
+      <h2>Basic Form Components</h2>
       <p>Essential form elements for building user inputs and data collection interfaces.</p>
       <div class="badge-list">
         {% include "components/badge.html" with text="Label" variant="neutral" size="sm" %}
         {% include "components/badge.html" with text="TextInput" variant="neutral" size="sm" %}
         {% include "components/badge.html" with text="Textarea" variant="neutral" size="sm" %}
         {% include "components/badge.html" with text="Select" variant="neutral" size="sm" %}
+      </div>
+    </a>
+
+    <!-- Forms Advanced -->
+    <a href="{% url 'demo:forms_advanced' %}" class="component-card">
+      <h2>Advanced Form Components</h2>
+      <p>Interactive form elements with animations and specialized input types.</p>
+      <div class="badge-list">
+        {% include "components/badge.html" with text="Checkbox" variant="primary" size="sm" %}
+        {% include "components/badge.html" with text="Radio" variant="primary" size="sm" %}
+        {% include "components/badge.html" with text="Switch" variant="primary" size="sm" %}
+        {% include "components/badge.html" with text="Datepicker" variant="primary" size="sm" %}
+      </div>
+    </a>
+
+    <!-- Complete Form Demo -->
+    <a href="{% url 'demo:form_demo' %}" class="component-card">
+      <h2>Complete Form Demo</h2>
+      <p>Full form implementation with validation, submission handling, and various field types.</p>
+      <div class="badge-list">
+        {% include "components/badge.html" with text="Form Container" variant="success" size="sm" %}
+        {% include "components/badge.html" with text="Validation" variant="success" size="sm" %}
+        {% include "components/badge.html" with text="HTMX" variant="success" size="sm" %}
+        {% include "components/badge.html" with text="POST Handler" variant="success" size="sm" %}
       </div>
     </a>
 

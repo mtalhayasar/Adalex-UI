@@ -1,23 +1,5 @@
-{# Pagination Component #}
-{# Parameters:
-  - pages (required): List of page data from view (see example below)
-
-  Example view preparation:
-    context = {
-        'pagination': {
-            'pages': [
-                {'number': 1, 'url': '/items/?page=1', 'is_active': False, 'is_ellipsis': False},
-                {'number': 2, 'url': '/items/?page=2', 'is_active': True, 'is_ellipsis': False},
-                {'number': 3, 'url': '/items/?page=3', 'is_active': False, 'is_ellipsis': False},
-            ],
-            'prev_url': '/items/?page=1',  # or None if on first page
-            'next_url': '/items/?page=3',  # or None if on last page
-        }
-    }
-#}
 <nav class="a-pagination" role="navigation" aria-label="Pagination">
   <ul class="a-pagination__list">
-    {# Previous button #}
     <li class="a-pagination__item">
       {% if prev_url %}
         <a
@@ -38,7 +20,6 @@
       {% endif %}
     </li>
 
-    {# Page numbers #}
     {% for page in pages %}
       <li class="a-pagination__item">
         {% if page.is_ellipsis %}
@@ -59,7 +40,6 @@
       </li>
     {% endfor %}
 
-    {# Next button #}
     <li class="a-pagination__item">
       {% if next_url %}
         <a

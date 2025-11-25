@@ -1,0 +1,19 @@
+<div class="a-datepicker{% if error %} a-datepicker--error{% endif %}{% if disabled %} a-datepicker--disabled{% endif %}">
+  <input 
+    type="date" 
+    id="{{ id }}" 
+    name="{{ name }}"
+    class="a-datepicker__input"
+    {% if value %}value="{{ value }}"{% endif %}
+    {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+    {% if required %}required aria-required="true"{% endif %}
+    {% if disabled %}disabled{% endif %}
+    {% if error %}aria-invalid="true" aria-describedby="{{ id }}-error"{% endif %}
+  />
+  {% if error %}
+    <div id="{{ id }}-error" class="a-datepicker__error" role="alert">
+      <span class="a-datepicker__error-icon" aria-hidden="true">⚠</span>
+      {{ error }}
+    </div>
+  {% endif %}
+</div>

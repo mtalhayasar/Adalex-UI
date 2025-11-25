@@ -1,72 +1,81 @@
 {% load a_ui_tags %}
-{# Form Component #}
-{# Parameters:
-  - id (required): The form id attribute
-  - action (required): Form action URL
-  - method (optional): Form method (get/post), defaults to 'post'
-  - title (optional): Form title displayed at the top
-  - fields (required): List of field configurations
-      Each field config dict can contain:
-        - type (required): Field type (text/email/password/textarea/select)
-        - name (required): Field name attribute
-        - id (required): Field id attribute
-        - label (required): Field label text
-        - value (optional): Default value
-        - placeholder (optional): Placeholder text
-        - required (optional): Boolean, makes field required
-        - disabled (optional): Boolean, disables field
-        - error (optional): Error message to display
-        - options (optional): For select fields, list of {value, label} dicts
-  - submit_text (optional): Submit button text, defaults to 'Submit'
-  - cancel_url (optional): If provided, shows cancel button linking to this URL
-  - csrf_token (optional): CSRF token for Django forms
-#}
-<form
-  id="{{ id }}"
-  action="{{ action }}"
-  method="{{ method|default:'post' }}"
-  class="a-form"
-  {% if method|lower == 'post' %}data-validate="true"{% endif %}
-  role="form"
-  aria-labelledby="{% if title %}{{ id }}-title{% endif %}"
->
-  {% if csrf_token %}
+<form class="a-form" id="{{ id }}" action="{{ action }}" method="{{ method|default:'POST' }}" novalidate>
+  {% if method|default:'POST' == 'POST' %}
     {% csrf_token %}
   {% endif %}
-
+  
   {% if title %}
-    <h2 id="{{ id }}-title" class="a-form__title">{{ title }}</h2>
+    <h2 class="a-form__title">{{ title }}</h2>
   {% endif %}
-
+  
   <div class="a-form__fields">
     {% for field in fields %}
-      {% with field_type=field|get_item:"type" field_name=field|get_item:"name" field_id=field|get_item:"id" field_label=field|get_item:"label" field_value=field|get_item:"value" field_placeholder=field|get_item:"placeholder" field_required=field|get_item:"required" field_disabled=field|get_item:"disabled" field_error=field|get_item:"error" field_options=field|get_item:"options" %}
-        <div class="a-form__field-group{% if field_error %} a-form__field-group--error{% endif %}">
-          {% include "components/label.html" with for_id=field_id text=field_label required=field_required %}
-
-          {% if field_type == "textarea" %}
-            {% include "components/textarea.html" with name=field_name id=field_id value=field_value placeholder=field_placeholder required=field_required disabled=field_disabled error=field_error %}
-          {% elif field_type == "select" %}
-            {% include "components/select.html" with name=field_name id=field_id options=field_options selected=field_value required=field_required disabled=field_disabled error=field_error %}
-          {% else %}
-            {# Default to text input for text/email/password/etc #}
-            {% include "components/text_input.html" with type=field_type name=field_name id=field_id value=field_value placeholder=field_placeholder required=field_required disabled=field_disabled error=field_error %}
+      <div class="a-form__group{% if field.error %} a-form__group--error{% endif %}">
+        {% include "components/label.html" with for_id=field.name text=field.label required=field.required help_text=field.help_text %}
+        
+        {% if field.type == 'text' or field.type == 'email' or field.type == 'password' or field.type == 'tel' or field.type == 'url' or field.type == 'number' %}
+          {% include "components/text_input.html" with name=field.name id=field.name type=field.type placeholder=field.placeholder value=field.value required=field.required error=field.error %}
+        
+        {% elif field.type == 'textarea' %}
+          {% include "components/textarea.html" with name=field.name id=field.name placeholder=field.placeholder value=field.value rows=field.rows required=field.required error=field.error %}
+        
+        {% elif field.type == 'select' %}
+          {% include "components/select.html" with name=field.name id=field.name options=field.options selected=field.value placeholder=field.placeholder required=field.required error=field.error %}
+        
+        {% elif field.type == 'checkbox' %}
+          {% include "components/checkbox.html" with name=field.name id=field.name label=field.help_text value="1" checked=field.value required=field.required %}
+          {% if field.error %}
+            <div id="{{ field.name }}-error" class="a-form__error" role="alert">
+              <span class="a-form__error-icon" aria-hidden="true">⚠</span>
+              {{ field.error }}
+            </div>
           {% endif %}
-        </div>
-      {% endwith %}
+        
+        {% elif field.type == 'radio' %}
+          <div class="a-form__radio-group" role="radiogroup" aria-labelledby="{{ field.name }}-label">
+            {% for option in field.options %}
+              {% if option.value|stringformat:"s" == field.value|stringformat:"s" %}
+                {% if field.required and forloop.first %}
+                  {% include "components/radio.html" with name=field.name id=field.name|add:"_"|add:forloop.counter value=option.value label=option.label checked=True required=True %}
+                {% else %}
+                  {% include "components/radio.html" with name=field.name id=field.name|add:"_"|add:forloop.counter value=option.value label=option.label checked=True required=False %}
+                {% endif %}
+              {% else %}
+                {% if field.required and forloop.first %}
+                  {% include "components/radio.html" with name=field.name id=field.name|add:"_"|add:forloop.counter value=option.value label=option.label checked=False required=True %}
+                {% else %}
+                  {% include "components/radio.html" with name=field.name id=field.name|add:"_"|add:forloop.counter value=option.value label=option.label checked=False required=False %}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </div>
+          {% if field.error %}
+            <div id="{{ field.name }}-error" class="a-form__error" role="alert">
+              <span class="a-form__error-icon" aria-hidden="true">⚠</span>
+              {{ field.error }}
+            </div>
+          {% endif %}
+        
+        {% elif field.type == 'date' %}
+          {% include "components/datepicker.html" with name=field.name id=field.name value=field.value required=field.required error=field.error %}
+        
+        {% elif field.type == 'switch' %}
+          {% include "components/switch.html" with name=field.name id=field.name label=field.help_text checked=field.value required=field.required %}
+          {% if field.error %}
+            <div id="{{ field.name }}-error" class="a-form__error" role="alert">
+              <span class="a-form__error-icon" aria-hidden="true">⚠</span>
+              {{ field.error }}
+            </div>
+          {% endif %}
+        {% endif %}
+      </div>
     {% endfor %}
   </div>
-
+  
   <div class="a-form__actions">
-    <button type="submit" class="a-button a-button--primary">
-      {{ submit_text|default:"Submit" }}
-    </button>
+    {% include "components/button.html" with type="submit" variant="primary" text=submit_text|default:"Submit" %}
     {% if cancel_url %}
-      <a href="{{ cancel_url }}" class="a-button a-button--secondary">
-        Cancel
-      </a>
+      {% include "components/button.html" with href=cancel_url variant="secondary" text="Cancel" %}
     {% endif %}
   </div>
-
-  <div class="a-form__feedback" role="status" aria-live="polite" aria-atomic="true"></div>
 </form>

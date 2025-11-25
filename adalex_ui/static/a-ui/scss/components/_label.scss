@@ -22,7 +22,7 @@
   // Required field indicator
   &__required-mark {
     margin-left: var(--spacing-xs);
-    color: #dc2626; // Red color for required indicator
+    color: var(--error-main); // Red color for required indicator
     font-weight: var(--font-weight-bold);
   }
 

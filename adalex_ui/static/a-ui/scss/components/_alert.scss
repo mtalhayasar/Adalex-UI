@@ -57,12 +57,12 @@
 
     &:hover {
       opacity: 1;
-      background: rgba(0, 0, 0, 0.05);
+      background: var(--button-hover-overlay);
     }
 
     &:active {
       opacity: 1;
-      background: rgba(0, 0, 0, 0.1);
+      background: var(--button-active-overlay);
     }
 
     &:focus-visible {
@@ -79,45 +79,45 @@
 
   // Info variant
   &--info {
-    color: #1e40af;
-    background-color: #dbeafe;
-    border-color: #93c5fd;
+    color: var(--info-main);
+    background-color: var(--info-light);
+    border-color: var(--info-border);
 
     .a-alert__icon {
-      color: #3b82f6;
+      color: var(--info-icon);
     }
   }
 
   // Success variant
   &--success {
-    color: #15803d;
-    background-color: #dcfce7;
-    border-color: #86efac;
+    color: var(--success-main);
+    background-color: var(--success-light);
+    border-color: var(--success-border);
 
     .a-alert__icon {
-      color: #22c55e;
+      color: var(--success-icon);
     }
   }
 
   // Warning variant
   &--warning {
-    color: #92400e;
-    background-color: #fef3c7;
-    border-color: #fcd34d;
+    color: var(--warning-main);
+    background-color: var(--warning-light);
+    border-color: var(--warning-border);
 
     .a-alert__icon {
-      color: #f59e0b;
+      color: var(--warning-icon);
     }
   }
 
   // Error variant
   &--error {
-    color: #991b1b;
-    background-color: #fee2e2;
-    border-color: #fca5a5;
+    color: var(--error-dark);
+    background-color: var(--error-light);
+    border-color: var(--error-border);
 
     .a-alert__icon {
-      color: #ef4444;
+      color: var(--error-icon);
     }
   }
 

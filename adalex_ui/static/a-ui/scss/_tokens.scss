@@ -18,6 +18,34 @@
   --secondary-main: #8fa3c7;
   --secondary-dark: #6b84b6;
 
+  /* Error/Danger Colors */
+  --error-main: #dc2626;
+  --error-light: #fef2f2;
+  --error-dark: #991b1b;
+  --error-border: #fca5a5;
+  --error-icon: #ef4444;
+
+  /* Success Colors */
+  --success-main: #15803d;
+  --success-light: #dcfce7;
+  --success-dark: #166534;
+  --success-border: #86efac;
+  --success-icon: #22c55e;
+
+  /* Warning Colors */
+  --warning-main: #92400e;
+  --warning-light: #fef3c7;
+  --warning-dark: #78350f;
+  --warning-border: #fcd34d;
+  --warning-icon: #f59e0b;
+
+  /* Info Colors */
+  --info-main: #1e40af;
+  --info-light: #dbeafe;
+  --info-dark: #1d4ed8;
+  --info-border: #93c5fd;
+  --info-icon: #3b82f6;
+
   /* Neutral Colors */
   --neutral-white: #ffffff;
   --neutral-50: #fafbfc;
@@ -94,6 +122,25 @@
   --z-index-modal: 1050;
   --z-index-popover: 1060;
   --z-index-tooltip: 1070;
+
+  /* Focus Rings */
+  --focus-ring-primary: 0 0 0 3px rgba(143, 163, 199, 0.1);
+  --focus-ring-error: 0 0 0 3px rgba(220, 38, 38, 0.1);
+  --focus-ring-info: 0 0 0 3px rgba(59, 130, 246, 0.1);
+
+  /* Interactive Overlays */
+  --button-hover-overlay: rgba(0, 0, 0, 0.05);
+  --button-active-overlay: rgba(0, 0, 0, 0.1);
+  --modal-backdrop: rgba(0, 0, 0, 0.5);
+
+  /* Component-specific Shadows */
+  --shadow-switch: 0 1px 3px rgba(0, 0, 0, 0.3);
+
+  /* Gradient Variants */
+  --primary-gradient-hover: linear-gradient(135deg, #e4e9f0 0%, #b5c0d6 100%);
+  --primary-gradient-active: linear-gradient(135deg, #d4dce6 0%, #a8b8d0 100%);
+  --secondary-gradient-hover: linear-gradient(135deg, #9daccd 0%, #6a7fb8 100%);
+  --secondary-gradient-active: linear-gradient(135deg, #8fa3c7 0%, #5e75ad 100%);
 
   /* Transitions */
   --transition-fast: 150ms ease-in-out;

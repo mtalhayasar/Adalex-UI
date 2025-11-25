@@ -1,14 +1,3 @@
-{# TextInput Component #}
-{# Parameters:
-  - name (required): The name attribute of the input
-  - id (required): The id attribute for label association
-  - value (optional): The default value
-  - type (optional): Input type (text/email/password), defaults to 'text'
-  - placeholder (optional): Placeholder text
-  - required (optional): Boolean, makes the field required
-  - disabled (optional): Boolean, disables the input
-  - error (optional): Error message to display
-#}
 <input
   type="{{ type|default:'text' }}"
   name="{{ name }}"

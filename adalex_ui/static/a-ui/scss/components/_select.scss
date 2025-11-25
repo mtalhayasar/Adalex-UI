@@ -38,7 +38,7 @@
   // Focus state
   &:focus:not(:disabled):not(.a-select--error) {
     border-color: var(--secondary-main);
-    box-shadow: 0 0 0 3px rgba(143, 163, 199, 0.1);
+    box-shadow: var(--focus-ring-primary);
   }
 
   // Disabled state
@@ -53,13 +53,13 @@
 
   // Error state
   &--error {
-    border-color: #dc2626;
-    background-color: #fef2f2;
+    border-color: var(--error-main);
+    background-color: var(--error-light);
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23dc2626' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
 
     &:focus {
-      border-color: #dc2626;
-      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+      border-color: var(--error-main);
+      box-shadow: var(--focus-ring-error);
     }
   }
 
@@ -69,7 +69,7 @@
     margin-top: var(--spacing-xs);
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-normal);
-    color: #dc2626;
+    color: var(--error-main);
     line-height: var(--line-height-normal);
   }
 

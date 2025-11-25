@@ -88,33 +88,22 @@
     </div>
   </div>
 
-  <!-- Inline Form Example -->
+  <!-- Additional Field Types -->
   <div class="demo-section">
-    <h2>Form States</h2>
-    <p>Forms automatically handle validation states and error messages.</p>
+    <h2>Field Types Demo</h2>
+    <p>Form component supports various input types with automatic validation.</p>
 
     <div class="demo-grid">
-      <!-- Form with Errors Example -->
+      <!-- Profile Form with Various Field Types -->
       <div>
-        <h3 style="margin: 0 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">With Errors</h3>
-        {% include "components/form.html" with id="error-form" action="#" method="post" title="Form with Validation Errors" fields=contact_form_fields submit_text="Submit" %}
+        <h3 style="margin: 0 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">Profile Settings</h3>
+        {% include "components/form.html" with id="profile-form" action="#" method="post" title="Edit Profile" fields=profile_form_fields submit_text="Save Changes" %}
       </div>
 
-      <!-- Borderless Form -->
+      <!-- Survey Form with Radio and Checkbox -->
       <div>
-        <h3 style="margin: 0 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">Borderless Variant</h3>
-        <div class="a-form a-form--borderless">
-          <h2 class="a-form__title">Newsletter Signup</h2>
-          <div class="a-form__fields">
-            <div class="a-form__field-group">
-              {% include "components/label.html" with for_id="newsletter-email" text="Email Address" required=True %}
-              {% include "components/text_input.html" with type="email" name="newsletter_email" id="newsletter-email" placeholder="your@email.com" required=True %}
-            </div>
-          </div>
-          <div class="a-form__actions">
-            <button type="submit" class="a-button a-button--primary">Subscribe</button>
-          </div>
-        </div>
+        <h3 style="margin: 0 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">Quick Survey</h3>
+        {% include "components/form.html" with id="survey-form" action="#" method="post" title="User Feedback" fields=survey_form_fields submit_text="Submit Survey" %}
       </div>
     </div>
   </div>

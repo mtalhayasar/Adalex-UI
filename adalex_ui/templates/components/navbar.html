@@ -1,16 +1,5 @@
-{# Navbar Component #}
-{# Parameters:
-  - logo_url (optional): URL/path for logo image
-  - logo_text (required): Logo text or brand name
-  - nav_items (required): List of navigation items
-    [{'url': '/about/', 'text': 'About', 'active': False}, ...]
-  - user_menu (optional): List of user menu items
-    [{'url': '/profile/', 'text': 'Profile'}, ...]
-  - user_name (optional): Displayed user name for user menu
-#}
 <nav class="a-navbar" role="navigation" data-navbar>
   <div class="a-navbar__container">
-    {# Logo/Brand #}
     <div class="a-navbar__brand">
       <a href="/" class="a-navbar__logo">
         {% if logo_url %}
@@ -20,7 +9,6 @@
       </a>
     </div>
 
-    {# Mobile Toggle Button #}
     <button
       type="button"
       class="a-navbar__toggle"
@@ -33,9 +21,7 @@
       <span class="a-navbar__toggle-icon"></span>
     </button>
 
-    {# Navigation Menu #}
     <div class="a-navbar__menu" data-navbar-menu>
-      {# Main Navigation Items #}
       {% if nav_items %}
         <ul class="a-navbar__nav">
           {% for item in nav_items %}
@@ -52,7 +38,6 @@
         </ul>
       {% endif %}
 
-      {# User Menu #}
       {% if user_menu %}
         <div class="a-navbar__user" data-navbar-user>
           <button

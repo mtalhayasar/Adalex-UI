@@ -172,7 +172,6 @@ def form_demo(request):
         {
             'type': 'text',
             'name': 'full_name',
-            'id': 'full_name',
             'label': 'Full Name',
             'placeholder': 'Enter your full name',
             'required': True,
@@ -180,7 +179,6 @@ def form_demo(request):
         {
             'type': 'email',
             'name': 'email',
-            'id': 'email',
             'label': 'Email Address',
             'placeholder': 'your.email@example.com',
             'required': True,
@@ -188,11 +186,10 @@ def form_demo(request):
         {
             'type': 'select',
             'name': 'country',
-            'id': 'country',
             'label': 'Country',
             'required': True,
+            'placeholder': 'Select a country...',
             'options': [
-                {'value': '', 'label': 'Select a country...'},
                 {'value': 'tr', 'label': 'Turkey'},
                 {'value': 'us', 'label': 'United States'},
                 {'value': 'uk', 'label': 'United Kingdom'},
@@ -203,10 +200,10 @@ def form_demo(request):
         {
             'type': 'textarea',
             'name': 'message',
-            'id': 'message',
             'label': 'Message',
             'placeholder': 'Type your message here...',
             'required': False,
+            'rows': 5,
         },
     ]
 
@@ -215,7 +212,6 @@ def form_demo(request):
         {
             'type': 'text',
             'name': 'username',
-            'id': 'username',
             'label': 'Username',
             'placeholder': 'Choose a username',
             'required': True,
@@ -223,7 +219,6 @@ def form_demo(request):
         {
             'type': 'password',
             'name': 'password',
-            'id': 'password',
             'label': 'Password',
             'placeholder': 'Enter a secure password',
             'required': True,
@@ -231,10 +226,94 @@ def form_demo(request):
         {
             'type': 'password',
             'name': 'password_confirm',
-            'id': 'password_confirm',
             'label': 'Confirm Password',
             'placeholder': 'Re-enter your password',
             'required': True,
+        },
+    ]
+    
+    # Profile form with various field types
+    profile_form_fields = [
+        {
+            'type': 'text',
+            'name': 'name',
+            'label': 'Full Name',
+            'value': 'John Doe',
+            'required': True,
+        },
+        {
+            'type': 'email',
+            'name': 'email',
+            'label': 'Email',
+            'value': 'john@example.com',
+            'required': True,
+        },
+        {
+            'type': 'tel',
+            'name': 'phone',
+            'label': 'Phone Number',
+            'placeholder': '+90 555 123 4567',
+        },
+        {
+            'type': 'url',
+            'name': 'website',
+            'label': 'Website',
+            'placeholder': 'https://yourwebsite.com',
+        },
+        {
+            'type': 'number',
+            'name': 'age',
+            'label': 'Age',
+            'min': 18,
+            'max': 120,
+            'value': 25,
+        },
+        {
+            'type': 'textarea',
+            'name': 'bio',
+            'label': 'Bio',
+            'placeholder': 'Tell us about yourself...',
+            'rows': 3,
+        },
+    ]
+    
+    # Survey form with radio and checkbox
+    survey_form_fields = [
+        {
+            'type': 'radio',
+            'name': 'experience',
+            'label': 'How would you rate your experience?',
+            'required': True,
+            'options': [
+                {'value': 'excellent', 'label': 'Excellent'},
+                {'value': 'good', 'label': 'Good'},
+                {'value': 'average', 'label': 'Average'},
+                {'value': 'poor', 'label': 'Poor'},
+            ],
+        },
+        {
+            'type': 'checkbox',
+            'name': 'newsletter',
+            'label': 'Subscribe to newsletter',
+            'help_text': 'I want to receive updates and promotions',
+        },
+        {
+            'type': 'select',
+            'name': 'frequency',
+            'label': 'Preferred contact frequency',
+            'placeholder': 'Choose frequency...',
+            'options': [
+                {'value': 'daily', 'label': 'Daily'},
+                {'value': 'weekly', 'label': 'Weekly'},
+                {'value': 'monthly', 'label': 'Monthly'},
+            ],
+        },
+        {
+            'type': 'textarea',
+            'name': 'comments',
+            'label': 'Additional Comments',
+            'placeholder': 'Any suggestions?',
+            'rows': 4,
         },
     ]
 
@@ -243,5 +322,24 @@ def form_demo(request):
         'description': 'Complete form container with validation and feedback',
         'contact_form_fields': contact_form_fields,
         'registration_form_fields': registration_form_fields,
+        'profile_form_fields': profile_form_fields,
+        'survey_form_fields': survey_form_fields,
     }
     return render(request, 'demo/form_demo.html', context)
+
+
+def forms_advanced(request):
+    """
+    Demo view for advanced form components (checkbox, radio, switch, datepicker).
+
+    Args:
+        request: Django HTTP request object
+
+    Returns:
+        Rendered template showcasing advanced form components
+    """
+    context = {
+        'title': 'Advanced Form Components',
+        'description': 'Checkbox, Radio, Switch, and Datepicker components',
+    }
+    return render(request, 'demo/forms_advanced.html', context)

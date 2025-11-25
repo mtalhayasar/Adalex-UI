@@ -1,0 +1,18 @@
+<div class="a-switch{% if disabled %} a-switch--disabled{% endif %}">
+  <input 
+    type="checkbox" 
+    id="{{ id }}" 
+    name="{{ name }}"
+    class="a-switch__input"
+    {% if checked %}checked{% endif %}
+    {% if disabled %}disabled{% endif %}
+  />
+  <label for="{{ id }}" class="a-switch__toggle">
+    <span class="a-switch__slider"></span>
+  </label>
+  {% if label %}
+    <label for="{{ id }}" class="a-switch__label">
+      {{ label }}
+    </label>
+  {% endif %}
+</div>

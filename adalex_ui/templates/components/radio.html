@@ -1,0 +1,16 @@
+<div class="a-radio{% if disabled %} a-radio--disabled{% endif %}">
+  <input 
+    type="radio" 
+    id="{{ id }}" 
+    name="{{ name }}"
+    class="a-radio__input"
+    {% if value %}value="{{ value }}"{% endif %}
+    {% if checked %}checked{% endif %}
+    {% if disabled %}disabled{% endif %}
+  />
+  {% if label %}
+    <label for="{{ id }}" class="a-radio__label">
+      {{ label }}
+    </label>
+  {% endif %}
+</div>

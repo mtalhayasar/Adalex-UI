@@ -1,10 +1,3 @@
-{# Alert Component #}
-{# Parameters:
-  - message (required): The alert message to display
-  - type (optional): Alert type (info/success/warning/error), defaults to 'info'
-  - dismissible (optional): Boolean, adds close button if True
-  - id (optional): Custom id for the alert element
-#}
 <div
   {% if id %}id="{{ id }}"{% endif %}
   class="a-alert a-alert--{{ type|default:'info' }}"

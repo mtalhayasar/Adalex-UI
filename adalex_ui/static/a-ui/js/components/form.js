@@ -1,96 +1,94 @@
-/**
- * Form Component JavaScript
- *
- * Handles client-side validation, form feedback, and HTMX integration.
- * HTMX compatible - idempotent initialization.
- */
-
 (function() {
   'use strict';
 
-  /**
-   * Initialize form functionality
-   * Idempotent - can be called multiple times safely
-   */
   function initForms() {
     const forms = document.querySelectorAll('.a-form');
 
     forms.forEach(form => {
-      // Skip if already initialized
       if (form.dataset.formInitialized === 'true') {
         return;
       }
 
-      // Setup validation if enabled
-      if (form.dataset.validate === 'true') {
-        setupValidation(form);
-      }
-
-      // Setup HTMX event listeners for feedback
+      setupValidation(form);
       setupHTMXListeners(form);
-
-      // Mark as initialized
       form.dataset.formInitialized = 'true';
     });
   }
 
-  /**
-   * Setup form validation
-   * @param {HTMLFormElement} form - The form element
-   */
   function setupValidation(form) {
     const inputs = form.querySelectorAll('input, textarea, select');
 
     inputs.forEach(input => {
-      // Real-time validation on blur
       input.addEventListener('blur', () => {
         validateField(input);
       });
 
-      // Clear error on input
       input.addEventListener('input', () => {
         clearFieldError(input);
       });
     });
 
-    // Validate on submit
     form.addEventListener('submit', (e) => {
       if (!validateForm(form)) {
         e.preventDefault();
-        showFeedback(form, 'Please fix the errors below.', 'error');
+        const firstError = form.querySelector('.a-form__group--error');
+        if (firstError) {
+          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          const input = firstError.querySelector('input, textarea, select');
+          if (input) input.focus();
+        }
       }
     });
   }
 
-  /**
-   * Validate a single field
-   * @param {HTMLElement} input - The input element
-   * @returns {boolean} Whether the field is valid
-   */
   function validateField(input) {
-    const fieldGroup = input.closest('.a-form__field-group');
-    if (!fieldGroup) return true;
+    const group = input.closest('.a-form__group');
+    if (!group) return true;
 
-    // Clear existing error
     clearFieldError(input);
 
-    // Check HTML5 validity
-    if (!input.checkValidity()) {
-      showFieldError(input, input.validationMessage);
-      return false;
+    let isValid = true;
+    let errorMessage = '';
+
+    if (input.hasAttribute('required') && !input.value.trim()) {
+      isValid = false;
+      errorMessage = 'This field is required';
+    } else if (input.type === 'email' && input.value) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(input.value)) {
+        isValid = false;
+        errorMessage = 'Please enter a valid email address';
+      }
+    } else if (input.type === 'tel' && input.value) {
+      const phoneRegex = /^[\d\s\-\+\(\)]+$/;
+      if (!phoneRegex.test(input.value)) {
+        isValid = false;
+        errorMessage = 'Please enter a valid phone number';
+      }
+    } else if (input.type === 'url' && input.value) {
+      try {
+        new URL(input.value);
+      } catch {
+        isValid = false;
+        errorMessage = 'Please enter a valid URL';
+      }
+    } else if (input.type === 'number' && input.value) {
+      if (input.hasAttribute('min') && parseFloat(input.value) < parseFloat(input.min)) {
+        isValid = false;
+        errorMessage = `Value must be at least ${input.min}`;
+      } else if (input.hasAttribute('max') && parseFloat(input.value) > parseFloat(input.max)) {
+        isValid = false;
+        errorMessage = `Value must be at most ${input.max}`;
+      }
     }
 
-    // Custom validations can be added here
-    // For example, pattern matching, custom business rules, etc.
+    if (!isValid) {
+      showFieldError(input, errorMessage);
+    }
 
-    return true;
+    return isValid;
   }
 
-  /**
-   * Validate entire form
-   * @param {HTMLFormElement} form - The form element
-   * @returns {boolean} Whether the form is valid
-   */
   function validateForm(form) {
     const inputs = form.querySelectorAll('input, textarea, select');
     let isValid = true;
@@ -104,87 +102,49 @@
     return isValid;
   }
 
-  /**
-   * Show field error message
-   * @param {HTMLElement} input - The input element
-   * @param {string} message - Error message
-   */
   function showFieldError(input, message) {
-    const fieldGroup = input.closest('.a-form__field-group');
-    if (!fieldGroup) return;
+    const group = input.closest('.a-form__group');
+    if (!group) return;
 
-    // Add error class to field group
-    fieldGroup.classList.add('a-form__field-group--error');
-
-    // Add error class to input
-    input.classList.add('a-text-input--error', 'a-select--error', 'a-textarea--error');
+    group.classList.add('a-form__group--error');
     input.setAttribute('aria-invalid', 'true');
 
-    // Create or update error message
-    let errorMsg = fieldGroup.querySelector('.a-text-input__error-message, .a-select__error-message, .a-textarea__error-message');
-
-    if (!errorMsg) {
-      errorMsg = document.createElement('span');
-      errorMsg.className = getErrorMessageClass(input);
-      errorMsg.setAttribute('role', 'alert');
-      errorMsg.id = `${input.id}-error`;
-      input.setAttribute('aria-describedby', errorMsg.id);
-      input.parentNode.insertBefore(errorMsg, input.nextSibling);
+    let errorEl = group.querySelector('.a-form__error');
+    if (!errorEl) {
+      errorEl = document.createElement('div');
+      errorEl.className = 'a-form__error';
+      errorEl.setAttribute('role', 'alert');
+      errorEl.id = `${input.name}-error`;
+      errorEl.innerHTML = `<span class="a-form__error-icon" aria-hidden="true">⚠</span><span></span>`;
+      group.appendChild(errorEl);
     }
 
-    errorMsg.textContent = message;
+    errorEl.querySelector('span:last-child').textContent = message;
+    input.setAttribute('aria-describedby', errorEl.id);
   }
 
-  /**
-   * Clear field error
-   * @param {HTMLElement} input - The input element
-   */
   function clearFieldError(input) {
-    const fieldGroup = input.closest('.a-form__field-group');
-    if (!fieldGroup) return;
+    const group = input.closest('.a-form__group');
+    if (!group) return;
 
-    // Remove error class from field group
-    fieldGroup.classList.remove('a-form__field-group--error');
+    group.classList.remove('a-form__group--error');
+    input.removeAttribute('aria-invalid');
+    input.removeAttribute('aria-describedby');
 
-    // Remove error class from input
-    input.classList.remove('a-text-input--error', 'a-select--error', 'a-textarea--error');
-    input.setAttribute('aria-invalid', 'false');
-
-    // Remove error message
-    const errorMsg = fieldGroup.querySelector('.a-text-input__error-message, .a-select__error-message, .a-textarea__error-message');
-    if (errorMsg && !input.dataset.serverError) {
-      errorMsg.remove();
+    const errorEl = group.querySelector('.a-form__error');
+    if (errorEl && !input.dataset.serverError) {
+      errorEl.remove();
     }
   }
 
-  /**
-   * Get appropriate error message class based on input type
-   * @param {HTMLElement} input - The input element
-   * @returns {string} Error message class name
-   */
-  function getErrorMessageClass(input) {
-    if (input.tagName === 'SELECT') {
-      return 'a-select__error-message';
-    } else if (input.tagName === 'TEXTAREA') {
-      return 'a-textarea__error-message';
-    }
-    return 'a-text-input__error-message';
-  }
-
-  /**
-   * Setup HTMX event listeners for form feedback
-   * @param {HTMLFormElement} form - The form element
-   */
   function setupHTMXListeners(form) {
-    // Show success message after successful HTMX request
     form.addEventListener('htmx:afterRequest', (event) => {
       if (event.detail.successful) {
         showFeedback(form, 'Form submitted successfully!', 'success');
-
-        // Optionally reset form
         if (form.dataset.resetOnSuccess === 'true') {
           setTimeout(() => {
-            resetForm(form);
+            form.reset();
+            clearAllErrors(form);
           }, 1500);
         }
       } else {
@@ -192,126 +152,66 @@
       }
     });
 
-    // Handle HTMX errors
-    form.addEventListener('htmx:responseError', () => {
-      showFeedback(form, 'Server error. Please try again later.', 'error');
+    form.addEventListener('htmx:beforeRequest', (event) => {
+      if (!validateForm(form)) {
+        event.preventDefault();
+      }
     });
   }
 
-  /**
-   * Show form feedback message
-   * @param {HTMLFormElement} form - The form element
-   * @param {string} message - Feedback message
-   * @param {string} type - Message type (success/error/warning/info)
-   * @param {number} duration - Auto-hide duration in ms (0 = no auto-hide)
-   */
   function showFeedback(form, message, type = 'info', duration = 5000) {
-    const feedbackEl = form.querySelector('.a-form__feedback');
-    if (!feedbackEl) return;
+    let feedbackEl = form.querySelector('.a-form__feedback');
+    if (!feedbackEl) {
+      feedbackEl = document.createElement('div');
+      feedbackEl.className = 'a-form__feedback';
+      feedbackEl.setAttribute('role', 'status');
+      feedbackEl.setAttribute('aria-live', 'polite');
+      form.insertBefore(feedbackEl, form.querySelector('.a-form__actions'));
+    }
 
-    // Clear existing classes
-    feedbackEl.className = 'a-form__feedback a-form__feedback--visible';
-    feedbackEl.classList.add(`a-form__feedback--${type}`);
-
-    // Set message
+    feedbackEl.className = `a-form__feedback a-form__feedback--${type} a-form__feedback--visible`;
     feedbackEl.textContent = message;
 
-    // Auto-hide if duration specified
     if (duration > 0) {
       setTimeout(() => {
-        hideFeedback(form);
+        feedbackEl.classList.remove('a-form__feedback--visible');
+        setTimeout(() => {
+          feedbackEl.textContent = '';
+          feedbackEl.className = 'a-form__feedback';
+        }, 300);
       }, duration);
     }
-
-    // Announce to screen readers
-    feedbackEl.setAttribute('aria-live', 'polite');
-    feedbackEl.setAttribute('role', 'status');
   }
 
-  /**
-   * Hide form feedback message
-   * @param {HTMLFormElement} form - The form element
-   */
-  function hideFeedback(form) {
-    const feedbackEl = form.querySelector('.a-form__feedback');
-    if (!feedbackEl) return;
+  function clearAllErrors(form) {
+    const groups = form.querySelectorAll('.a-form__group--error');
+    groups.forEach(group => {
+      group.classList.remove('a-form__group--error');
+      const errorEl = group.querySelector('.a-form__error');
+      if (errorEl) errorEl.remove();
+    });
 
-    feedbackEl.classList.remove('a-form__feedback--visible');
-
-    setTimeout(() => {
-      feedbackEl.textContent = '';
-      feedbackEl.className = 'a-form__feedback';
-    }, 300);
-  }
-
-  /**
-   * Reset form and clear all errors
-   * @param {HTMLFormElement} form - The form element
-   */
-  function resetForm(form) {
-    // Reset native form
-    form.reset();
-
-    // Clear all field errors
-    const inputs = form.querySelectorAll('input, textarea, select');
+    const inputs = form.querySelectorAll('[aria-invalid="true"]');
     inputs.forEach(input => {
-      clearFieldError(input);
+      input.removeAttribute('aria-invalid');
+      input.removeAttribute('aria-describedby');
     });
-
-    // Hide feedback
-    hideFeedback(form);
-
-    // Dispatch custom event
-    const event = new CustomEvent('form:reset', {
-      detail: { form },
-      bubbles: true
-    });
-    form.dispatchEvent(event);
   }
 
-  /**
-   * Get form data as object
-   * @param {HTMLFormElement} form - The form element
-   * @returns {Object} Form data as key-value pairs
-   */
-  function getFormData(form) {
-    const formData = new FormData(form);
-    const data = {};
-
-    for (let [key, value] of formData.entries()) {
-      // Handle multiple values (checkboxes, multi-select)
-      if (data[key]) {
-        if (!Array.isArray(data[key])) {
-          data[key] = [data[key]];
-        }
-        data[key].push(value);
-      } else {
-        data[key] = value;
-      }
-    }
-
-    return data;
-  }
-
-  // Initialize on DOM ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initForms);
   } else {
     initForms();
   }
 
-  // Re-initialize after HTMX swaps
   document.addEventListener('htmx:afterSwap', initForms);
 
-  // Expose API to window
   window.AdalexUI = window.AdalexUI || {};
   window.AdalexUI.Form = {
     init: initForms,
     validate: validateForm,
     validateField: validateField,
     showFeedback: showFeedback,
-    hideFeedback: hideFeedback,
-    reset: resetForm,
-    getData: getFormData
+    clearAllErrors: clearAllErrors
   };
 })();

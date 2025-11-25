@@ -34,8 +34,12 @@ adalex-ui/
 
 ### 1. Design Tokens
 - **Tüm renkler/gölgeler CSS değişkenlerinden gelmelidir**
-- Hard-coded renk değerleri kullanma
-- `_tokens.scss` tek kaynak dosyadır
+- **ASLA hard-coded renk değerleri kullanma (hex, rgb, rgba, hsl)**
+- `_tokens.scss` tek kaynak dosyadır - tüm renkler buradan yönetilir
+- **Semantic token sistemi**: `--error-main`, `--success-light`, `--warning-border` vb. kullan
+- **Focus ring sistemi**: `--focus-ring-primary`, `--focus-ring-error` vb. kullan
+- **Gradient varyantları**: `--primary-gradient-hover`, `--secondary-gradient-active` vb. kullan
+- **Interactive overlays**: `--button-hover-overlay`, `--modal-backdrop` vb. kullan
 
 ### 2. Taşınabilirlik
 - Bileşenler `INSTALLED_APPS` + `{% include %}` ile çalışmalı
@@ -58,7 +62,15 @@ adalex-ui/
 - `.a-component-name__element` (element)
 - `.a-component-name--variant` (modifier)
 
-### 6. Dokümantasyon Yaklaşımı
+### 6. Modüler Bileşen Mimarisi
+- **Küçük vs Büyük Bileşenler**: Proje iki seviyeli bileşen sistemine sahiptir
+  - **Küçük bileşenler**: Tek amaçlı, yeniden kullanılabilir (button.html, text_input.html, icon.html gibi)
+  - **Büyük bileşenler**: Birden fazla küçük bileşen içeren kompozit yapılar (form.html, navbar.html, dashboard.html gibi)
+- **Mutlak Kural**: Büyük bileşenler **SADECE** küçük bileşenleri kullanmalı, inline HTML yazmamalı
+- **Tek Yerden Değişim**: Küçük bir bileşeni değiştirdiğinde tüm kullanıldığı yerlerde otomatik değişmeli
+- **Yeniden Kullanım**: Aynı element türü her yerde aynı küçük bileşenle çalışmalı
+
+### 7. Dokümantasyon Yaklaşımı
 - **Demo sayfaları**: Minimal, sadece görsel showcase
   - Başlık + kısa açıklama + bileşen örnekleri
   - **ASLA** parametreleri, kullanım kodlarını demo'ya yazma
@@ -125,6 +137,7 @@ pytest
 - 2 space indentation
 - Self-closing tag'lerde boşluk: `<br />`
 - Attribute sırası: class, id, data-*, aria-*, diğerleri
+- **Django yorumları kullanma** - `{# ... #}` yorumları bazı durumlarda HTML'de görünebilir
 
 ### SCSS
 - 2 space indentation
@@ -156,28 +169,44 @@ Ana task'ı böl:
 ## Kısıtlamalar
 
 ### YAPMA:
-- ❌ Hard-coded renk değerleri
+- ❌ **Hard-coded renk değerleri** (hex: #ffffff, rgb: rgb(255,0,0), rgba: rgba(0,0,0,0.5), hsl: hsl(0,100%,50%))
+- ❌ **Gradientlerde hard-coded renkler** - gradient token'ları kullan
+- ❌ **Focus ring'lerde hard-coded box-shadow** - `--focus-ring-*` token'ları kullan
+- ❌ **Modal backdrop'larda hard-coded rgba** - `--modal-backdrop` kullan
 - ❌ `!important` kullanma (son çare hariç)
 - ❌ Inline style attribute'ları
 - ❌ Global JS namespace kirliliği
 - ❌ Erişilebilirlik olmadan bileşen yayınlama
+- ❌ Django template yorumları `{# ... #}` - HTML'de görünebilir
+- ❌ **Büyük bileşenlerde inline HTML yazma** - Mutlaka küçük bileşenleri kullan
 
 ### YAP:
-- ✅ Design token'ları kullan
+- ✅ **Design token'ları kullan** - `var(--token-name)` formatında
+- ✅ **Semantic renk sistemi** - `--error-main`, `--success-light`, `--warning-border`
+- ✅ **Focus ring token'ları** - `--focus-ring-primary`, `--focus-ring-error`
+- ✅ **Gradient token'ları** - `--primary-gradient-hover`, `--secondary-gradient-active`
+- ✅ **Interactive overlay'ler** - `--button-hover-overlay`, `--button-active-overlay`
 - ✅ Semantic HTML
 - ✅ Progressive enhancement
 - ✅ Mobile-first responsive
 - ✅ Her bileşeni test et
+- ✅ **Büyük bileşenleri küçük bileşenlerden oluştur** - Modüler mimariye uy
 
 ## Kalite Kontrol Checklist
 
 Her bileşen tamamlandığında kontrol et:
 
-- [ ] Design token'ları kullanılıyor mu?
+- [ ] **Design token'ları kullanılıyor mu?** (hiç hard-coded renk yok mu?)
+- [ ] **Semantic renk sistemi** - Error, success, warning, info renkleri token'lardan mı?
+- [ ] **Focus ring token'ları** - Hard-coded rgba box-shadow yok mu?
+- [ ] **Gradient token'ları** - Hard-coded gradient değerleri yok mu?
+- [ ] **Interactive overlay'ler** - Hover/active için token kullanılıyor mu?
 - [ ] ARIA attributes eklenmiş mi?
 - [ ] Klavye erişimi sağlanmış mı?
 - [ ] Hover/focus/active durumları var mı?
 - [ ] HTMX swap sonrası çalışıyor mu?
+- [ ] **Büyük bileşen ise küçük bileşenleri kullanıyor mu?**
+- [ ] **Inline HTML yazılmış mı? (büyük bileşenlerde yasak)**
 - [ ] Playground'da minimal demo var mı? (sadece görsel)
 - [ ] `docs/COMPONENTS.md`'de API referansı var mı?
 - [ ] Tüm parametreler dokümante edilmiş mi?

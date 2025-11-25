@@ -1,0 +1,81 @@
+.a-checkbox {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  
+  &__input {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    padding: 0;
+    border: 2px solid var(--border-main);
+    border-radius: var(--radius-sm);
+    background-color: var(--neutral-white);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    margin-top: 2px;
+    
+    &:focus {
+      outline: none;
+      border-color: var(--secondary-main);
+      box-shadow: var(--focus-ring-primary);
+    }
+    
+    &:hover:not(:disabled) {
+      border-color: var(--secondary-main);
+    }
+    
+    &:checked {
+      background-color: var(--secondary-main);
+      border-color: var(--secondary-main);
+      background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='m13.854 3.646-7.5 7.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6 10.293l7.146-7.147a.5.5 0 0 1 .708.708z'/%3e%3c/svg%3e");
+      background-size: 14px 14px;
+      background-position: center;
+      background-repeat: no-repeat;
+      
+      &:hover {
+        background-color: var(--secondary-dark);
+      }
+      
+      &:focus {
+        box-shadow: var(--focus-ring-primary);
+      }
+    }
+    
+    &:disabled {
+      background-color: var(--neutral-100);
+      border-color: var(--border-light);
+      cursor: not-allowed;
+      opacity: 0.6;
+      
+      &:checked {
+        background-color: var(--neutral-400);
+        border-color: var(--neutral-400);
+      }
+    }
+  }
+  
+  &__label {
+    color: var(--text-primary);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-normal);
+    line-height: var(--line-height-normal);
+    cursor: pointer;
+    user-select: none;
+    
+    &:hover .a-checkbox__input:not(:disabled) {
+      border-color: var(--primary-600);
+    }
+  }
+  
+  &--disabled {
+    .a-checkbox__label {
+      color: var(--text-disabled);
+      cursor: not-allowed;
+    }
+  }
+}

@@ -53,22 +53,22 @@
 
   // Success variant
   &--success {
-    color: #15803d;
-    background-color: #dcfce7;
-    border-color: #86efac;
+    color: var(--success-main);
+    background-color: var(--success-light);
+    border-color: var(--success-border);
   }
 
   // Warning variant
   &--warning {
-    color: #92400e;
-    background-color: #fef3c7;
-    border-color: #fcd34d;
+    color: var(--warning-main);
+    background-color: var(--warning-light);
+    border-color: var(--warning-border);
   }
 
   // Error variant
   &--error {
-    color: #991b1b;
-    background-color: #fee2e2;
-    border-color: #fca5a5;
+    color: var(--error-dark);
+    background-color: var(--error-light);
+    border-color: var(--error-border);
   }
 }

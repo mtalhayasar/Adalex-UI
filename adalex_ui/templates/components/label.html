@@ -1,10 +1,3 @@
-{# Label Component #}
-{# Parameters:
-  - for_id (required): The id of the form element this label is for
-  - text (required): The label text to display
-  - required (optional): Boolean, if True shows a red asterisk
-  - help_text (optional): Additional help text shown below the label
-#}
 <label
   class="a-label{% if required %} a-label--required{% endif %}"
   for="{{ for_id }}"

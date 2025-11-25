@@ -1,9 +1,3 @@
-{# Badge Component #}
-{# Parameters:
-  - text (required): The badge text/label
-  - variant (optional): Visual variant (neutral/primary/secondary/success/warning/error), defaults to 'neutral'
-  - size (optional): Badge size (sm/md), defaults to 'md'
-#}
 <span class="a-badge a-badge--{{ variant|default:'neutral' }} a-badge--{{ size|default:'md' }}">
   {{ text }}
 </span>

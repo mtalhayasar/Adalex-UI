@@ -200,7 +200,6 @@ Complete form container with field management, validation, and feedback.
 | `fields` | list | Yes | - | List of field configuration dicts (see below) |
 | `submit_text` | string | No | `"Submit"` | Submit button text |
 | `cancel_url` | string | No | - | Cancel button URL (if provided, shows cancel button) |
-| `csrf_token` | boolean | No | `False` | Include Django CSRF token |
 
 **Field Configuration:**
 
@@ -208,16 +207,18 @@ Each field in the `fields` list should be a dictionary with the following struct
 
 | Key | Type | Required | Description |
 |-----|------|----------|-------------|
-| `type` | string | Yes | Field type: `text`, `email`, `password`, `textarea`, `select` |
+| `type` | string | Yes | Field type: `text`, `email`, `password`, `tel`, `url`, `number`, `textarea`, `select`, `checkbox`, `radio` |
 | `name` | string | Yes | Field name attribute |
-| `id` | string | Yes | Field ID attribute |
 | `label` | string | Yes | Field label text |
-| `value` | string | No | Default/pre-filled value |
-| `placeholder` | string | No | Placeholder text |
+| `value` | string/boolean | No | Default/pre-filled value |
+| `placeholder` | string | No | Placeholder text (for text/textarea/select) |
 | `required` | boolean | No | Mark field as required |
-| `disabled` | boolean | No | Disable field |
 | `error` | string | No | Error message to display |
-| `options` | list | Conditional | Required for `select` type: list of `{'value': '', 'label': ''}` dicts |
+| `help_text` | string | No | Help text below field (or checkbox label for checkbox type) |
+| `options` | list | Conditional | Required for `select` and `radio`: list of `{'value': '', 'label': ''}` dicts |
+| `rows` | integer | No | Number of rows for textarea (default: 4) |
+| `min` | number | No | Minimum value for number input |
+| `max` | number | No | Maximum value for number input |
 
 **Usage:**
 
@@ -229,14 +230,14 @@ def contact_form(request):
         name = request.POST.get('name')
         email = request.POST.get('email')
         # ... handle submission
-        return redirect('success')
+        messages.success(request, 'Form submitted successfully!')
+        return redirect('contact')
 
     # Define form fields
     form_fields = [
         {
             'type': 'text',
             'name': 'name',
-            'id': 'name',
             'label': 'Full Name',
             'placeholder': 'Enter your name',
             'required': True,
@@ -244,30 +245,52 @@ def contact_form(request):
         {
             'type': 'email',
             'name': 'email',
-            'id': 'email',
             'label': 'Email Address',
             'placeholder': 'your@email.com',
             'required': True,
         },
         {
+            'type': 'tel',
+            'name': 'phone',
+            'label': 'Phone Number',
+            'placeholder': '+90 555 123 4567',
+        },
+        {
             'type': 'select',
             'name': 'country',
-            'id': 'country',
             'label': 'Country',
+            'placeholder': 'Select a country...',
             'required': True,
             'options': [
-                {'value': '', 'label': 'Select...'},
                 {'value': 'tr', 'label': 'Turkey'},
                 {'value': 'us', 'label': 'United States'},
+                {'value': 'uk', 'label': 'United Kingdom'},
             ],
+        },
+        {
+            'type': 'radio',
+            'name': 'contact_method',
+            'label': 'Preferred Contact Method',
+            'required': True,
+            'options': [
+                {'value': 'email', 'label': 'Email'},
+                {'value': 'phone', 'label': 'Phone'},
+                {'value': 'both', 'label': 'Both'},
+            ],
+        },
+        {
+            'type': 'checkbox',
+            'name': 'newsletter',
+            'label': 'Newsletter',
+            'help_text': 'I want to receive updates and promotions',
         },
         {
             'type': 'textarea',
             'name': 'message',
-            'id': 'message',
             'label': 'Message',
             'placeholder': 'Your message...',
-            'required': False,
+            'rows': 5,
+            'required': True,
         },
     ]
 
@@ -282,23 +305,75 @@ def contact_form(request):
 
 {% include "components/form.html" with
   id="contact-form"
-  action="{% url 'contact_submit' %}"
-  method="post"
+  action=""
+  method="POST"
   title="Contact Us"
   fields=form_fields
   submit_text="Send Message"
   cancel_url="{% url 'home' %}"
-  csrf_token=True
 %}
 ```
 
-**Form Variants:**
+**JavaScript Features:**
 
-The form component supports CSS modifier classes for different styles:
+The Form component includes automatic client-side validation:
 
-- **Compact:** `.a-form--compact` - Reduced spacing for smaller forms
-- **Inline:** `.a-form--inline` - Horizontal layout for simple forms
-- **Borderless:** `.a-form--borderless` - No border or shadow
+- **Email validation** - Checks for valid email format
+- **Phone validation** - Validates phone number format
+- **URL validation** - Ensures valid URL format
+- **Number validation** - Respects min/max attributes
+- **Required field validation** - Checks for empty required fields
+- **Real-time validation** - Validates on blur, clears errors on input
+- **HTMX integration** - Shows success/error messages after async submission
+
+```javascript
+// Initialize forms (automatically called on page load)
+AdalexUI.Form.init();
+
+// Manual validation
+const form = document.getElementById('contact-form');
+const isValid = AdalexUI.Form.validate(form);
+
+// Show feedback message
+AdalexUI.Form.showFeedback(form, 'Success!', 'success');
+
+// Clear all errors
+AdalexUI.Form.clearAllErrors(form);
+```
+
+**HTMX Integration:**
+
+```django
+{# Form with HTMX #}
+<form class="a-form" 
+      id="ajax-form"
+      hx-post="{% url 'form_submit' %}"
+      hx-target="#result"
+      data-reset-on-success="true">
+  <!-- Form automatically validates before HTMX request -->
+  <!-- Shows feedback message after success/error -->
+</form>
+```
+
+**Accessibility:**
+
+- All form fields have associated labels with `for` attributes
+- Required fields include `aria-required="true"`
+- Error states include `aria-invalid="true"` and `aria-describedby`
+- Error messages have `role="alert"` for screen reader announcements
+- Radio groups use `role="radiogroup"`
+- Keyboard navigation fully supported
+- Focus management on validation errors
+
+**Best Practices:**
+
+1. **Always include labels** - Every field must have a label for accessibility
+2. **Use appropriate input types** - `email`, `tel`, `url` for better mobile keyboards
+3. **Add placeholders sparingly** - Don't use placeholders as labels
+4. **Group related fields** - Use fieldsets for logical grouping
+5. **Provide clear error messages** - Be specific about what needs correction
+6. **Include help text** - Guide users for complex fields
+7. **Test with keyboard** - Ensure all fields are keyboard accessible
 
 **JavaScript Required:** `form.js`
 

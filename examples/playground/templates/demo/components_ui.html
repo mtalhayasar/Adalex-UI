@@ -114,7 +114,7 @@
 
     <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">With Icon</h3>
     <div class="demo-row">
-      {% include "components/button.html" with text="With Icon" variant="primary" icon='<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0L10.5 5.5L16 6.5L12 10.5L13 16L8 13L3 16L4 10.5L0 6.5L5.5 5.5L8 0Z"/></svg>' %}
+      {% include "components/button.html" with text="Save" variant="primary" icon='<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0L10.5 5.5L16 6.5L12 10.5L13 16L8 13L3 16L4 10.5L0 6.5L5.5 5.5L8 0Z"/></svg>' %}
       {% include "components/button.html" with text="Download" variant="secondary" icon='<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 12L3 7H6V0H10V7H13L8 12ZM0 14V16H16V14H0Z"/></svg>' %}
     </div>
   </div>
@@ -206,9 +206,9 @@
     <div class="demo-row">
       <div style="display: flex; gap: var(--spacing-sm); align-items: center; padding: var(--spacing-md); background: var(--neutral-50); border-radius: var(--radius-md);">
         {% include "components/spinner.html" with size="sm" %}
-        <span>Loading...</span>
+        <span>Loading data...</span>
       </div>
-      {% include "components/button.html" with text="Loading" variant="primary" icon='<div class="a-spinner a-spinner--sm" style="width: 1rem; height: 1rem;"><svg class="a-spinner__svg" viewBox="0 0 50 50" style="width: 1rem; height: 1rem;"><circle class="a-spinner__circle" cx="25" cy="25" r="20" fill="none" stroke-width="6" style="stroke: currentColor;"></circle></svg></div>' %}
+      {% include "components/button.html" with text="Processing" variant="primary" icon='<div class="a-spinner a-spinner--sm" style="width: 1rem; height: 1rem;"><svg class="a-spinner__svg" viewBox="0 0 50 50" style="width: 1rem; height: 1rem;"><circle class="a-spinner__circle" cx="25" cy="25" r="20" fill="none" stroke-width="6" style="stroke: currentColor;"></circle></svg></div>' %}
     </div>
   </div>
 

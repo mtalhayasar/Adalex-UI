@@ -1,10 +1,3 @@
-{# Icon Component #}
-{# Parameters:
-  - name (required): Icon name (matches SVG filename without .svg)
-  - size (optional): Icon size (sm/md/lg), defaults to 'md'
-  - color (optional): Icon color (CSS var or color value)
-  - aria_label (optional): Accessible label for screen readers
-#}
 <span
   class="a-icon a-icon--{{ size|default:'md' }}"
   {% if color %}style="color: {{ color }};"{% endif %}
@@ -60,7 +53,6 @@
       <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
     </svg>
   {% else %}
-    {# Default icon if name not found #}
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" fill="currentColor"/>
     </svg>

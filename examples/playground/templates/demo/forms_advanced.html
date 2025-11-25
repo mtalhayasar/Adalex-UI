@@ -1,0 +1,178 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} - Adalex UI</title>
+  <link rel="stylesheet" href="{% static 'a-ui/css/main.css' %}">
+  <style>
+    body {
+      font-family: var(--font-family-base);
+      padding: var(--spacing-2xl);
+      background: var(--neutral-50);
+      color: var(--text-primary);
+    }
+    .demo-header {
+      margin-bottom: var(--spacing-2xl);
+      padding-bottom: var(--spacing-lg);
+      border-bottom: 2px solid var(--border-light);
+    }
+    .demo-header h1 {
+      margin: 0 0 var(--spacing-sm) 0;
+      font-size: var(--font-size-3xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--text-primary);
+    }
+    .demo-header p {
+      margin: 0;
+      font-size: var(--font-size-lg);
+      color: var(--text-secondary);
+    }
+    .demo-section {
+      margin-bottom: var(--spacing-2xl);
+    }
+    .demo-section h2 {
+      margin: 0 0 var(--spacing-md) 0;
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-primary);
+    }
+    .demo-section p {
+      margin: 0 0 var(--spacing-lg) 0;
+      color: var(--text-secondary);
+    }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--spacing-xl);
+      margin-top: var(--spacing-lg);
+    }
+    .demo-card {
+      background: var(--neutral-white);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+    }
+    .demo-card h3 {
+      margin: 0 0 var(--spacing-md) 0;
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-medium);
+      color: var(--text-primary);
+    }
+    .component-examples {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+    }
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+    @media (max-width: 768px) {
+      .demo-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-header">
+    <h1>{{ title }}</h1>
+    <p>{{ description }}</p>
+  </div>
+
+  <!-- Checkbox Component -->
+  <div class="demo-section">
+    <h2>Checkbox Component</h2>
+    <p>Customizable checkbox inputs with labels and different states.</p>
+
+    <div class="demo-card">
+      <h3>Checkbox Examples</h3>
+      <div class="component-examples">
+        {% include "components/checkbox.html" with name="terms" id="terms" label="I agree to the terms and conditions" %}
+        {% include "components/checkbox.html" with name="newsletter" id="newsletter" label="Subscribe to newsletter" checked=True %}
+        {% include "components/checkbox.html" with name="updates" id="updates" label="Receive product updates" disabled=True %}
+        {% include "components/checkbox.html" with name="disabled-checked" id="disabled-checked" label="Disabled & Checked" checked=True disabled=True %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Radio Component -->
+  <div class="demo-section">
+    <h2>Radio Component</h2>
+    <p>Radio button inputs for single-choice selections.</p>
+
+    <div class="demo-card">
+      <h3>Radio Button Examples</h3>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-xl);">
+        <div>
+          <h4 style="margin: 0 0 var(--spacing-md) 0; font-size: var(--font-size-base); color: var(--text-secondary);">Size Selection</h4>
+          <div class="radio-group">
+            {% include "components/radio.html" with name="size" id="size-s" value="S" label="Small" %}
+            {% include "components/radio.html" with name="size" id="size-m" value="M" label="Medium" checked=True %}
+            {% include "components/radio.html" with name="size" id="size-l" value="L" label="Large" %}
+            {% include "components/radio.html" with name="size" id="size-xl" value="XL" label="Extra Large" disabled=True %}
+          </div>
+        </div>
+        <div>
+          <h4 style="margin: 0 0 var(--spacing-md) 0; font-size: var(--font-size-base); color: var(--text-secondary);">Color Selection</h4>
+          <div class="radio-group">
+            {% include "components/radio.html" with name="color" id="red" value="red" label="Red" checked=True %}
+            {% include "components/radio.html" with name="color" id="blue" value="blue" label="Blue" %}
+            {% include "components/radio.html" with name="color" id="green" value="green" label="Green" %}
+            {% include "components/radio.html" with name="color" id="yellow" value="yellow" label="Yellow" disabled=True %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Switch Component -->
+  <div class="demo-section">
+    <h2>Switch Component</h2>
+    <p>Toggle switches for on/off states with smooth animations.</p>
+
+    <div class="demo-card">
+      <h3>Switch Examples</h3>
+      <div class="component-examples">
+        {% include "components/switch.html" with name="notifications" id="notifications" label="Enable notifications" checked=True %}
+        {% include "components/switch.html" with name="auto_save" id="auto_save" label="Auto-save documents" %}
+        {% include "components/switch.html" with name="disabled-off" id="disabled-off" label="Disabled Off" disabled=True %}
+        {% include "components/switch.html" with name="dark_mode" id="dark_mode" label="Dark mode (Disabled On)" checked=True disabled=True %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Datepicker Component -->
+  <div class="demo-section">
+    <h2>Datepicker Component</h2>
+    <p>Native HTML5 date inputs with custom styling and validation.</p>
+
+    <div class="demo-card">
+      <h3>Datepicker Examples</h3>
+      <div class="component-examples">
+        <div>
+          <label for="birth_date" style="display: block; margin-bottom: var(--spacing-xs); font-weight: var(--font-weight-medium);">Birth Date (with value)</label>
+          {% include "components/datepicker.html" with name="birth_date" id="birth_date" value="1990-01-01" %}
+        </div>
+        <div>
+          <label for="start_date" style="display: block; margin-bottom: var(--spacing-xs); font-weight: var(--font-weight-medium);">Required Date <span style="color: var(--error-main);">*</span></label>
+          {% include "components/datepicker.html" with name="start_date" id="start_date" required=True %}
+        </div>
+        <div>
+          <label for="end_date" style="display: block; margin-bottom: var(--spacing-xs); font-weight: var(--font-weight-medium);">Disabled Date</label>
+          {% include "components/datepicker.html" with name="end_date" id="end_date" value="2024-12-31" disabled=True %>
+        </div>
+        <div>
+          <label for="error_date" style="display: block; margin-bottom: var(--spacing-xs); font-weight: var(--font-weight-medium);">Date with Error</label>
+          {% include "components/datepicker.html" with name="error_date" id="error_date" error="Please select a valid date" %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="{% static 'a-ui/js/main.js' %}"></script>
+</body>
+</html>
