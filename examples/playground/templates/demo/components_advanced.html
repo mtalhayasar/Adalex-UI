@@ -1,0 +1,256 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} - Adalex UI</title>
+  <link rel="stylesheet" href="{% static 'a-ui/css/main.css' %}">
+  <style>
+    body {
+      font-family: var(--font-family-base);
+      padding: var(--spacing-2xl);
+      background: var(--neutral-50);
+      color: var(--text-primary);
+    }
+    .demo-header {
+      margin-bottom: var(--spacing-2xl);
+      padding-bottom: var(--spacing-lg);
+      border-bottom: 2px solid var(--border-light);
+    }
+    .demo-header h1 {
+      margin: 0 0 var(--spacing-sm) 0;
+      font-size: var(--font-size-3xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--text-primary);
+    }
+    .demo-header p {
+      margin: 0;
+      font-size: var(--font-size-lg);
+      color: var(--text-secondary);
+    }
+    .demo-section {
+      margin-bottom: var(--spacing-2xl);
+      padding: var(--spacing-xl);
+      background: var(--neutral-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+    .demo-section h2 {
+      margin: 0 0 var(--spacing-md) 0;
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-primary);
+    }
+    .demo-section p {
+      margin: 0 0 var(--spacing-lg) 0;
+      color: var(--text-secondary);
+    }
+    .demo-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-md);
+      align-items: center;
+      margin-bottom: var(--spacing-lg);
+    }
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+    }
+    .icon-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-md);
+      background: var(--neutral-50);
+      border-radius: var(--radius-md);
+      text-align: center;
+    }
+    .icon-name {
+      font-size: var(--font-size-xs);
+      color: var(--text-tertiary);
+      font-family: var(--font-family-mono);
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-header">
+    <h1>{{ title }}</h1>
+    <p>{{ description }}</p>
+  </div>
+
+  <!-- Tooltip Component Demo -->
+  <div class="demo-section">
+    <h2>Tooltip Component</h2>
+    <p>Contextual tooltips that appear on hover or focus.</p>
+
+    <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">Positions</h3>
+    <div class="demo-row">
+      {% include "components/tooltip.html" with text="Tooltip on top" position="top" trigger_content='<button type="button" class="a-button a-button--primary a-button--sm">Top</button>' %}
+      {% include "components/tooltip.html" with text="Tooltip on bottom" position="bottom" trigger_content='<button type="button" class="a-button a-button--primary a-button--sm">Bottom</button>' %}
+      {% include "components/tooltip.html" with text="Tooltip on left" position="left" trigger_content='<button type="button" class="a-button a-button--primary a-button--sm">Left</button>' %}
+      {% include "components/tooltip.html" with text="Tooltip on right" position="right" trigger_content='<button type="button" class="a-button a-button--primary a-button--sm">Right</button>' %}
+    </div>
+
+    <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">Examples</h3>
+    <div class="demo-row">
+      <span style="display: flex; align-items: center; gap: var(--spacing-sm);">
+        This is some text with a
+        {% include "components/tooltip.html" with text="Additional helpful information" position="top" trigger_content='<span style="text-decoration: underline; cursor: help;">tooltip</span>' %}
+        inline.
+      </span>
+    </div>
+    <div class="demo-row">
+      {% include "components/tooltip.html" with text="Click to perform action" position="bottom" trigger_content='<button type="button" class="a-button a-button--secondary">Hover Me</button>' %}
+    </div>
+  </div>
+
+  <!-- Modal Component Demo -->
+  <div class="demo-section">
+    <h2>Modal Component</h2>
+    <p>Accessible modal dialogs with focus trap and keyboard support.</p>
+
+    <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">Basic Modal</h3>
+    <div class="demo-row">
+      <button type="button" class="a-button a-button--primary" data-modal-open="demo-modal-1">
+        Open Modal
+      </button>
+    </div>
+
+    <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">Modal Sizes</h3>
+    <div class="demo-row">
+      <button type="button" class="a-button a-button--ghost" data-modal-open="demo-modal-sm">
+        Small Modal
+      </button>
+      <button type="button" class="a-button a-button--ghost" data-modal-open="demo-modal-md">
+        Medium Modal
+      </button>
+      <button type="button" class="a-button a-button--ghost" data-modal-open="demo-modal-lg">
+        Large Modal
+      </button>
+    </div>
+
+    <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">With Footer</h3>
+    <div class="demo-row">
+      <button type="button" class="a-button a-button--secondary" data-modal-open="demo-modal-footer">
+        Modal with Footer
+      </button>
+    </div>
+
+    <p style="margin-top: var(--spacing-lg); font-size: var(--font-size-sm); color: var(--text-tertiary);">
+      Features: ESC key to close, backdrop click to close, focus trap, ARIA attributes
+    </p>
+  </div>
+
+  <!-- Icon Component Demo -->
+  <div class="demo-section">
+    <h2>Icon Component</h2>
+    <p>SVG icons with size variants and color support.</p>
+
+    <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">Available Icons</h3>
+    <div class="icon-grid">
+      <div class="icon-item">
+        {% include "components/icon.html" with name="check" size="lg" %}
+        <span class="icon-name">check</span>
+      </div>
+      <div class="icon-item">
+        {% include "components/icon.html" with name="close" size="lg" %}
+        <span class="icon-name">close</span>
+      </div>
+      <div class="icon-item">
+        {% include "components/icon.html" with name="chevron-right" size="lg" %}
+        <span class="icon-name">chevron-right</span>
+      </div>
+      <div class="icon-item">
+        {% include "components/icon.html" with name="chevron-left" size="lg" %}
+        <span class="icon-name">chevron-left</span>
+      </div>
+      <div class="icon-item">
+        {% include "components/icon.html" with name="info" size="lg" %}
+        <span class="icon-name">info</span>
+      </div>
+      <div class="icon-item">
+        {% include "components/icon.html" with name="warning" size="lg" %}
+        <span class="icon-name">warning</span>
+      </div>
+      <div class="icon-item">
+        {% include "components/icon.html" with name="error" size="lg" %}
+        <span class="icon-name">error</span>
+      </div>
+      <div class="icon-item">
+        {% include "components/icon.html" with name="star" size="lg" %}
+        <span class="icon-name">star</span>
+      </div>
+      <div class="icon-item">
+        {% include "components/icon.html" with name="heart" size="lg" %}
+        <span class="icon-name">heart</span>
+      </div>
+      <div class="icon-item">
+        {% include "components/icon.html" with name="settings" size="lg" %}
+        <span class="icon-name">settings</span>
+      </div>
+      <div class="icon-item">
+        {% include "components/icon.html" with name="search" size="lg" %}
+        <span class="icon-name">search</span>
+      </div>
+      <div class="icon-item">
+        {% include "components/icon.html" with name="user" size="lg" %}
+        <span class="icon-name">user</span>
+      </div>
+    </div>
+
+    <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">Sizes</h3>
+    <div class="demo-row" style="align-items: flex-end;">
+      {% include "components/icon.html" with name="star" size="sm" %}
+      {% include "components/icon.html" with name="star" size="md" %}
+      {% include "components/icon.html" with name="star" size="lg" %}
+    </div>
+
+    <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">Colors</h3>
+    <div class="demo-row">
+      {% include "components/icon.html" with name="heart" size="lg" color="var(--secondary-main)" %}
+      {% include "components/icon.html" with name="heart" size="lg" color="#ef4444" %}
+      {% include "components/icon.html" with name="star" size="lg" color="#f59e0b" %}
+      {% include "components/icon.html" with name="check" size="lg" color="#22c55e" %}
+    </div>
+  </div>
+
+  <!-- Pagination Component Demo -->
+  <div class="demo-section">
+    <h2>Pagination Component</h2>
+    <p>Navigation for paginated content with page numbers. Data is prepared in the view using build_pagination_data() helper.</p>
+
+    <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">First Page</h3>
+    {% include "components/pagination.html" with pages=pagination_1.pages prev_url=pagination_1.prev_url next_url=pagination_1.next_url %}
+
+    <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">Middle Page</h3>
+    {% include "components/pagination.html" with pages=pagination_5.pages prev_url=pagination_5.prev_url next_url=pagination_5.next_url %}
+
+    <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">Last Page</h3>
+    {% include "components/pagination.html" with pages=pagination_10.pages prev_url=pagination_10.prev_url next_url=pagination_10.next_url %}
+
+    <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">Few Pages</h3>
+    {% include "components/pagination.html" with pages=pagination_2_of_3.pages prev_url=pagination_2_of_3.prev_url next_url=pagination_2_of_3.next_url %}
+  </div>
+
+  <!-- Modal Instances (hidden by default) -->
+  {% include "components/modal.html" with id="demo-modal-1" title="Welcome!" size="md" content="<p>This is a basic modal dialog. You can close it by clicking the X button, pressing ESC, or clicking the backdrop.</p><p>The modal includes focus trap functionality, so pressing Tab will cycle through focusable elements within the modal.</p>" %}
+
+  {% include "components/modal.html" with id="demo-modal-sm" title="Small Modal" size="sm" content="<p>This is a small modal. Perfect for simple confirmations or brief messages.</p>" %}
+
+  {% include "components/modal.html" with id="demo-modal-md" title="Medium Modal" size="md" content="<p>This is a medium modal (default size). Good for most use cases.</p><p>It provides a balanced amount of space for content without overwhelming the page.</p>" %}
+
+  {% include "components/modal.html" with id="demo-modal-lg" title="Large Modal" size="lg" content="<p>This is a large modal. Use it when you need more space for complex content or forms.</p><p>Large modals are great for detailed information, multi-step forms, or rich content.</p><p>They provide ample room while still maintaining the modal overlay effect.</p>" %}
+
+  {% include "components/modal.html" with id="demo-modal-footer" title="Confirm Action" size="md" content="<p>Are you sure you want to proceed with this action?</p><p>This modal demonstrates the footer section, which is perfect for action buttons.</p>" footer='<button type="button" class="a-button a-button--ghost" data-modal-close>Cancel</button><button type="button" class="a-button a-button--primary">Confirm</button>' %}
+
+  <!-- Load JavaScript -->
+  <script src="{% static 'a-ui/js/components/alert.js' %}"></script>
+  <script src="{% static 'a-ui/js/components/modal.js' %}"></script>
+  <script src="{% static 'a-ui/js/components/tooltip.js' %}"></script>
+  <script src="{% static 'a-ui/js/main.js' %}"></script>
+</body>
+</html>

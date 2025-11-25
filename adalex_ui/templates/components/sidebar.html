@@ -1,0 +1,51 @@
+{# Sidebar Component #}
+{# Parameters:
+  - items (required): List of sidebar items
+    [{'url': '/dashboard/', 'text': 'Dashboard', 'icon': 'star', 'active': True}, ...]
+  - collapsible (optional): Boolean, if True sidebar can be collapsed
+  - collapsed (optional): Boolean, initial collapsed state
+#}
+<aside
+  class="a-sidebar{% if collapsed %} a-sidebar--collapsed{% endif %}"
+  data-sidebar
+  {% if collapsible %}data-sidebar-collapsible{% endif %}
+  role="navigation"
+  aria-label="Sidebar navigation"
+>
+  {# Collapse Toggle (if collapsible) #}
+  {% if collapsible %}
+    <button
+      type="button"
+      class="a-sidebar__toggle"
+      data-sidebar-toggle
+      aria-label="Toggle sidebar"
+      aria-expanded="{% if not collapsed %}true{% else %}false{% endif %}"
+    >
+      {% include "components/icon.html" with name="chevron-left" size="sm" %}
+    </button>
+  {% endif %}
+
+  {# Sidebar Content #}
+  <div class="a-sidebar__content">
+    <nav class="a-sidebar__nav">
+      <ul class="a-sidebar__list">
+        {% for item in items %}
+          <li class="a-sidebar__item">
+            <a
+              href="{{ item.url }}"
+              class="a-sidebar__link{% if item.active %} a-sidebar__link--active{% endif %}"
+              {% if item.active %}aria-current="page"{% endif %}
+            >
+              {% if item.icon %}
+                <span class="a-sidebar__icon">
+                  {% include "components/icon.html" with name=item.icon size="md" %}
+                </span>
+              {% endif %}
+              <span class="a-sidebar__text">{{ item.text }}</span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+  </div>
+</aside>

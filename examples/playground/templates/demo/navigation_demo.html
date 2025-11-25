@@ -1,0 +1,56 @@
+{% extends "layouts/dashboard.html" %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+  <!-- Navbar Demo -->
+  <div class="demo-section" style="margin-bottom: var(--spacing-2xl); padding: var(--spacing-xl); background: var(--neutral-white); border-radius: var(--radius-lg); box-shadow: var(--shadow-md);">
+    <h2 style="margin: 0 0 var(--spacing-md) 0; font-size: var(--font-size-2xl); font-weight: var(--font-weight-semibold);">Navbar Component</h2>
+    <p style="margin: 0; color: var(--text-secondary);">Responsive navigation bar with mobile hamburger menu and user dropdown. Check the top of this page!</p>
+  </div>
+
+  <!-- Sidebar Demo -->
+  <div class="demo-section" style="margin-bottom: var(--spacing-2xl); padding: var(--spacing-xl); background: var(--neutral-white); border-radius: var(--radius-lg); box-shadow: var(--shadow-md);">
+    <h2 style="margin: 0 0 var(--spacing-md) 0; font-size: var(--font-size-2xl); font-weight: var(--font-weight-semibold);">Sidebar Component</h2>
+    <p style="margin: 0; color: var(--text-secondary);">Collapsible sidebar navigation with icons. Try clicking the collapse button on the left!</p>
+  </div>
+
+  <!-- Dashboard Layout Demo -->
+  <div class="demo-section" style="margin-bottom: var(--spacing-2xl); padding: var(--spacing-xl); background: var(--neutral-white); border-radius: var(--radius-lg); box-shadow: var(--shadow-md);">
+    <h2 style="margin: 0 0 var(--spacing-md) 0; font-size: var(--font-size-2xl); font-weight: var(--font-weight-semibold);">Dashboard Layout</h2>
+    <p style="margin: 0; color: var(--text-secondary);">This page is using the dashboard layout! It combines navbar, sidebar, and main content area.</p>
+  </div>
+
+  <!-- Sample Cards -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-lg); margin-bottom: var(--spacing-2xl);">
+    <div style="padding: var(--spacing-xl); background: var(--neutral-white); border-radius: var(--radius-lg); box-shadow: var(--shadow-md);">
+      <h3 style="margin: 0 0 var(--spacing-sm) 0; font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); color: var(--secondary-main);">1,234</h3>
+      <p style="margin: 0; color: var(--text-secondary);">Total Users</p>
+    </div>
+    <div style="padding: var(--spacing-xl); background: var(--neutral-white); border-radius: var(--radius-lg); box-shadow: var(--shadow-md);">
+      <h3 style="margin: 0 0 var(--spacing-sm) 0; font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); color: var(--secondary-main);">567</h3>
+      <p style="margin: 0; color: var(--text-secondary);">Active Projects</p>
+    </div>
+    <div style="padding: var(--spacing-xl); background: var(--neutral-white); border-radius: var(--radius-lg); box-shadow: var(--shadow-md);">
+      <h3 style="margin: 0 0 var(--spacing-sm) 0; font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); color: var(--secondary-main);">89%</h3>
+      <p style="margin: 0; color: var(--text-secondary);">Completion Rate</p>
+    </div>
+  </div>
+
+  <!-- Alert Example -->
+  <div style="margin-bottom: var(--spacing-2xl);">
+    {% include "components/alert.html" with message="This is a dashboard using the complete navigation system!" type="success" dismissible=True %}
+  </div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+  .demo-section h2 {
+    color: var(--text-primary);
+  }
+  .demo-section p {
+    line-height: var(--line-height-relaxed);
+  }
+</style>
+{% endblock %}

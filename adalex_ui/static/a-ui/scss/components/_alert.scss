@@ -1,0 +1,134 @@
+/**
+ * Alert Component
+ *
+ * Alert messages with different types (info, success, warning, error).
+ * Supports dismissible functionality via JavaScript.
+ */
+
+.a-alert {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  border: 1px solid;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  transition: opacity var(--transition-fast);
+
+  // Icon container
+  &__icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  // Content area
+  &__content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  // Close button
+  &__close {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    opacity: 0.6;
+    transition: all var(--transition-fast);
+    margin-left: var(--spacing-sm);
+
+    &:hover {
+      opacity: 1;
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    &:active {
+      opacity: 1;
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    &:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 2px;
+      opacity: 1;
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  // Info variant
+  &--info {
+    color: #1e40af;
+    background-color: #dbeafe;
+    border-color: #93c5fd;
+
+    .a-alert__icon {
+      color: #3b82f6;
+    }
+  }
+
+  // Success variant
+  &--success {
+    color: #15803d;
+    background-color: #dcfce7;
+    border-color: #86efac;
+
+    .a-alert__icon {
+      color: #22c55e;
+    }
+  }
+
+  // Warning variant
+  &--warning {
+    color: #92400e;
+    background-color: #fef3c7;
+    border-color: #fcd34d;
+
+    .a-alert__icon {
+      color: #f59e0b;
+    }
+  }
+
+  // Error variant
+  &--error {
+    color: #991b1b;
+    background-color: #fee2e2;
+    border-color: #fca5a5;
+
+    .a-alert__icon {
+      color: #ef4444;
+    }
+  }
+
+  // Dismissing animation
+  &.is-dismissing {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  // Hidden state
+  &.is-hidden {
+    display: none;
+  }
+}

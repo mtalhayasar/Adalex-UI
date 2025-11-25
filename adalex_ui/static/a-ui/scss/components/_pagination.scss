@@ -1,0 +1,100 @@
+/**
+ * Pagination Component
+ *
+ * Navigation for paginated content with page numbers and prev/next buttons.
+ */
+
+.a-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-family-base);
+
+  // List container
+  &__list {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  // List item
+  &__item {
+    display: flex;
+    align-items: center;
+  }
+
+  // Link/button
+  &__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    padding: 0 var(--spacing-sm);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-primary);
+    background-color: var(--neutral-white);
+    border: 1px solid var(--border-main);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+
+    &:hover:not(&--disabled):not(&--active) {
+      background-color: var(--neutral-100);
+      border-color: var(--border-dark);
+    }
+
+    &:active:not(&--disabled):not(&--active) {
+      background-color: var(--neutral-200);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--secondary-main);
+      outline-offset: 2px;
+    }
+
+    // Active state
+    &--active {
+      color: var(--neutral-white);
+      background-color: var(--secondary-main);
+      border-color: var(--secondary-dark);
+      cursor: default;
+      font-weight: var(--font-weight-semibold);
+    }
+
+    // Disabled state
+    &--disabled {
+      color: var(--text-disabled);
+      background-color: var(--neutral-100);
+      border-color: var(--border-light);
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    // Prev/Next buttons
+    &--prev,
+    &--next {
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  // Ellipsis
+  &__ellipsis {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    padding: 0 var(--spacing-xs);
+    font-size: var(--font-size-sm);
+    color: var(--text-tertiary);
+  }
+}

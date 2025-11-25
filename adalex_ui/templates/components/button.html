@@ -1,0 +1,20 @@
+{# Button Component #}
+{# Parameters:
+  - text (required): The button text/label
+  - type (optional): Button type (button/submit), defaults to 'button'
+  - variant (optional): Visual variant (primary/secondary/ghost/link), defaults to 'primary'
+  - size (optional): Button size (sm/md/lg), defaults to 'md'
+  - disabled (optional): Boolean, disables the button
+  - icon (optional): Icon HTML to prepend to text
+  - full_width (optional): Boolean, makes button full width
+#}
+<button
+  type="{{ type|default:'button' }}"
+  class="a-button a-button--{{ variant|default:'primary' }} a-button--{{ size|default:'md' }}{% if full_width %} a-button--full-width{% endif %}"
+  {% if disabled %}disabled aria-disabled="true"{% endif %}
+>
+  {% if icon %}
+    <span class="a-button__icon">{{ icon|safe }}</span>
+  {% endif %}
+  <span class="a-button__text">{{ text }}</span>
+</button>

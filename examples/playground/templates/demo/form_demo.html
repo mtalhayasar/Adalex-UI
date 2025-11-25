@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} - Adalex UI</title>
+  <link rel="stylesheet" href="{% static 'a-ui/css/main.css' %}">
+  <style>
+    body {
+      font-family: var(--font-family-base);
+      padding: var(--spacing-2xl);
+      background: var(--neutral-50);
+      color: var(--text-primary);
+    }
+    .demo-header {
+      margin-bottom: var(--spacing-2xl);
+      padding-bottom: var(--spacing-lg);
+      border-bottom: 2px solid var(--border-light);
+    }
+    .demo-header h1 {
+      margin: 0 0 var(--spacing-sm) 0;
+      font-size: var(--font-size-3xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--text-primary);
+    }
+    .demo-header p {
+      margin: 0;
+      font-size: var(--font-size-lg);
+      color: var(--text-secondary);
+    }
+    .demo-section {
+      margin-bottom: var(--spacing-2xl);
+    }
+    .demo-section h2 {
+      margin: 0 0 var(--spacing-md) 0;
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-primary);
+    }
+    .demo-section p {
+      margin: 0 0 var(--spacing-lg) 0;
+      color: var(--text-secondary);
+    }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+      gap: var(--spacing-xl);
+      margin-top: var(--spacing-lg);
+    }
+    @media (max-width: 768px) {
+      .demo-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-header">
+    <h1>{{ title }}</h1>
+    <p>{{ description }}</p>
+  </div>
+
+  <!-- Django Messages Display -->
+  {% if messages %}
+    <div style="margin-bottom: var(--spacing-xl);">
+      {% for message in messages %}
+        {% include "components/alert.html" with type=message.tags|default:"info" message=message dismissible=True %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- Contact Form Demo -->
+  <div class="demo-section">
+    <h2>Contact Form</h2>
+    <p>A complete contact form with validation and feedback.</p>
+
+    {% include "components/form.html" with id="contact-form" action="" method="post" title="Get in Touch" fields=contact_form_fields submit_text="Send Message" cancel_url="#" csrf_token=True %}
+  </div>
+
+  <!-- Registration Form (Compact) -->
+  <div class="demo-section">
+    <h2>Compact Form Variant</h2>
+    <p>A more compact form style, perfect for smaller forms or sidebars.</p>
+
+    <div style="max-width: 500px;">
+      {% include "components/form.html" with id="registration-form" action="#" method="post" title="Create Account" fields=registration_form_fields submit_text="Sign Up" %}
+    </div>
+  </div>
+
+  <!-- Inline Form Example -->
+  <div class="demo-section">
+    <h2>Form States</h2>
+    <p>Forms automatically handle validation states and error messages.</p>
+
+    <div class="demo-grid">
+      <!-- Form with Errors Example -->
+      <div>
+        <h3 style="margin: 0 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">With Errors</h3>
+        {% include "components/form.html" with id="error-form" action="#" method="post" title="Form with Validation Errors" fields=contact_form_fields submit_text="Submit" %}
+      </div>
+
+      <!-- Borderless Form -->
+      <div>
+        <h3 style="margin: 0 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">Borderless Variant</h3>
+        <div class="a-form a-form--borderless">
+          <h2 class="a-form__title">Newsletter Signup</h2>
+          <div class="a-form__fields">
+            <div class="a-form__field-group">
+              {% include "components/label.html" with for_id="newsletter-email" text="Email Address" required=True %}
+              {% include "components/text_input.html" with type="email" name="newsletter_email" id="newsletter-email" placeholder="your@email.com" required=True %}
+            </div>
+          </div>
+          <div class="a-form__actions">
+            <button type="submit" class="a-button a-button--primary">Subscribe</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="{% static 'a-ui/js/components/form.js' %}"></script>
+  <script src="{% static 'a-ui/js/main.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+{# Modal Component #}
+{# Parameters:
+  - id (required): Unique identifier for the modal
+  - title (required): Modal title
+  - content (required): Modal body content
+  - size (optional): Modal size (sm/md/lg), defaults to 'md'
+  - footer (optional): Modal footer content
+#}
+<div
+  id="{{ id }}"
+  class="a-modal"
+  data-modal
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="{{ id }}-title"
+  aria-hidden="true"
+>
+  <div class="a-modal__backdrop" data-modal-backdrop></div>
+  <div class="a-modal__container a-modal__container--{{ size|default:'md' }}">
+    <div class="a-modal__content">
+      <div class="a-modal__header">
+        <h2 id="{{ id }}-title" class="a-modal__title">{{ title }}</h2>
+        <button
+          type="button"
+          class="a-modal__close"
+          data-modal-close
+          aria-label="Close modal"
+        >
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="a-modal__body">
+        {{ content|safe }}
+      </div>
+
+      {% if footer %}
+        <div class="a-modal__footer">
+          {{ footer|safe }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>

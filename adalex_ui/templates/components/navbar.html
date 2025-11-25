@@ -1,0 +1,87 @@
+{# Navbar Component #}
+{# Parameters:
+  - logo_url (optional): URL/path for logo image
+  - logo_text (required): Logo text or brand name
+  - nav_items (required): List of navigation items
+    [{'url': '/about/', 'text': 'About', 'active': False}, ...]
+  - user_menu (optional): List of user menu items
+    [{'url': '/profile/', 'text': 'Profile'}, ...]
+  - user_name (optional): Displayed user name for user menu
+#}
+<nav class="a-navbar" role="navigation" data-navbar>
+  <div class="a-navbar__container">
+    {# Logo/Brand #}
+    <div class="a-navbar__brand">
+      <a href="/" class="a-navbar__logo">
+        {% if logo_url %}
+          <img src="{{ logo_url }}" alt="{{ logo_text }}" class="a-navbar__logo-img">
+        {% endif %}
+        <span class="a-navbar__logo-text">{{ logo_text }}</span>
+      </a>
+    </div>
+
+    {# Mobile Toggle Button #}
+    <button
+      type="button"
+      class="a-navbar__toggle"
+      data-navbar-toggle
+      aria-label="Toggle navigation menu"
+      aria-expanded="false"
+    >
+      <span class="a-navbar__toggle-icon"></span>
+      <span class="a-navbar__toggle-icon"></span>
+      <span class="a-navbar__toggle-icon"></span>
+    </button>
+
+    {# Navigation Menu #}
+    <div class="a-navbar__menu" data-navbar-menu>
+      {# Main Navigation Items #}
+      {% if nav_items %}
+        <ul class="a-navbar__nav">
+          {% for item in nav_items %}
+            <li class="a-navbar__nav-item">
+              <a
+                href="{{ item.url }}"
+                class="a-navbar__nav-link{% if item.active %} a-navbar__nav-link--active{% endif %}"
+                {% if item.active %}aria-current="page"{% endif %}
+              >
+                {{ item.text }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      {# User Menu #}
+      {% if user_menu %}
+        <div class="a-navbar__user" data-navbar-user>
+          <button
+            type="button"
+            class="a-navbar__user-trigger"
+            data-navbar-user-toggle
+            aria-label="User menu"
+            aria-expanded="false"
+          >
+            {% include "components/icon.html" with name="user" size="sm" %}
+            {% if user_name %}
+              <span class="a-navbar__user-name">{{ user_name }}</span>
+            {% endif %}
+            {% include "components/icon.html" with name="chevron-right" size="sm" %}
+          </button>
+
+          <div class="a-navbar__user-menu" data-navbar-user-menu>
+            <ul class="a-navbar__user-list">
+              {% for item in user_menu %}
+                <li class="a-navbar__user-item">
+                  <a href="{{ item.url }}" class="a-navbar__user-link">
+                    {{ item.text }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</nav>

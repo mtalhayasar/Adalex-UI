@@ -1,0 +1,30 @@
+{# Select Component #}
+{# Parameters:
+  - name (required): The name attribute of the select
+  - id (required): The id attribute for label association
+  - options (required): List of dicts with 'value' and 'label' keys
+  - selected (optional): The value of the option to be selected by default
+  - required (optional): Boolean, makes the field required
+  - disabled (optional): Boolean, disables the select
+  - error (optional): Error message to display
+#}
+<select
+  name="{{ name }}"
+  id="{{ id }}"
+  class="a-select{% if error %} a-select--error{% endif %}{% if disabled %} a-select--disabled{% endif %}"
+  {% if required %}required aria-required="true"{% endif %}
+  {% if disabled %}disabled aria-disabled="true"{% endif %}
+  {% if error %}aria-invalid="true" aria-describedby="{{ id }}-error"{% endif %}
+>
+  {% for option in options %}
+    <option
+      value="{{ option.value }}"
+      {% if option.value == selected %}selected{% endif %}
+    >
+      {{ option.label }}
+    </option>
+  {% endfor %}
+</select>
+{% if error %}
+  <span id="{{ id }}-error" class="a-select__error-message" role="alert">{{ error }}</span>
+{% endif %}

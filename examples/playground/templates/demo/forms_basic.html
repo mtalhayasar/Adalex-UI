@@ -1,0 +1,204 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} - Adalex UI</title>
+  <link rel="stylesheet" href="{% static 'a-ui/css/main.css' %}">
+  <style>
+    body {
+      font-family: var(--font-family-base);
+      padding: var(--spacing-2xl);
+      background: var(--neutral-50);
+      color: var(--text-primary);
+    }
+    .demo-header {
+      margin-bottom: var(--spacing-2xl);
+      padding-bottom: var(--spacing-lg);
+      border-bottom: 2px solid var(--border-light);
+    }
+    .demo-header h1 {
+      margin: 0 0 var(--spacing-sm) 0;
+      font-size: var(--font-size-3xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--text-primary);
+    }
+    .demo-header p {
+      margin: 0;
+      font-size: var(--font-size-lg);
+      color: var(--text-secondary);
+    }
+    .demo-section {
+      margin-bottom: var(--spacing-2xl);
+      padding: var(--spacing-xl);
+      background: var(--neutral-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+    .demo-section h2 {
+      margin: 0 0 var(--spacing-md) 0;
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-primary);
+    }
+    .demo-section p {
+      margin: 0 0 var(--spacing-lg) 0;
+      color: var(--text-secondary);
+    }
+    .form-group {
+      margin-bottom: var(--spacing-lg);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+    }
+    .code-snippet {
+      margin-top: var(--spacing-md);
+      padding: var(--spacing-md);
+      background: var(--neutral-100);
+      border-radius: var(--radius-md);
+      font-family: var(--font-family-mono);
+      font-size: var(--font-size-sm);
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-header">
+    <h1>{{ title }}</h1>
+    <p>{{ description }}</p>
+  </div>
+
+  <!-- Label Component Demo -->
+  <div class="demo-section">
+    <h2>Label Component</h2>
+    <p>Semantic labels with support for required fields and help text.</p>
+
+    <div class="form-group">
+      {% include "components/label.html" with for_id="demo-input-1" text="Full Name" required=True %}
+    </div>
+
+    <div class="form-group">
+      {% include "components/label.html" with for_id="demo-input-2" text="Email Address" required=True help_text="We'll never share your email with anyone else." %}
+    </div>
+  </div>
+
+  <!-- TextInput Component Demo -->
+  <div class="demo-section">
+    <h2>TextInput Component</h2>
+    <p>Text input fields with support for different types, states, and validation.</p>
+
+    <div class="form-group">
+      {% include "components/label.html" with for_id="username" text="Username" required=True %}
+      {% include "components/text_input.html" with name="username" id="username" placeholder="Enter your username" required=True %}
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        {% include "components/label.html" with for_id="email" text="Email" required=True %}
+        {% include "components/text_input.html" with name="email" id="email" type="email" placeholder="you@example.com" required=True %}
+      </div>
+
+      <div class="form-group">
+        {% include "components/label.html" with for_id="password" text="Password" required=True %}
+        {% include "components/text_input.html" with name="password" id="password" type="password" placeholder="••••••••" required=True %}
+      </div>
+    </div>
+
+    <div class="form-group">
+      {% include "components/label.html" with for_id="disabled-input" text="Disabled Input" %}
+      {% include "components/text_input.html" with name="disabled" id="disabled-input" value="This field is disabled" disabled=True %}
+    </div>
+
+    <div class="form-group">
+      {% include "components/label.html" with for_id="error-input" text="Input with Error" required=True %}
+      {% include "components/text_input.html" with name="error-field" id="error-input" value="invalid@email" error="Please enter a valid email address." %}
+    </div>
+  </div>
+
+  <!-- Textarea Component Demo -->
+  <div class="demo-section">
+    <h2>Textarea Component</h2>
+    <p>Multi-line text areas with adjustable rows and validation support.</p>
+
+    <div class="form-group">
+      {% include "components/label.html" with for_id="message" text="Message" required=True help_text="Tell us what you think" %}
+      {% include "components/textarea.html" with name="message" id="message" placeholder="Enter your message here..." rows=4 required=True %}
+    </div>
+
+    <div class="form-group">
+      {% include "components/label.html" with for_id="disabled-textarea" text="Disabled Textarea" %}
+      {% include "components/textarea.html" with name="disabled-msg" id="disabled-textarea" value="This textarea is disabled and cannot be edited." disabled=True %}
+    </div>
+
+    <div class="form-group">
+      {% include "components/label.html" with for_id="error-textarea" text="Textarea with Error" required=True %}
+      {% include "components/textarea.html" with name="error-msg" id="error-textarea" value="Too short" error="Message must be at least 10 characters long." %}
+    </div>
+  </div>
+
+  <!-- Select Component Demo -->
+  <div class="demo-section">
+    <h2>Select Component</h2>
+    <p>Dropdown select menus with custom styling and validation.</p>
+
+    <div class="form-group">
+      {% include "components/label.html" with for_id="country" text="Country" required=True %}
+      {% include "components/select.html" with name="country" id="country" options=country_options required=True %}
+    </div>
+
+    <div class="form-group">
+      {% include "components/label.html" with for_id="country-selected" text="Country (Pre-selected)" %}
+      {% include "components/select.html" with name="country-pre" id="country-selected" options=country_options selected="tr" %}
+    </div>
+
+    <div class="form-group">
+      {% include "components/label.html" with for_id="disabled-select" text="Disabled Select" %}
+      {% include "components/select.html" with name="disabled-country" id="disabled-select" options=country_options disabled=True %}
+    </div>
+
+    <div class="form-group">
+      {% include "components/label.html" with for_id="error-select" text="Select with Error" required=True %}
+      {% include "components/select.html" with name="error-country" id="error-select" options=country_options error="Please select a country." %}
+    </div>
+  </div>
+
+  <!-- Full Form Example -->
+  <div class="demo-section">
+    <h2>Complete Form Example</h2>
+    <p>A real-world form combining all components.</p>
+
+    <form>
+      <div class="form-row">
+        <div class="form-group">
+          {% include "components/label.html" with for_id="first-name" text="First Name" required=True %}
+          {% include "components/text_input.html" with name="first_name" id="first-name" placeholder="John" required=True %}
+        </div>
+
+        <div class="form-group">
+          {% include "components/label.html" with for_id="last-name" text="Last Name" required=True %}
+          {% include "components/text_input.html" with name="last_name" id="last-name" placeholder="Doe" required=True %}
+        </div>
+      </div>
+
+      <div class="form-group">
+        {% include "components/label.html" with for_id="form-email" text="Email Address" required=True help_text="We'll use this to contact you" %}
+        {% include "components/text_input.html" with name="email" id="form-email" type="email" placeholder="john.doe@example.com" required=True %}
+      </div>
+
+      <div class="form-group">
+        {% include "components/label.html" with for_id="form-country" text="Country" required=True %}
+        {% include "components/select.html" with name="country" id="form-country" options=country_options required=True %}
+      </div>
+
+      <div class="form-group">
+        {% include "components/label.html" with for_id="form-message" text="Message" required=True help_text="Minimum 10 characters" %}
+        {% include "components/textarea.html" with name="message" id="form-message" placeholder="Your message here..." rows=5 required=True %}
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,150 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="{% static 'a-ui/css/main.css' %}">
+  <style>
+    body {
+      font-family: var(--font-family-base);
+      padding: var(--spacing-2xl);
+      background: var(--neutral-50);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+    .hero {
+      text-align: center;
+      padding: var(--spacing-3xl) 0;
+      margin-bottom: var(--spacing-2xl);
+    }
+    .hero h1 {
+      margin: 0 0 var(--spacing-md) 0;
+      font-size: var(--font-size-4xl);
+      font-weight: var(--font-weight-bold);
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      margin: 0;
+      font-size: var(--font-size-xl);
+      color: var(--text-secondary);
+    }
+    .component-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--spacing-xl);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .component-card {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+      padding: var(--spacing-xl);
+      background: var(--neutral-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      transition: all var(--transition-base);
+      text-decoration: none;
+      color: inherit;
+    }
+    .component-card:hover {
+      box-shadow: var(--shadow-xl);
+      transform: translateY(-4px);
+    }
+    .component-card h2 {
+      margin: 0;
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-primary);
+    }
+    .component-card p {
+      margin: 0;
+      font-size: var(--font-size-base);
+      color: var(--text-secondary);
+      line-height: var(--line-height-relaxed);
+    }
+    .component-card .badge-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-xs);
+      margin-top: auto;
+    }
+    .footer {
+      text-align: center;
+      margin-top: var(--spacing-3xl);
+      padding-top: var(--spacing-xl);
+      border-top: 1px solid var(--border-light);
+      color: var(--text-tertiary);
+      font-size: var(--font-size-sm);
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <h1>{{ title }}</h1>
+    <p>{{ description }}</p>
+  </div>
+
+  <div class="component-grid">
+    <!-- Forms Basic -->
+    <a href="{% url 'demo:forms_basic' %}" class="component-card">
+      <h2>Form Components</h2>
+      <p>Essential form elements for building user inputs and data collection interfaces.</p>
+      <div class="badge-list">
+        {% include "components/badge.html" with text="Label" variant="neutral" size="sm" %}
+        {% include "components/badge.html" with text="TextInput" variant="neutral" size="sm" %}
+        {% include "components/badge.html" with text="Textarea" variant="neutral" size="sm" %}
+        {% include "components/badge.html" with text="Select" variant="neutral" size="sm" %}
+      </div>
+    </a>
+
+    <!-- Components UI -->
+    <a href="{% url 'demo:components_ui' %}" class="component-card">
+      <h2>UI Components</h2>
+      <p>Common user interface components for building interactive experiences.</p>
+      <div class="badge-list">
+        {% include "components/badge.html" with text="Button" variant="primary" size="sm" %}
+        {% include "components/badge.html" with text="Alert" variant="primary" size="sm" %}
+        {% include "components/badge.html" with text="Badge" variant="primary" size="sm" %}
+        {% include "components/badge.html" with text="Spinner" variant="primary" size="sm" %}
+      </div>
+    </a>
+
+    <!-- Components Advanced -->
+    <a href="{% url 'demo:components_advanced' %}" class="component-card">
+      <h2>Advanced Components</h2>
+      <p>Sophisticated components with complex interactions and accessibility features.</p>
+      <div class="badge-list">
+        {% include "components/badge.html" with text="Tooltip" variant="secondary" size="sm" %}
+        {% include "components/badge.html" with text="Modal" variant="secondary" size="sm" %}
+        {% include "components/badge.html" with text="Icon" variant="secondary" size="sm" %}
+        {% include "components/badge.html" with text="Pagination" variant="secondary" size="sm" %}
+      </div>
+    </a>
+
+    <!-- Navigation Components -->
+    <a href="{% url 'demo:navigation_demo' %}" class="component-card">
+      <h2>Navigation & Layout</h2>
+      <p>Complete dashboard layout with navbar, sidebar, and responsive navigation.</p>
+      <div class="badge-list">
+        {% include "components/badge.html" with text="Navbar" variant="success" size="sm" %}
+        {% include "components/badge.html" with text="Sidebar" variant="success" size="sm" %}
+        {% include "components/badge.html" with text="Dashboard" variant="success" size="sm" %}
+      </div>
+    </a>
+  </div>
+
+  <div class="footer">
+    <p>Adalex UI Component Library - Built with Django, SCSS, and Vanilla JavaScript</p>
+    <p style="margin-top: var(--spacing-sm);">Design token based • Accessible • HTMX compatible</p>
+  </div>
+
+  <!-- Load JavaScript -->
+  <script src="{% static 'a-ui/js/main.js' %}"></script>
+</body>
+</html>

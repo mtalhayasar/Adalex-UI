@@ -1,0 +1,24 @@
+{# Textarea Component #}
+{# Parameters:
+  - name (required): The name attribute of the textarea
+  - id (required): The id attribute for label association
+  - value (optional): The default value/content
+  - rows (optional): Number of visible text rows, defaults to 4
+  - placeholder (optional): Placeholder text
+  - required (optional): Boolean, makes the field required
+  - disabled (optional): Boolean, disables the textarea
+  - error (optional): Error message to display
+#}
+<textarea
+  name="{{ name }}"
+  id="{{ id }}"
+  rows="{{ rows|default:4 }}"
+  class="a-textarea{% if error %} a-textarea--error{% endif %}{% if disabled %} a-textarea--disabled{% endif %}"
+  {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+  {% if required %}required aria-required="true"{% endif %}
+  {% if disabled %}disabled aria-disabled="true"{% endif %}
+  {% if error %}aria-invalid="true" aria-describedby="{{ id }}-error"{% endif %}
+>{{ value|default:'' }}</textarea>
+{% if error %}
+  <span id="{{ id }}-error" class="a-textarea__error-message" role="alert">{{ error }}</span>
+{% endif %}

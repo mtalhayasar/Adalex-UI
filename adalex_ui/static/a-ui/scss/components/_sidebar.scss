@@ -1,0 +1,144 @@
+/**
+ * Sidebar Component
+ *
+ * Collapsible sidebar navigation with icons.
+ */
+
+.a-sidebar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: var(--sidebar-width);
+  height: 100%;
+  background-color: var(--neutral-white);
+  border-right: 1px solid var(--border-light);
+  transition: width var(--transition-base);
+  overflow: hidden;
+
+  // Collapsed state
+  &--collapsed {
+    width: var(--sidebar-collapsed-width);
+
+    .a-sidebar__text {
+      opacity: 0;
+      width: 0;
+    }
+
+    .a-sidebar__toggle .a-icon {
+      transform: rotate(180deg);
+    }
+  }
+
+  // Toggle button
+  &__toggle {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    background-color: var(--neutral-white);
+    border: 1px solid var(--border-main);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+
+    &:hover {
+      background-color: var(--neutral-100);
+      border-color: var(--border-dark);
+      color: var(--text-primary);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--secondary-main);
+      outline-offset: 2px;
+    }
+
+    .a-icon {
+      transition: transform var(--transition-base);
+    }
+  }
+
+  // Content wrapper
+  &__content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  // Navigation
+  &__nav {
+    padding: var(--spacing-lg) 0;
+  }
+
+  // List
+  &__list {
+    margin: 0;
+    padding: 0 var(--spacing-md);
+    list-style: none;
+  }
+
+  // Item
+  &__item {
+    margin-bottom: var(--spacing-xs);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  // Link
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+
+    &:hover {
+      color: var(--text-primary);
+      background-color: var(--neutral-100);
+    }
+
+    &--active {
+      color: var(--secondary-main);
+      background-color: var(--neutral-100);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--secondary-main);
+      outline-offset: -2px;
+    }
+  }
+
+  // Icon
+  &__icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  // Text
+  &__text {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: opacity var(--transition-base),
+                width var(--transition-base);
+  }
+}

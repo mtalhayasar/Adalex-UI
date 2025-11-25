@@ -1,0 +1,83 @@
+{# Pagination Component #}
+{# Parameters:
+  - pages (required): List of page data from view (see example below)
+
+  Example view preparation:
+    context = {
+        'pagination': {
+            'pages': [
+                {'number': 1, 'url': '/items/?page=1', 'is_active': False, 'is_ellipsis': False},
+                {'number': 2, 'url': '/items/?page=2', 'is_active': True, 'is_ellipsis': False},
+                {'number': 3, 'url': '/items/?page=3', 'is_active': False, 'is_ellipsis': False},
+            ],
+            'prev_url': '/items/?page=1',  # or None if on first page
+            'next_url': '/items/?page=3',  # or None if on last page
+        }
+    }
+#}
+<nav class="a-pagination" role="navigation" aria-label="Pagination">
+  <ul class="a-pagination__list">
+    {# Previous button #}
+    <li class="a-pagination__item">
+      {% if prev_url %}
+        <a
+          href="{{ prev_url }}"
+          class="a-pagination__link a-pagination__link--prev"
+          aria-label="Previous page"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      {% else %}
+        <span class="a-pagination__link a-pagination__link--prev a-pagination__link--disabled" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      {% endif %}
+    </li>
+
+    {# Page numbers #}
+    {% for page in pages %}
+      <li class="a-pagination__item">
+        {% if page.is_ellipsis %}
+          <span class="a-pagination__ellipsis">...</span>
+        {% elif page.is_active %}
+          <span class="a-pagination__link a-pagination__link--active" aria-current="page">
+            {{ page.number }}
+          </span>
+        {% else %}
+          <a
+            href="{{ page.url }}"
+            class="a-pagination__link"
+            aria-label="Go to page {{ page.number }}"
+          >
+            {{ page.number }}
+          </a>
+        {% endif %}
+      </li>
+    {% endfor %}
+
+    {# Next button #}
+    <li class="a-pagination__item">
+      {% if next_url %}
+        <a
+          href="{{ next_url }}"
+          class="a-pagination__link a-pagination__link--next"
+          aria-label="Next page"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 12l4-4-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      {% else %}
+        <span class="a-pagination__link a-pagination__link--next a-pagination__link--disabled" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 12l4-4-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      {% endif %}
+    </li>
+  </ul>
+</nav>

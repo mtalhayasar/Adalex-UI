@@ -1,0 +1,25 @@
+{# Tooltip Component #}
+{# Parameters:
+  - text (required): The tooltip text to display
+  - position (optional): Tooltip position (top/bottom/left/right), defaults to 'top'
+  - trigger_content (required): Content that triggers the tooltip (use with 'with' tag)
+#}
+<span class="a-tooltip-wrapper" data-tooltip-wrapper>
+  <span
+    class="a-tooltip-trigger"
+    data-tooltip-trigger
+    aria-describedby="tooltip-{{ text|slugify }}"
+    tabindex="0"
+  >
+    {{ trigger_content|safe }}
+  </span>
+  <span
+    id="tooltip-{{ text|slugify }}"
+    class="a-tooltip a-tooltip--{{ position|default:'top' }}"
+    role="tooltip"
+    data-tooltip
+    aria-hidden="true"
+  >
+    {{ text }}
+  </span>
+</span>

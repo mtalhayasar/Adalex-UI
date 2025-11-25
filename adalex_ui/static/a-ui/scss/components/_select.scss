@@ -1,0 +1,82 @@
+/**
+ * Select Component
+ *
+ * A styled select dropdown component with error states, disabled states,
+ * and accessibility features.
+ */
+
+.a-select {
+  display: block;
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+  color: var(--text-primary);
+  background-color: var(--neutral-white);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23323f4b' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--spacing-md) center;
+  background-size: 12px;
+  border: 1px solid var(--border-main);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: border-color var(--transition-fast),
+              box-shadow var(--transition-fast),
+              background-color var(--transition-fast);
+  outline: none;
+  appearance: none;
+  padding-right: calc(var(--spacing-md) * 2.5);
+
+  // Hover state
+  &:hover:not(:disabled):not(.a-select--error) {
+    border-color: var(--border-dark);
+  }
+
+  // Focus state
+  &:focus:not(:disabled):not(.a-select--error) {
+    border-color: var(--secondary-main);
+    box-shadow: 0 0 0 3px rgba(143, 163, 199, 0.1);
+  }
+
+  // Disabled state
+  &:disabled,
+  &--disabled {
+    background-color: var(--neutral-100);
+    color: var(--text-disabled);
+    cursor: not-allowed;
+    border-color: var(--border-light);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239aa5b1' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  }
+
+  // Error state
+  &--error {
+    border-color: #dc2626;
+    background-color: #fef2f2;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23dc2626' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+
+    &:focus {
+      border-color: #dc2626;
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+    }
+  }
+
+  // Error message
+  &__error-message {
+    display: block;
+    margin-top: var(--spacing-xs);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-normal);
+    color: #dc2626;
+    line-height: var(--line-height-normal);
+  }
+
+  // Option styles
+  option {
+    padding: var(--spacing-sm);
+    background-color: var(--neutral-white);
+    color: var(--text-primary);
+  }
+}

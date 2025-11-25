@@ -1,0 +1,103 @@
+/**
+ * Spinner Component
+ *
+ * Loading spinner with CSS animation and multiple size variants.
+ */
+
+@keyframes spinner-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinner-dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
+
+.a-spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  // SVG container
+  &__svg {
+    animation: spinner-rotate 2s linear infinite;
+  }
+
+  // Circle element
+  &__circle {
+    stroke: var(--secondary-main);
+    stroke-linecap: round;
+    animation: spinner-dash 1.5s ease-in-out infinite;
+  }
+
+  // Screen reader only text
+  &__sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  // Size variants
+  &--sm {
+    width: 1rem;
+    height: 1rem;
+
+    .a-spinner__svg {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .a-spinner__circle {
+      stroke-width: 6;
+    }
+  }
+
+  &--md {
+    width: 2rem;
+    height: 2rem;
+
+    .a-spinner__svg {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    .a-spinner__circle {
+      stroke-width: 5;
+    }
+  }
+
+  &--lg {
+    width: 3rem;
+    height: 3rem;
+
+    .a-spinner__svg {
+      width: 3rem;
+      height: 3rem;
+    }
+
+    .a-spinner__circle {
+      stroke-width: 4;
+    }
+  }
+}

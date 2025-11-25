@@ -1,0 +1,241 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} - Adalex UI</title>
+  <link rel="stylesheet" href="{% static 'a-ui/css/main.css' %}">
+  <style>
+    body {
+      font-family: var(--font-family-base);
+      padding: var(--spacing-2xl);
+      background: var(--neutral-50);
+      color: var(--text-primary);
+    }
+    .demo-header {
+      margin-bottom: var(--spacing-2xl);
+      padding-bottom: var(--spacing-lg);
+      border-bottom: 2px solid var(--border-light);
+    }
+    .demo-header h1 {
+      margin: 0 0 var(--spacing-sm) 0;
+      font-size: var(--font-size-3xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--text-primary);
+    }
+    .demo-header p {
+      margin: 0;
+      font-size: var(--font-size-lg);
+      color: var(--text-secondary);
+    }
+    .demo-section {
+      margin-bottom: var(--spacing-2xl);
+      padding: var(--spacing-xl);
+      background: var(--neutral-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+    .demo-section h2 {
+      margin: 0 0 var(--spacing-md) 0;
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-primary);
+    }
+    .demo-section p {
+      margin: 0 0 var(--spacing-lg) 0;
+      color: var(--text-secondary);
+    }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+    }
+    .demo-item {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+    .demo-item-label {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-medium);
+      color: var(--text-secondary);
+    }
+    .demo-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-md);
+      align-items: center;
+      margin-bottom: var(--spacing-lg);
+    }
+    .spinner-demo {
+      display: flex;
+      gap: var(--spacing-xl);
+      align-items: center;
+      padding: var(--spacing-lg);
+      background: var(--neutral-50);
+      border-radius: var(--radius-md);
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-header">
+    <h1>{{ title }}</h1>
+    <p>{{ description }}</p>
+  </div>
+
+  <!-- Button Component Demo -->
+  <div class="demo-section">
+    <h2>Button Component</h2>
+    <p>Versatile buttons with multiple variants, sizes, and states.</p>
+
+    <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">Variants</h3>
+    <div class="demo-row">
+      {% include "components/button.html" with text="Primary Button" variant="primary" %}
+      {% include "components/button.html" with text="Secondary Button" variant="secondary" %}
+      {% include "components/button.html" with text="Ghost Button" variant="ghost" %}
+      {% include "components/button.html" with text="Link Button" variant="link" %}
+    </div>
+
+    <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">Sizes</h3>
+    <div class="demo-row">
+      {% include "components/button.html" with text="Small" variant="primary" size="sm" %}
+      {% include "components/button.html" with text="Medium" variant="primary" size="md" %}
+      {% include "components/button.html" with text="Large" variant="primary" size="lg" %}
+    </div>
+
+    <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">States</h3>
+    <div class="demo-row">
+      {% include "components/button.html" with text="Normal Button" variant="primary" %}
+      {% include "components/button.html" with text="Disabled Button" variant="primary" disabled=True %}
+      {% include "components/button.html" with text="Submit Button" variant="secondary" type="submit" %}
+    </div>
+
+    <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">With Icon</h3>
+    <div class="demo-row">
+      {% include "components/button.html" with text="With Icon" variant="primary" icon='<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0L10.5 5.5L16 6.5L12 10.5L13 16L8 13L3 16L4 10.5L0 6.5L5.5 5.5L8 0Z"/></svg>' %}
+      {% include "components/button.html" with text="Download" variant="secondary" icon='<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 12L3 7H6V0H10V7H13L8 12ZM0 14V16H16V14H0Z"/></svg>' %}
+    </div>
+  </div>
+
+  <!-- Alert Component Demo -->
+  <div class="demo-section">
+    <h2>Alert Component</h2>
+    <p>Alert messages with different types and dismissible functionality.</p>
+
+    <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">Types</h3>
+    <div style="display: flex; flex-direction: column; gap: var(--spacing-md);">
+      {% include "components/alert.html" with message="This is an info alert. It provides helpful information." type="info" %}
+      {% include "components/alert.html" with message="Success! Your changes have been saved successfully." type="success" %}
+      {% include "components/alert.html" with message="Warning! Please review this information carefully." type="warning" %}
+      {% include "components/alert.html" with message="Error! Something went wrong. Please try again." type="error" %}
+    </div>
+
+    <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">Dismissible</h3>
+    <div style="display: flex; flex-direction: column; gap: var(--spacing-md);">
+      {% include "components/alert.html" with message="This alert can be dismissed. Click the X button." type="info" dismissible=True id="alert-1" %}
+      {% include "components/alert.html" with message="This success alert is also dismissible!" type="success" dismissible=True id="alert-2" %}
+    </div>
+  </div>
+
+  <!-- Badge Component Demo -->
+  <div class="demo-section">
+    <h2>Badge Component</h2>
+    <p>Small status indicators and labels with multiple color variants.</p>
+
+    <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">Variants</h3>
+    <div class="demo-row">
+      {% include "components/badge.html" with text="Neutral" variant="neutral" %}
+      {% include "components/badge.html" with text="Primary" variant="primary" %}
+      {% include "components/badge.html" with text="Secondary" variant="secondary" %}
+      {% include "components/badge.html" with text="Success" variant="success" %}
+      {% include "components/badge.html" with text="Warning" variant="warning" %}
+      {% include "components/badge.html" with text="Error" variant="error" %}
+    </div>
+
+    <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">Sizes</h3>
+    <div class="demo-row">
+      {% include "components/badge.html" with text="Small Badge" variant="primary" size="sm" %}
+      {% include "components/badge.html" with text="Medium Badge" variant="primary" size="md" %}
+    </div>
+
+    <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">Use Cases</h3>
+    <div class="demo-row">
+      <span style="display: flex; align-items: center; gap: var(--spacing-sm);">
+        <span>Status:</span>
+        {% include "components/badge.html" with text="Active" variant="success" size="sm" %}
+      </span>
+      <span style="display: flex; align-items: center; gap: var(--spacing-sm);">
+        <span>Priority:</span>
+        {% include "components/badge.html" with text="High" variant="error" size="sm" %}
+      </span>
+      <span style="display: flex; align-items: center; gap: var(--spacing-sm);">
+        <span>Version:</span>
+        {% include "components/badge.html" with text="v2.1.0" variant="neutral" size="sm" %}
+      </span>
+      <span style="display: flex; align-items: center; gap: var(--spacing-sm);">
+        <span>Role:</span>
+        {% include "components/badge.html" with text="Admin" variant="secondary" size="sm" %}
+      </span>
+    </div>
+  </div>
+
+  <!-- Spinner Component Demo -->
+  <div class="demo-section">
+    <h2>Spinner Component</h2>
+    <p>Loading spinners with CSS animation and multiple sizes.</p>
+
+    <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">Sizes</h3>
+    <div class="spinner-demo">
+      <div style="display: flex; flex-direction: column; gap: var(--spacing-xs); align-items: center;">
+        {% include "components/spinner.html" with size="sm" %}
+        <span style="font-size: var(--font-size-sm); color: var(--text-tertiary);">Small</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: var(--spacing-xs); align-items: center;">
+        {% include "components/spinner.html" with size="md" %}
+        <span style="font-size: var(--font-size-sm); color: var(--text-tertiary);">Medium</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: var(--spacing-xs); align-items: center;">
+        {% include "components/spinner.html" with size="lg" %}
+        <span style="font-size: var(--font-size-sm); color: var(--text-tertiary);">Large</span>
+      </div>
+    </div>
+
+    <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md) 0; font-size: var(--font-size-lg);">Use Cases</h3>
+    <div class="demo-row">
+      <div style="display: flex; gap: var(--spacing-sm); align-items: center; padding: var(--spacing-md); background: var(--neutral-50); border-radius: var(--radius-md);">
+        {% include "components/spinner.html" with size="sm" %}
+        <span>Loading...</span>
+      </div>
+      {% include "components/button.html" with text="Loading" variant="primary" icon='<div class="a-spinner a-spinner--sm" style="width: 1rem; height: 1rem;"><svg class="a-spinner__svg" viewBox="0 0 50 50" style="width: 1rem; height: 1rem;"><circle class="a-spinner__circle" cx="25" cy="25" r="20" fill="none" stroke-width="6" style="stroke: currentColor;"></circle></svg></div>' %}
+    </div>
+  </div>
+
+  <!-- Combined Example -->
+  <div class="demo-section">
+    <h2>Combined Example</h2>
+    <p>Real-world example combining multiple components.</p>
+
+    <div style="display: flex; flex-direction: column; gap: var(--spacing-lg);">
+      {% include "components/alert.html" with message="Your profile has been updated successfully!" type="success" dismissible=True %}
+
+      <div style="display: flex; gap: var(--spacing-md); align-items: center;">
+        <h3 style="margin: 0; font-size: var(--font-size-lg);">User Profile</h3>
+        {% include "components/badge.html" with text="Verified" variant="success" size="sm" %}
+        {% include "components/badge.html" with text="Pro" variant="primary" size="sm" %}
+      </div>
+
+      <div class="demo-row">
+        {% include "components/button.html" with text="Save Changes" variant="primary" %}
+        {% include "components/button.html" with text="Cancel" variant="ghost" %}
+        {% include "components/button.html" with text="Delete Account" variant="link" %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Load JavaScript -->
+  <script src="{% static 'a-ui/js/components/alert.js' %}"></script>
+  <script src="{% static 'a-ui/js/main.js' %}"></script>
+</body>
+</html>

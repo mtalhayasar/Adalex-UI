@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Dashboard{% endblock %} - {{ site_name|default:"Adalex UI" }}</title>
+  <link rel="stylesheet" href="{% static 'a-ui/css/main.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body class="a-dashboard-layout">
+  {# Navbar - Grid Row 1 #}
+  {% block navbar %}
+    {% include "components/navbar.html" with logo_text=site_name|default:"Adalex UI" nav_items=nav_items user_menu=user_menu user_name=user_name %}
+  {% endblock %}
+
+  {# Dashboard Container - Grid Row 2 #}
+  <div class="a-dashboard">
+    {# Sidebar - Grid Column 1 (auto-width) #}
+    {% block sidebar %}
+      {% if sidebar_items %}
+        {% include "components/sidebar.html" with items=sidebar_items collapsible=True %}
+      {% endif %}
+    {% endblock %}
+
+    {# Main Content Area - Grid Column 2 (1fr) #}
+    <main class="a-dashboard__main" role="main">
+      {# Page Header (optional) #}
+      {% block page_header %}
+        {% if page_title %}
+          <div class="a-dashboard__header">
+            <h1 class="a-dashboard__title">{{ page_title }}</h1>
+            {% if page_description %}
+              <p class="a-dashboard__description">{{ page_description }}</p>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endblock %}
+
+      {# Main Content #}
+      <div class="a-dashboard__content">
+        {% block content %}
+          <p>Dashboard content goes here.</p>
+        {% endblock %}
+      </div>
+    </main>
+  </div>
+
+  {# JavaScript #}
+  <script src="{% static 'a-ui/js/components/navbar.js' %}"></script>
+  <script src="{% static 'a-ui/js/components/sidebar.js' %}"></script>
+  <script src="{% static 'a-ui/js/main.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

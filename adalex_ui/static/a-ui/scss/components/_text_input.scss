@@ -1,0 +1,75 @@
+/**
+ * TextInput Component
+ *
+ * A versatile text input component supporting various types (text, email, password)
+ * with error states, disabled states, and accessibility features.
+ */
+
+.a-text-input {
+  display: block;
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+  color: var(--text-primary);
+  background-color: var(--neutral-white);
+  border: 1px solid var(--border-main);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition-fast),
+              box-shadow var(--transition-fast),
+              background-color var(--transition-fast);
+  outline: none;
+
+  &::placeholder {
+    color: var(--text-disabled);
+    opacity: 1;
+  }
+
+  // Hover state
+  &:hover:not(:disabled):not(.a-text-input--error) {
+    border-color: var(--border-dark);
+  }
+
+  // Focus state
+  &:focus:not(:disabled):not(.a-text-input--error) {
+    border-color: var(--secondary-main);
+    box-shadow: 0 0 0 3px rgba(143, 163, 199, 0.1);
+  }
+
+  // Disabled state
+  &:disabled,
+  &--disabled {
+    background-color: var(--neutral-100);
+    color: var(--text-disabled);
+    cursor: not-allowed;
+    border-color: var(--border-light);
+
+    &::placeholder {
+      color: var(--text-disabled);
+    }
+  }
+
+  // Error state
+  &--error {
+    border-color: #dc2626;
+    background-color: #fef2f2;
+
+    &:focus {
+      border-color: #dc2626;
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+    }
+  }
+
+  // Error message
+  &__error-message {
+    display: block;
+    margin-top: var(--spacing-xs);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-normal);
+    color: #dc2626;
+    line-height: var(--line-height-normal);
+  }
+}

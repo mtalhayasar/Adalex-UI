@@ -1,0 +1,166 @@
+/**
+ * Modal Component
+ *
+ * Accessible modal dialog with backdrop, focus trap, and keyboard support.
+ */
+
+.a-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-index-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+  overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-base), visibility var(--transition-base);
+
+  // Hidden state (default)
+  &[aria-hidden="true"] {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    .a-modal__container {
+      transform: scale(0.95) translateY(-20px);
+    }
+  }
+
+  // Visible state
+  &[aria-hidden="false"] {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    .a-modal__container {
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  // Backdrop
+  &__backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: var(--z-index-modal-backdrop);
+  }
+
+  // Container
+  &__container {
+    position: relative;
+    z-index: calc(var(--z-index-modal) + 1);
+    width: 100%;
+    max-width: 600px;
+    background-color: var(--neutral-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    transition: transform var(--transition-base);
+
+    // Size variants
+    &--sm {
+      max-width: 400px;
+    }
+
+    &--md {
+      max-width: 600px;
+    }
+
+    &--lg {
+      max-width: 800px;
+    }
+  }
+
+  // Content wrapper
+  &__content {
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - var(--spacing-2xl) * 2);
+  }
+
+  // Header
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  // Title
+  &__title {
+    margin: 0;
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    line-height: var(--line-height-tight);
+  }
+
+  // Close button
+  &__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    color: var(--text-tertiary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+
+    &:hover {
+      background: var(--neutral-100);
+      color: var(--text-primary);
+    }
+
+    &:active {
+      background: var(--neutral-200);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--secondary-main);
+      outline-offset: 2px;
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  // Body
+  &__body {
+    flex: 1;
+    padding: var(--spacing-xl);
+    overflow-y: auto;
+    color: var(--text-primary);
+    line-height: var(--line-height-relaxed);
+  }
+
+  // Footer
+  &__footer {
+    padding: var(--spacing-lg) var(--spacing-xl);
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--spacing-md);
+  }
+}
+
+// Prevent body scroll when modal is open
+body.modal-open {
+  overflow: hidden;
+}

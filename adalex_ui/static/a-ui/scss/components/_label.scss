@@ -1,0 +1,43 @@
+/**
+ * Label Component
+ *
+ * A semantic label component with support for required fields and help text.
+ */
+
+.a-label {
+  display: inline-block;
+  margin-bottom: var(--spacing-xs);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+  line-height: var(--line-height-normal);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+
+  &:hover {
+    color: var(--text-secondary);
+  }
+
+  // Required field indicator
+  &__required-mark {
+    margin-left: var(--spacing-xs);
+    color: #dc2626; // Red color for required indicator
+    font-weight: var(--font-weight-bold);
+  }
+
+  // Help text styling
+  &__help-text {
+    display: block;
+    margin-top: var(--spacing-xs);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-normal);
+    color: var(--text-tertiary);
+    line-height: var(--line-height-normal);
+  }
+
+  // Modifier for required labels
+  &--required {
+    // Additional styles for required labels if needed
+  }
+}

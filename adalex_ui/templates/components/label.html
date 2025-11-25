@@ -1,0 +1,20 @@
+{# Label Component #}
+{# Parameters:
+  - for_id (required): The id of the form element this label is for
+  - text (required): The label text to display
+  - required (optional): Boolean, if True shows a red asterisk
+  - help_text (optional): Additional help text shown below the label
+#}
+<label
+  class="a-label{% if required %} a-label--required{% endif %}"
+  for="{{ for_id }}"
+  {% if help_text %}aria-describedby="{{ for_id }}-help"{% endif %}
+>
+  {{ text }}
+  {% if required %}
+    <span class="a-label__required-mark" aria-label="required">*</span>
+  {% endif %}
+</label>
+{% if help_text %}
+  <span id="{{ for_id }}-help" class="a-label__help-text">{{ help_text }}</span>
+{% endif %}
