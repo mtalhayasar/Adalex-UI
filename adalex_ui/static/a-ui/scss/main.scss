@@ -22,7 +22,25 @@
 
 /* === Components === */
 /* Component styles will be imported here as they are created */
-/* Example: @import 'components/button'; */
+@import 'components/alert';
+@import 'components/badge';
+@import 'components/button';
+@import 'components/form';
+@import 'components/icon';
+@import 'components/label';
+@import 'components/modal';
+@import 'components/navbar';
+@import 'components/pagination';
+@import 'components/select';
+@import 'components/sidebar';
+@import 'components/spinner';
+@import 'components/text_input';
+@import 'components/textarea';
+@import 'components/tooltip';
+
+/* === Layouts === */
+/* Layout styles for page structures */
+@import 'layouts/dashboard';
 
 /**
  * Import Order Guidelines:

@@ -99,4 +99,9 @@
   --transition-fast: 150ms ease-in-out;
   --transition-base: 250ms ease-in-out;
   --transition-slow: 350ms ease-in-out;
+
+  /* Layout Dimensions */
+  --navbar-height: 4rem;           /* 64px */
+  --sidebar-width: 16rem;          /* 256px */
+  --sidebar-collapsed-width: 4rem; /* 64px */
 }

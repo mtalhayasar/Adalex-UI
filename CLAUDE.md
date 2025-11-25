@@ -20,8 +20,13 @@ Bu bir Django UI bileşen kütüphanesi monorepo'sudur. Taşınabilir, yeniden k
 ```
 adalex-ui/
 ├── adalex_ui/           # Ana Django app (reusable)
+│   ├── templates/       # Django templates (components, layouts)
+│   ├── static/a-ui/     # CSS, JS, assets
+│   └── utils.py         # Python utilities
 ├── examples/playground/ # Demo Django projesi
-├── docs/                # Dokümantasyon
+│   └── templates/demo/  # Minimal demo pages (visual only)
+├── docs/                # Kapsamlı dokümantasyon
+│   └── COMPONENTS.md    # Tüm bileşenlerin API referansı
 └── tests/               # Test suite
 ```
 
@@ -52,6 +57,16 @@ adalex-ui/
 - `.a-component-name` (block)
 - `.a-component-name__element` (element)
 - `.a-component-name--variant` (modifier)
+
+### 6. Dokümantasyon Yaklaşımı
+- **Demo sayfaları**: Minimal, sadece görsel showcase
+  - Başlık + kısa açıklama + bileşen örnekleri
+  - **ASLA** parametreleri, kullanım kodlarını demo'ya yazma
+- **Dokümantasyon**: `docs/COMPONENTS.md`'de kapsamlı API referansı
+  - Tüm parametreler tablo formatında
+  - Kullanım örnekleri (Django template kodu)
+  - Best practices ve erişilebilirlik notları
+- **Separation of concerns**: Demo = görsel, Docs = teknik detay
 
 ## Komutlar
 
@@ -86,12 +101,18 @@ pytest
    - Parametreleri dokümante et
 
 4. **Playground'a Ekle**
-   - Her bileşen için demo sayfası oluştur
+   - Her bileşen için minimal demo sayfası oluştur
+   - Sadece başlık + kısa açıklama + görsel demo
    - URL, view, template üçlüsünü tamamla
+   - **Parametreleri demo'ya yazma** - docs/ altında dökümante et
 
 5. **Import'ları Güncelle**
    - `main.scss`'ye component stil dosyasını ekle
    - `main.js`'ye component JS'ini ekle
+
+6. **Dokümantasyonu Güncelle**
+   - Yeni bileşen için `docs/COMPONENTS.md`'ye ekle
+   - Tüm parametreleri, kullanım örneklerini ve best practice'leri yaz
 
 ## Kod Standartları
 
@@ -153,12 +174,14 @@ Ana task'ı böl:
 Her bileşen tamamlandığında kontrol et:
 
 - [ ] Design token'ları kullanılıyor mu?
-- [ ] Template parametreleri dokümante edilmiş mi?
 - [ ] ARIA attributes eklenmiş mi?
 - [ ] Klavye erişimi sağlanmış mı?
 - [ ] Hover/focus/active durumları var mı?
 - [ ] HTMX swap sonrası çalışıyor mu?
-- [ ] Playground'da demo var mı?
+- [ ] Playground'da minimal demo var mı? (sadece görsel)
+- [ ] `docs/COMPONENTS.md`'de API referansı var mı?
+- [ ] Tüm parametreler dokümante edilmiş mi?
+- [ ] Kullanım örnekleri eklenmiş mi?
 - [ ] SCSS main.scss'ye import edilmiş mi?
 - [ ] JS main.js'ye dahil edilmiş mi?
 
@@ -169,8 +192,10 @@ Her task'ı bitirdiğinde:
 1. **Dosya yapısını kontrol et**: Tüm dosyalar doğru yerde mi?
 2. **Entegrasyonu doğrula**: Yeni kod mevcut yapıyla uyumlu mu?
 3. **Test et**: Manuel veya otomatik test yap
-4. **Dokümante et**: README veya docs/ güncelle
-5. **Bir sonraki task'a hazırla**: Gerekli context'i not et
+4. **Playground demo'yu temizle**: Parametreleri/usage blokları kaldır
+5. **Dokümante et**: `docs/COMPONENTS.md` güncelle
+6. **CSS derle**: `npm run css:build` çalıştır
+7. **Bir sonraki task'a hazırla**: Gerekli context'i not et
 
 ## Hata Ayıklama
 
