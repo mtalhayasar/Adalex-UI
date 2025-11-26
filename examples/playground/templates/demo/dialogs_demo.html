@@ -1,0 +1,199 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} - Adalex UI</title>
+  <link rel="stylesheet" href="{% static 'a-ui/css/main.css' %}">
+  <style>
+    body {
+      font-family: var(--font-family-base);
+      padding: var(--spacing-2xl);
+      background: var(--neutral-50);
+      color: var(--text-primary);
+    }
+    .demo-header {
+      margin-bottom: var(--spacing-2xl);
+      padding-bottom: var(--spacing-lg);
+      border-bottom: 2px solid var(--border-light);
+    }
+    .demo-header h1 {
+      margin: 0 0 var(--spacing-sm) 0;
+      font-size: var(--font-size-3xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--text-primary);
+    }
+    .demo-header p {
+      margin: 0;
+      font-size: var(--font-size-lg);
+      color: var(--text-secondary);
+    }
+    .demo-section {
+      margin-bottom: var(--spacing-2xl);
+      padding: var(--spacing-xl);
+      background: var(--neutral-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+    .demo-section h2 {
+      margin: 0 0 var(--spacing-md) 0;
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-primary);
+    }
+    .demo-section > p {
+      margin: 0 0 var(--spacing-lg) 0;
+      color: var(--text-secondary);
+    }
+    .demo-subtitle {
+      margin: var(--spacing-lg) 0 var(--spacing-md) 0;
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-medium);
+    }
+    .demo-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-md);
+      align-items: flex-start;
+      margin-bottom: var(--spacing-lg);
+    }
+    .demo-result {
+      margin-top: var(--spacing-md);
+      padding: var(--spacing-md);
+      background: var(--neutral-100);
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+    }
+    .demo-result strong {
+      color: var(--text-primary);
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-header">
+    <h1>{{ title }}</h1>
+    <p>{{ description }}</p>
+  </div>
+
+  <div class="demo-section">
+    <h2>Confirm Dialog</h2>
+    <p>Modal confirmation dialogs with focus trap, ESC close, and promise-based API.</p>
+
+    <h3 class="demo-subtitle">Basic Confirm Dialog</h3>
+    <div class="demo-row">
+      {% include "components/button.html" with text="Open Confirm Dialog" variant="secondary" type="button" %}
+    </div>
+    <div class="demo-result" id="confirm-result">Click the button to open the confirm dialog.</div>
+
+    <h3 class="demo-subtitle">Danger Confirm Dialog</h3>
+    <div class="demo-row">
+      {% include "components/button.html" with text="Delete Item" variant="primary" type="button" %}
+    </div>
+    <div class="demo-result" id="danger-result">Click the button to open the danger confirm dialog.</div>
+
+    <h3 class="demo-subtitle">Programmatic API</h3>
+    <div class="demo-row">
+      {% include "components/button.html" with text="Custom Confirm" variant="secondary" type="button" %}
+    </div>
+    <div class="demo-result" id="api-result">Uses the JavaScript API to show a custom confirm dialog.</div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Drawer</h2>
+    <p>Slide-in panels from left or right with focus trap and keyboard support.</p>
+
+    <h3 class="demo-subtitle">Position Variants</h3>
+    <div class="demo-row">
+      {% include "components/button.html" with text="Open Right Drawer" variant="primary" type="button" %}
+      {% include "components/button.html" with text="Open Left Drawer" variant="secondary" type="button" %}
+    </div>
+
+    <h3 class="demo-subtitle">Size Variants</h3>
+    <div class="demo-row">
+      {% include "components/button.html" with text="Small Drawer" variant="secondary" type="button" %}
+      {% include "components/button.html" with text="Large Drawer" variant="secondary" type="button" %}
+      {% include "components/button.html" with text="Extra Large Drawer" variant="secondary" type="button" %}
+    </div>
+  </div>
+
+  {% include "components/confirm_dialog.html" with id="confirm-basic" title="Confirm Action" message="Are you sure you want to proceed with this action?" confirm_text="Yes, Proceed" cancel_text="Cancel" icon=True %}
+
+  {% include "components/confirm_dialog.html" with id="confirm-danger" title="Delete Item" message="This action cannot be undone. Are you sure you want to delete this item permanently?" confirm_text="Delete" cancel_text="Cancel" danger=True icon=True %}
+
+  {% include "components/drawer.html" with id="drawer-right" title="Right Drawer" position="right" content="<p>This drawer slides in from the right side of the screen.</p><p>It's great for displaying additional details, settings, or navigation options.</p>" %}
+
+  {% include "components/drawer.html" with id="drawer-left" title="Left Drawer" position="left" content="<p>This drawer slides in from the left side of the screen.</p><p>Commonly used for navigation menus or filters.</p>" %}
+
+  {% include "components/drawer.html" with id="drawer-sm" title="Small Drawer" position="right" size="sm" content="<p>A compact drawer for quick actions or simple content.</p>" %}
+
+  {% include "components/drawer.html" with id="drawer-lg" title="Large Drawer" position="right" size="lg" content="<p>A larger drawer for more complex content, forms, or detailed information.</p><p>This size provides more space for displaying content without overwhelming the user.</p>" %}
+
+  {% include "components/drawer.html" with id="drawer-xl" title="Extra Large Drawer" position="right" size="xl" content="<p>An extra large drawer for complex interfaces, multi-step forms, or rich content.</p><p>This size is ideal when you need to display a significant amount of information or interactive elements.</p><p>Consider using this for settings panels, detailed previews, or embedded applications.</p>" %}
+
+  <script src="{% static 'a-ui/js/components/confirm.js' %}"></script>
+  <script src="{% static 'a-ui/js/components/drawer.js' %}"></script>
+  <script src="{% static 'a-ui/js/main.js' %}"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const buttons = document.querySelectorAll('.demo-row .a-button');
+
+      // Basic confirm dialog
+      buttons[0].addEventListener('click', async function() {
+        const result = await window.AdalexUI.ConfirmDialog.open('confirm-basic');
+        document.getElementById('confirm-result').innerHTML = result
+          ? '<strong>Confirmed!</strong> You clicked the confirm button.'
+          : '<strong>Cancelled.</strong> You clicked the cancel button or closed the dialog.';
+      });
+
+      // Danger confirm dialog
+      buttons[1].addEventListener('click', async function() {
+        const result = await window.AdalexUI.ConfirmDialog.open('confirm-danger');
+        document.getElementById('danger-result').innerHTML = result
+          ? '<strong>Deleted!</strong> The item would be deleted now.'
+          : '<strong>Cancelled.</strong> The item was not deleted.';
+      });
+
+      // Programmatic API
+      buttons[2].addEventListener('click', async function() {
+        const result = await window.AdalexUI.ConfirmDialog.confirm({
+          title: 'Save Changes?',
+          message: 'You have unsaved changes. Would you like to save them before leaving?',
+          confirmText: 'Save',
+          cancelText: 'Discard',
+          danger: false
+        });
+        document.getElementById('api-result').innerHTML = result
+          ? '<strong>Saved!</strong> Changes would be saved.'
+          : '<strong>Discarded.</strong> Changes were discarded.';
+      });
+
+      // Right drawer
+      buttons[3].addEventListener('click', function() {
+        window.AdalexUI.Drawer.open('drawer-right');
+      });
+
+      // Left drawer
+      buttons[4].addEventListener('click', function() {
+        window.AdalexUI.Drawer.open('drawer-left');
+      });
+
+      // Small drawer
+      buttons[5].addEventListener('click', function() {
+        window.AdalexUI.Drawer.open('drawer-sm');
+      });
+
+      // Large drawer
+      buttons[6].addEventListener('click', function() {
+        window.AdalexUI.Drawer.open('drawer-lg');
+      });
+
+      // Extra large drawer
+      buttons[7].addEventListener('click', function() {
+        window.AdalexUI.Drawer.open('drawer-xl');
+      });
+    });
+  </script>
+</body>
+</html>

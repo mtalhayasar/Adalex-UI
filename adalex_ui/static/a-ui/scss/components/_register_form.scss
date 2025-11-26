@@ -1,0 +1,189 @@
+/**
+ * Register Form Component
+ *
+ * Registration form with name, email, password fields, password confirmation,
+ * terms checkbox, and password visibility toggle.
+ */
+
+.a-register-form {
+  width: 100%;
+  max-width: 24rem;
+  margin: 0 auto;
+
+  // Form container
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-xl);
+    background: var(--neutral-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+  }
+
+  // Title
+  &__title {
+    margin: 0;
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+    text-align: center;
+    line-height: var(--line-height-tight);
+  }
+
+  // Subtitle
+  &__subtitle {
+    margin: calc(var(--spacing-xs) * -1) 0 0 0;
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    text-align: center;
+    line-height: var(--line-height-relaxed);
+  }
+
+  // Fields container
+  &__fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  // Individual field
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  // Password field wrapper (for toggle button)
+  &__password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .a-text-input {
+      flex: 1;
+      padding-right: var(--spacing-2xl);
+    }
+  }
+
+  // Password toggle button
+  &__password-toggle {
+    position: absolute;
+    right: var(--spacing-sm);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    color: var(--text-tertiary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+
+    &:hover {
+      color: var(--text-secondary);
+      background: var(--neutral-100);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--secondary-main);
+      outline-offset: 2px;
+    }
+
+    // When password is visible
+    &[data-visible="true"] {
+      .a-register-form__icon--show {
+        display: none;
+      }
+
+      .a-register-form__icon--hide {
+        display: block;
+      }
+    }
+
+    // When password is hidden (default)
+    &[data-visible="false"],
+    &:not([data-visible]) {
+      .a-register-form__icon--show {
+        display: block;
+      }
+
+      .a-register-form__icon--hide {
+        display: none;
+      }
+    }
+  }
+
+  // Icons
+  &__icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  // Help text for password requirements
+  &__help-text {
+    font-size: var(--font-size-xs);
+    color: var(--text-tertiary);
+    line-height: var(--line-height-relaxed);
+  }
+
+  // Terms checkbox
+  &__terms {
+    margin-top: var(--spacing-xs);
+  }
+
+  // Error message area
+  &__error {
+    margin: 0;
+  }
+
+  // Actions (submit button)
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-xs);
+  }
+
+  // Links section
+  &__links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--border-light);
+  }
+
+  // Link text
+  &__link-text {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+  }
+
+  // Individual link
+  &__link {
+    font-size: var(--font-size-sm);
+    color: var(--secondary-dark);
+    text-decoration: none;
+    font-weight: var(--font-weight-medium);
+    transition: color var(--transition-fast);
+
+    &:hover {
+      color: var(--text-primary);
+      text-decoration: underline;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--secondary-main);
+      outline-offset: 2px;
+      border-radius: var(--radius-sm);
+    }
+  }
+}

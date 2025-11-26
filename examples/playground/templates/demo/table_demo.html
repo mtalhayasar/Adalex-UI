@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} - Adalex UI</title>
+  <link rel="stylesheet" href="{% static 'a-ui/css/main.css' %}">
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+  <style>
+    body {
+      font-family: var(--font-family-base);
+      padding: var(--spacing-2xl);
+      background: var(--neutral-50);
+      color: var(--text-primary);
+    }
+    .demo-header {
+      margin-bottom: var(--spacing-2xl);
+      padding-bottom: var(--spacing-lg);
+      border-bottom: 2px solid var(--border-light);
+    }
+    .demo-header h1 {
+      margin: 0 0 var(--spacing-sm) 0;
+      font-size: var(--font-size-3xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--text-primary);
+    }
+    .demo-header p {
+      margin: 0;
+      font-size: var(--font-size-lg);
+      color: var(--text-secondary);
+    }
+    .demo-section {
+      margin-bottom: var(--spacing-2xl);
+    }
+    .demo-section h2 {
+      margin: 0 0 var(--spacing-md) 0;
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-primary);
+    }
+    .demo-section p {
+      margin: 0 0 var(--spacing-lg) 0;
+      color: var(--text-secondary);
+    }
+    .table-info {
+      padding: var(--spacing-md);
+      background: var(--neutral-white);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--spacing-md);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--spacing-md);
+    }
+    .table-info__stat {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+    }
+    .table-info__label {
+      font-size: var(--font-size-sm);
+      color: var(--text-tertiary);
+      font-weight: var(--font-weight-medium);
+    }
+    .table-info__value {
+      font-size: var(--font-size-lg);
+      color: var(--text-primary);
+      font-weight: var(--font-weight-semibold);
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-header">
+    <h1>{{ title }}</h1>
+    <p>{{ description }}</p>
+  </div>
+
+  <div class="demo-section">
+    <h2>Interactive Table</h2>
+    <p>Full-featured data table with search, sorting, and pagination. Try searching for users, clicking column headers to sort, or navigating through pages.</p>
+
+    <div class="table-info">
+      <div class="table-info__stat">
+        <span class="table-info__label">Total Records</span>
+        <span class="table-info__value">{{ total_records }}</span>
+      </div>
+      <div class="table-info__stat">
+        <span class="table-info__label">Current Page</span>
+        <span class="table-info__value">{{ current_page }} / {{ total_pages }}</span>
+      </div>
+      {% if search_query %}
+        <div class="table-info__stat">
+          <span class="table-info__label">Search Query</span>
+          <span class="table-info__value">"{{ search_query }}"</span>
+        </div>
+      {% endif %}
+      {% if sort_key %}
+        <div class="table-info__stat">
+          <span class="table-info__label">Sorted By</span>
+          <span class="table-info__value">{{ sort_key }} ({{ sort_direction }})</span>
+        </div>
+      {% endif %}
+    </div>
+
+    {% include "components/table.html" with columns=columns rows=rows row_actions=row_actions searchable=searchable sortable=sortable paginated=paginated search_query=search_query sort_key=sort_key sort_direction=sort_direction pagination_data=pagination_data %}
+  </div>
+
+  <div class="demo-section">
+    <h2>Empty State Example</h2>
+    <p>When there are no results, the table shows a helpful empty state message.</p>
+
+    {% include "components/table.html" with columns=columns rows=None empty_text="No users found matching your criteria" searchable=False sortable=False paginated=False %}
+  </div>
+
+  <script src="{% static 'a-ui/js/components/table.js' %}"></script>
+  <script src="{% static 'a-ui/js/main.js' %}"></script>
+</body>
+</html>

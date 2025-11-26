@@ -1,0 +1,113 @@
+{% load a_ui_tags %}
+<div class="a-table-container" data-table-container>
+  {% if searchable %}
+    <div class="a-table__search">
+      {% include "components/text_input.html" with type="search" name="search" id=search_id|default:"table-search" placeholder=search_placeholder|default:"Search..." value=search_query %}
+    </div>
+  {% endif %}
+
+  <div class="a-table__wrapper">
+    <table class="a-table" role="table" aria-label="{{ aria_label|default:'Data table' }}">
+      <thead class="a-table__head">
+        <tr class="a-table__row a-table__row--header">
+          {% for column in columns %}
+            <th
+              class="a-table__cell a-table__cell--header{% if column.sortable %} a-table__cell--sortable{% endif %}"
+              scope="col"
+              {% if column.sortable %}
+                data-sort-key="{{ column.key }}"
+                data-sort-direction="{% if sort_key == column.key %}{{ sort_direction }}{% else %}none{% endif %}"
+                role="button"
+                tabindex="0"
+                aria-sort="{% if sort_key == column.key %}{% if sort_direction == 'asc' %}ascending{% elif sort_direction == 'desc' %}descending{% else %}none{% endif %}{% else %}none{% endif %}"
+              {% endif %}
+            >
+              <span class="a-table__cell-content">
+                {{ column.label }}
+                {% if column.sortable %}
+                  <span class="a-table__sort-icon">
+                    {% if sort_key == column.key %}
+                      {% if sort_direction == 'asc' %}
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <path d="M8 4L12 10H4L8 4Z" fill="currentColor"/>
+                        </svg>
+                      {% elif sort_direction == 'desc' %}
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <path d="M8 12L4 6H12L8 12Z" fill="currentColor"/>
+                        </svg>
+                      {% endif %}
+                    {% else %}
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M8 4L12 10H4L8 4Z" fill="currentColor" opacity="0.3"/>
+                        <path d="M8 12L4 6H12L8 12Z" fill="currentColor" opacity="0.3"/>
+                      </svg>
+                    {% endif %}
+                  </span>
+                {% endif %}
+              </span>
+            </th>
+          {% endfor %}
+          {% if row_actions %}
+            <th class="a-table__cell a-table__cell--header a-table__cell--actions" scope="col">
+              <span class="a-table__cell-content">Actions</span>
+            </th>
+          {% endif %}
+        </tr>
+      </thead>
+      <tbody class="a-table__body">
+        {% if rows %}
+          {% for row in rows %}
+            {% if row_partial %}
+              {% include row_partial with row=row row_actions=row_actions %}
+            {% else %}
+              <tr class="a-table__row">
+                {% for column in columns %}
+                  <td class="a-table__cell" data-label="{{ column.label }}">
+                    <span class="a-table__cell-content">
+                      {{ row|get_item:column.key }}
+                    </span>
+                  </td>
+                {% endfor %}
+                {% if row_actions %}
+                  <td class="a-table__cell a-table__cell--actions" data-label="Actions">
+                    <div class="a-table__actions">
+                      {% for action in row_actions %}
+                        {% if action.method == 'post' %}
+                          <form method="post" action="{{ action.url_pattern|format_with:row }}" style="display: inline;">
+                            {% csrf_token %}
+                            {% include "components/button.html" with type="submit" text=action.text variant=action.variant|default:"secondary" size="sm" %}
+                          </form>
+                        {% else %}
+                          {% include "components/button.html" with href=action.url_pattern|format_with:row text=action.text variant=action.variant|default:"secondary" size="sm" %}
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                  </td>
+                {% endif %}
+              </tr>
+            {% endif %}
+          {% endfor %}
+        {% else %}
+          <tr class="a-table__row a-table__row--empty">
+            <td class="a-table__cell a-table__cell--empty" colspan="{% if row_actions %}{{ columns|length|add:1 }}{% else %}{{ columns|length }}{% endif %}">
+              <div class="a-table__empty-state">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M24 16V24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M24 32H24.02" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <p class="a-table__empty-text">{{ empty_text|default:"No data available" }}</p>
+              </div>
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if paginated and rows %}
+    <div class="a-table__pagination">
+      {% include "components/pagination.html" with pages=pagination_data.pages prev_url=pagination_data.prev_url next_url=pagination_data.next_url %}
+    </div>
+  {% endif %}
+</div>

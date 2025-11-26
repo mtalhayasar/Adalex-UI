@@ -33,3 +33,37 @@ def get_item(dictionary, key):
 
     # Try object attribute access
     return getattr(dictionary, key, None)
+
+
+@register.filter
+def format_with(pattern, obj):
+    """
+    Format a string pattern with object attributes or dictionary values.
+
+    Usage in templates:
+        {{ "/users/{id}/edit/"|format_with:user }}
+        {{ "/items/{item_id}/delete/"|format_with:item_dict }}
+
+    Args:
+        pattern: String pattern with {key} placeholders
+        obj: Dictionary or object with values to insert
+
+    Returns:
+        Formatted string with placeholders replaced
+    """
+    if pattern is None or obj is None:
+        return pattern
+
+    # If obj is a dictionary
+    if isinstance(obj, dict):
+        try:
+            return pattern.format(**obj)
+        except (KeyError, ValueError):
+            return pattern
+
+    # If obj is an object, convert its attributes to dict
+    try:
+        obj_dict = {key: getattr(obj, key, None) for key in dir(obj) if not key.startswith('_')}
+        return pattern.format(**obj_dict)
+    except (KeyError, ValueError, AttributeError):
+        return pattern

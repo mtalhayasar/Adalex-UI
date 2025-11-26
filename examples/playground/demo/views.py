@@ -343,3 +343,236 @@ def forms_advanced(request):
         'description': 'Checkbox, Radio, Switch, and Datepicker components',
     }
     return render(request, 'demo/forms_advanced.html', context)
+
+
+def table_demo(request):
+    """
+    Demo view for Table component with search, sorting, and pagination.
+
+    Args:
+        request: Django HTTP request object
+
+    Returns:
+        Rendered template showcasing Table component
+    """
+    import math
+    from datetime import datetime, timedelta
+
+    # Generate dummy data (100 records)
+    all_records = []
+    statuses = ['Active', 'Pending', 'Inactive', 'Completed']
+    departments = ['Engineering', 'Sales', 'Marketing', 'Support', 'HR']
+
+    for i in range(1, 101):
+        all_records.append({
+            'id': i,
+            'name': f'User {i:03d}',
+            'email': f'user{i:03d}@example.com',
+            'department': departments[i % len(departments)],
+            'status': statuses[i % len(statuses)],
+            'joined': (datetime.now() - timedelta(days=i * 10)).strftime('%Y-%m-%d'),
+            'score': 50 + (i * 7) % 51,  # Random score between 50-100
+        })
+
+    # Get query parameters
+    search_query = request.GET.get('search', '').strip()
+    sort_key = request.GET.get('sort', '')
+    sort_direction = request.GET.get('direction', 'asc')
+    page = int(request.GET.get('page', 1))
+    page_size = 10
+
+    # Filter records based on search
+    filtered_records = all_records
+    if search_query:
+        filtered_records = [
+            record for record in all_records
+            if (search_query.lower() in record['name'].lower() or
+                search_query.lower() in record['email'].lower() or
+                search_query.lower() in record['department'].lower() or
+                search_query.lower() in record['status'].lower())
+        ]
+
+    # Sort records
+    if sort_key and sort_key in ['id', 'name', 'email', 'department', 'status', 'joined', 'score']:
+        reverse = (sort_direction == 'desc')
+        filtered_records = sorted(
+            filtered_records,
+            key=lambda x: x[sort_key],
+            reverse=reverse
+        )
+
+    # Calculate pagination
+    total_records = len(filtered_records)
+    total_pages = math.ceil(total_records / page_size) if total_records > 0 else 1
+    page = max(1, min(page, total_pages))  # Ensure page is within range
+
+    start_idx = (page - 1) * page_size
+    end_idx = start_idx + page_size
+    paginated_records = filtered_records[start_idx:end_idx]
+
+    # Build pagination data
+    def build_page_url(page_num):
+        from urllib.parse import urlencode
+        params = {}
+        if search_query:
+            params['search'] = search_query
+        if sort_key:
+            params['sort'] = sort_key
+            params['direction'] = sort_direction
+        params['page'] = page_num
+        return f'/demo/table/?{urlencode(params)}'
+
+    pagination_data = build_pagination_data(
+        page,
+        total_pages,
+        '/demo/table/?page={page}'
+    )
+
+    # Update URLs with search and sort parameters
+    for page_info in pagination_data['pages']:
+        if not page_info.get('is_ellipsis'):
+            page_info['url'] = build_page_url(page_info['number'])
+
+    if pagination_data['prev_url']:
+        pagination_data['prev_url'] = build_page_url(page - 1)
+    if pagination_data['next_url']:
+        pagination_data['next_url'] = build_page_url(page + 1)
+
+    # Define table columns
+    columns = [
+        {'key': 'id', 'label': 'ID', 'sortable': True},
+        {'key': 'name', 'label': 'Name', 'sortable': True},
+        {'key': 'email', 'label': 'Email', 'sortable': True},
+        {'key': 'department', 'label': 'Department', 'sortable': True},
+        {'key': 'status', 'label': 'Status', 'sortable': True},
+        {'key': 'joined', 'label': 'Joined', 'sortable': True},
+        {'key': 'score', 'label': 'Score', 'sortable': True},
+    ]
+
+    # Define row actions
+    row_actions = [
+        {
+            'url_pattern': '/demo/table/view/{id}/',
+            'text': 'View',
+            'variant': 'secondary',
+        },
+        {
+            'url_pattern': '/demo/table/edit/{id}/',
+            'text': 'Edit',
+            'variant': 'primary',
+        },
+    ]
+
+    context = {
+        'title': 'Table Component',
+        'description': 'Data table with search, sorting, and pagination',
+        'columns': columns,
+        'rows': paginated_records,
+        'row_actions': row_actions,
+        'searchable': True,
+        'sortable': True,
+        'paginated': True,
+        'search_query': search_query,
+        'sort_key': sort_key,
+        'sort_direction': sort_direction,
+        'pagination_data': pagination_data,
+        'current_page': page,
+        'total_pages': total_pages,
+        'total_records': total_records,
+    }
+
+    return render(request, 'demo/table_demo.html', context)
+
+
+def components_complex(request):
+    """
+    Demo view for complex components (Card, Notification, Tabs).
+
+    Args:
+        request: Django HTTP request object
+
+    Returns:
+        Rendered template showcasing complex components
+    """
+    # Tabs data
+    tabs_data = [
+        {
+            'id': 'overview',
+            'label': 'Overview',
+            'content': '<p>This is the overview panel. Here you can see a summary of your dashboard with key metrics and recent activity.</p>'
+        },
+        {
+            'id': 'details',
+            'label': 'Details',
+            'content': '<p>Detailed information about your account, settings, and preferences. You can customize various options here.</p>'
+        },
+        {
+            'id': 'settings',
+            'label': 'Settings',
+            'content': '<p>Configure your application settings, notifications, and privacy options in this panel.</p>'
+        },
+    ]
+
+    tabs_with_icons = [
+        {
+            'id': 'home',
+            'label': 'Home',
+            'icon': 'star',
+            'content': '<p>Welcome to your home dashboard. Quick access to all your important features.</p>'
+        },
+        {
+            'id': 'profile',
+            'label': 'Profile',
+            'icon': 'user',
+            'content': '<p>Manage your profile information, avatar, and public settings.</p>'
+        },
+        {
+            'id': 'notifications',
+            'label': 'Notifications',
+            'icon': 'info',
+            'badge': '3',
+            'content': '<p>You have 3 new notifications. Review and manage your notification preferences.</p>'
+        },
+    ]
+
+    context = {
+        'title': 'Complex Components',
+        'description': 'Card, Notification/Toast, and Tabs components',
+        'tabs_data': tabs_data,
+        'tabs_with_icons': tabs_with_icons,
+    }
+    return render(request, 'demo/components_complex.html', context)
+
+
+def auth_demo(request):
+    """
+    Demo view for authentication components (Login Form, Register Form).
+
+    Args:
+        request: Django HTTP request object
+
+    Returns:
+        Rendered template showcasing auth components
+    """
+    context = {
+        'title': 'Authentication Components',
+        'description': 'Login and Register form components with password visibility toggle',
+    }
+    return render(request, 'demo/auth_demo.html', context)
+
+
+def dialogs_demo(request):
+    """
+    Demo view for dialog components (Confirm Dialog, Drawer).
+
+    Args:
+        request: Django HTTP request object
+
+    Returns:
+        Rendered template showcasing dialog components
+    """
+    context = {
+        'title': 'Dialog Components',
+        'description': 'Confirm Dialog and Drawer components with focus trap and keyboard support',
+    }
+    return render(request, 'demo/dialogs_demo.html', context)

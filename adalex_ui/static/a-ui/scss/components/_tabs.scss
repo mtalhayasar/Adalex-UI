@@ -1,0 +1,225 @@
+/**
+ * Tabs Component
+ *
+ * Accessible tabbed interface with keyboard navigation.
+ * Uses design tokens exclusively - no hard-coded values.
+ */
+
+.a-tabs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Tab List */
+.a-tabs__list {
+  display: flex;
+  gap: var(--spacing-xs);
+  border-bottom: 2px solid var(--border-light);
+  overflow-x: auto;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--neutral-100);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--neutral-300);
+    border-radius: var(--radius-full);
+  }
+}
+
+/* Individual Tab */
+.a-tabs__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-lg);
+  margin-bottom: -2px;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast);
+
+  &:hover:not(.a-tabs__tab--active) {
+    color: var(--text-primary);
+    background-color: var(--neutral-50);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: var(--focus-ring-primary);
+    position: relative;
+    z-index: 1;
+  }
+
+  &--active {
+    color: var(--secondary-dark);
+    border-bottom-color: var(--secondary-main);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  &:disabled {
+    color: var(--text-disabled);
+    cursor: not-allowed;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+}
+
+/* Tab Icon */
+.a-tabs__tab-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Tab Label */
+.a-tabs__tab-label {
+  display: inline-block;
+}
+
+/* Tab Panels Container */
+.a-tabs__panels {
+  position: relative;
+}
+
+/* Individual Tab Panel */
+.a-tabs__panel {
+  padding: var(--spacing-lg) 0;
+  animation: tabs-fade-in var(--transition-fast) ease-out;
+
+  &[hidden] {
+    display: none;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+/* Fade in animation */
+@keyframes tabs-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Variants */
+
+/* Boxed/Contained Tabs */
+.a-tabs--boxed {
+  .a-tabs__list {
+    gap: 0;
+    border-bottom: none;
+    background-color: var(--neutral-100);
+    padding: var(--spacing-xs);
+    border-radius: var(--radius-md);
+  }
+
+  .a-tabs__tab {
+    margin-bottom: 0;
+    border-bottom: none;
+    border-radius: var(--radius-sm);
+
+    &--active {
+      background-color: var(--neutral-white);
+      box-shadow: var(--shadow-sm);
+    }
+  }
+
+  .a-tabs__panel {
+    padding: var(--spacing-lg);
+  }
+}
+
+/* Vertical Tabs */
+.a-tabs--vertical {
+  flex-direction: row;
+  gap: var(--spacing-lg);
+
+  .a-tabs__list {
+    flex-direction: column;
+    border-bottom: none;
+    border-right: 2px solid var(--border-light);
+    overflow-x: visible;
+    overflow-y: auto;
+    min-width: 12rem;
+  }
+
+  .a-tabs__tab {
+    margin-bottom: 0;
+    margin-right: -2px;
+    border-bottom: none;
+    border-right: 2px solid transparent;
+    text-align: left;
+    justify-content: flex-start;
+
+    &--active {
+      border-right-color: var(--secondary-main);
+    }
+  }
+
+  .a-tabs__panels {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+/* Full Width Tabs */
+.a-tabs--full-width {
+  .a-tabs__list {
+    display: flex;
+  }
+
+  .a-tabs__tab {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .a-tabs--vertical {
+    flex-direction: column;
+
+    .a-tabs__list {
+      flex-direction: row;
+      border-right: none;
+      border-bottom: 2px solid var(--border-light);
+      min-width: auto;
+      overflow-x: auto;
+    }
+
+    .a-tabs__tab {
+      margin-right: 0;
+      margin-bottom: -2px;
+      border-right: none;
+      border-bottom: 2px solid transparent;
+
+      &--active {
+        border-right-color: transparent;
+        border-bottom-color: var(--secondary-main);
+      }
+    }
+  }
+}

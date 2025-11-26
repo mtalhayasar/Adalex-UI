@@ -11,21 +11,33 @@ Complete API reference for all Adalex UI components.
 - [Select](#select)
 - [Form](#form)
 
+### Authentication Components
+- [Login Form](#login-form)
+- [Register Form](#register-form)
+
 ### UI Components
 - [Button](#button)
 - [Alert](#alert)
 - [Badge](#badge)
 - [Spinner](#spinner)
+- [Card](#card)
+- [Notification](#notification)
+- [Tabs](#tabs)
 
 ### Advanced Components
 - [Tooltip](#tooltip)
 - [Modal](#modal)
+- [Confirm Dialog](#confirm-dialog)
+- [Drawer](#drawer)
 - [Icon](#icon)
 - [Pagination](#pagination)
 
 ### Navigation Components
 - [Navbar](#navbar)
 - [Sidebar](#sidebar)
+
+### Data Components
+- [Table](#table)
 
 ### Layouts
 - [Dashboard Layout](#dashboard-layout)
@@ -485,6 +497,157 @@ def contact_form(request):
 
 ---
 
+## Authentication Components
+
+### Login Form
+
+Complete login form with email and password fields, password visibility toggle, and optional links.
+
+**Template Path:** `components/login_form.html`
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `action` | string | No | `""` | Form action URL |
+| `title` | string | No | - | Form title |
+| `subtitle` | string | No | - | Subtitle text below title |
+| `show_remember` | boolean | No | `False` | Show "Remember me" checkbox |
+| `show_forgot_password` | boolean | No | `False` | Show "Forgot password?" link |
+| `show_register_link` | boolean | No | `False` | Show "Create an account" link |
+| `forgot_password_url` | string | No | `"#"` | URL for forgot password link |
+| `register_url` | string | No | `"#"` | URL for register link |
+| `email_error` | string | No | - | Error message for email field |
+| `password_error` | string | No | - | Error message for password field |
+| `error_message` | string | No | - | General error alert message |
+
+**Usage:**
+
+```django
+{% include "components/login_form.html" with
+  title="Welcome Back"
+  subtitle="Sign in to your account"
+  action="{% url 'login' %}"
+  show_remember=True
+  show_forgot_password=True
+  show_register_link=True
+  register_url="{% url 'register' %}"
+  forgot_password_url="{% url 'password_reset' %}"
+%}
+```
+
+**With Validation Errors:**
+
+```django
+{% include "components/login_form.html" with
+  title="Sign In"
+  action="{% url 'login' %}"
+  email_error="Please enter a valid email"
+  password_error="Password is required"
+  error_message="Invalid email or password"
+%}
+```
+
+**JavaScript Features:**
+
+The login form includes password visibility toggle:
+
+```javascript
+// Toggle password visibility
+window.AdalexUI.Auth.togglePassword('login-password');
+
+// Show password
+window.AdalexUI.Auth.showPassword('login-password');
+
+// Hide password
+window.AdalexUI.Auth.hidePassword('login-password');
+```
+
+**Accessibility:**
+
+- All inputs have associated labels
+- Password toggle button has `aria-label`
+- Error states use `aria-invalid` and `role="alert"`
+- Keyboard navigation supported
+- Focus management on toggle
+
+**JavaScript Required:** `auth.js`
+
+---
+
+### Register Form
+
+Complete registration form with name, email, password, password confirmation, and terms acceptance.
+
+**Template Path:** `components/register_form.html`
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `action` | string | No | `""` | Form action URL |
+| `title` | string | No | - | Form title |
+| `subtitle` | string | No | - | Subtitle text below title |
+| `show_name` | boolean | No | `False` | Show full name field |
+| `show_terms` | boolean | No | `False` | Show terms acceptance checkbox |
+| `show_login_link` | boolean | No | `False` | Show "Sign in" link |
+| `login_url` | string | No | `"#"` | URL for login link |
+| `terms_label` | string | No | `"I agree to the Terms of Service and Privacy Policy"` | Terms checkbox label |
+| `password_help` | string | No | - | Help text for password requirements |
+| `name_error` | string | No | - | Error message for name field |
+| `email_error` | string | No | - | Error message for email field |
+| `password_error` | string | No | - | Error message for password field |
+| `password_confirm_error` | string | No | - | Error message for password confirmation |
+| `error_message` | string | No | - | General error alert message |
+
+**Usage:**
+
+```django
+{% include "components/register_form.html" with
+  title="Create Account"
+  subtitle="Join us today"
+  action="{% url 'register' %}"
+  show_name=True
+  show_terms=True
+  show_login_link=True
+  login_url="{% url 'login' %}"
+  password_help="Password must be at least 8 characters"
+%}
+```
+
+**With Validation Errors:**
+
+```django
+{% include "components/register_form.html" with
+  title="Register"
+  action="{% url 'register' %}"
+  show_name=True
+  password_error="Password must be at least 8 characters"
+  password_confirm_error="Passwords do not match"
+%}
+```
+
+**JavaScript Features:**
+
+Both password fields have visibility toggles:
+
+```javascript
+// Initialize auth forms
+window.AdalexUI.Auth.init();
+```
+
+**Accessibility:**
+
+- All inputs have associated labels
+- Password toggle buttons have `aria-label`
+- Required fields marked with `aria-required`
+- Error states use `aria-invalid` and descriptive error text
+- Keyboard navigation supported
+
+**JavaScript Required:** `auth.js`
+
+---
+
 ## UI Components
 
 ### Button
@@ -613,6 +776,244 @@ Loading spinner with CSS animation.
 
 ---
 
+### Card
+
+Flexible container for displaying content with multiple variants.
+
+**Template Path:** `components/card.html`
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `title` | string | No | - | Card title |
+| `subtitle` | string | No | - | Subtitle text below title |
+| `content` | string | No | - | Main content text |
+| `footer` | string (HTML) | No | - | Footer content |
+| `variant` | string | No | `"default"` | Card style: `default`, `bordered`, `elevated`, `primary`, `secondary`, `statistic` |
+| `size` | string | No | `"md"` | Padding size: `sm`, `md`, `lg` |
+| `shadow` | boolean | No | `False` | Add box shadow |
+| `border` | boolean | No | `False` | Add border |
+| `interactive` | boolean | No | `False` | Add hover/active states |
+| `title_level` | number | No | `3` | HTML heading level (2-6) |
+| `value` | string | No | - | Large value for statistic cards |
+| `label` | string | No | - | Label for statistic cards |
+
+**Usage:**
+
+```django
+{# Basic card #}
+{% include "components/card.html" with
+  title="Card Title"
+  subtitle="Card subtitle"
+  content="This is the card content."
+  variant="default"
+%}
+
+{# Elevated card #}
+{% include "components/card.html" with
+  title="Elevated Card"
+  content="This card has a shadow instead of border."
+  variant="elevated"
+%}
+
+{# Interactive card #}
+{% include "components/card.html" with
+  title="Clickable Card"
+  content="Hover to see the effect."
+  variant="default"
+  interactive=True
+%}
+
+{# Statistic card #}
+{% include "components/card.html" with
+  value="1,234"
+  label="Total Users"
+  variant="statistic"
+  shadow=True
+%}
+```
+
+**Variants:**
+- `default` - Subtle border
+- `bordered` - Prominent border
+- `elevated` - Shadow instead of border
+- `primary` - Primary color background
+- `secondary` - Secondary color background
+- `statistic` - For displaying metrics
+
+---
+
+### Notification
+
+Toast notifications that stack in the top-right corner with auto-dismiss.
+
+**Template Path:** `components/notification.html`
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `message` | string | Yes | - | Notification message |
+| `type` | string | No | `"info"` | Type: `info`, `success`, `warning`, `error` |
+| `duration` | number | No | `5000` | Auto-dismiss time in ms (0 = no auto-dismiss) |
+| `dismissible` | boolean | No | `True` | Show close button |
+| `id` | string | No | - | Unique notification ID |
+
+**Static Usage (in templates):**
+
+```django
+{% include "components/notification.html" with
+  message="Your changes have been saved."
+  type="success"
+  dismissible=True
+%}
+```
+
+**JavaScript Usage (dynamic):**
+
+```javascript
+// Show notification
+window.AdalexUI.Notification.show({
+  message: 'Operation completed successfully!',
+  type: 'success',
+  duration: 5000
+});
+
+// Convenience methods
+window.AdalexUI.Notification.info('Information message');
+window.AdalexUI.Notification.success('Success message');
+window.AdalexUI.Notification.warning('Warning message');
+window.AdalexUI.Notification.error('Error message');
+
+// Dismiss all notifications
+window.AdalexUI.Notification.dismissAll();
+```
+
+**Events:**
+
+```javascript
+document.addEventListener('notification:shown', (e) => {
+  console.log('Notification shown:', e.detail);
+});
+
+document.addEventListener('notification:dismissed', (e) => {
+  console.log('Notification dismissed:', e.detail);
+});
+```
+
+**JavaScript Required:** `notification.js`
+
+---
+
+### Tabs
+
+Accessible tabbed interface with keyboard navigation.
+
+**Template Path:** `components/tabs.html`
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `tabs` | list | Yes | - | List of tab objects (see below) |
+| `aria_label` | string | No | `"Tabs"` | ARIA label for tab list |
+
+**Tab Object:**
+
+| Key | Type | Required | Description |
+|-----|------|----------|-------------|
+| `id` | string | Yes | Unique tab identifier |
+| `label` | string | Yes | Tab button text |
+| `content` | string (HTML) | Yes | Panel content (HTML) |
+| `icon` | string | No | Icon name (uses Icon component) |
+| `badge` | string | No | Badge text (uses Badge component) |
+
+**Usage:**
+
+```python
+# In views.py
+tabs_data = [
+    {
+        'id': 'overview',
+        'label': 'Overview',
+        'content': '<p>Overview content here.</p>'
+    },
+    {
+        'id': 'details',
+        'label': 'Details',
+        'icon': 'info',
+        'content': '<p>Details content here.</p>'
+    },
+    {
+        'id': 'notifications',
+        'label': 'Notifications',
+        'badge': '3',
+        'content': '<p>You have 3 notifications.</p>'
+    },
+]
+```
+
+```django
+{% include "components/tabs.html" with tabs=tabs_data %}
+```
+
+**Variants (CSS classes on container):**
+
+```django
+{# Boxed style #}
+<div class="a-tabs a-tabs--boxed" data-tabs>
+  ...
+</div>
+
+{# Full width tabs #}
+<div class="a-tabs a-tabs--full-width" data-tabs>
+  ...
+</div>
+
+{# Vertical tabs #}
+<div class="a-tabs a-tabs--vertical" data-tabs>
+  ...
+</div>
+```
+
+**Keyboard Navigation:**
+- `Arrow Left/Right` - Move between tabs (horizontal)
+- `Arrow Up/Down` - Move between tabs (vertical)
+- `Home` - Go to first tab
+- `End` - Go to last tab
+- `Enter/Space` - Activate focused tab
+
+**JavaScript API:**
+
+```javascript
+// Initialize tabs
+window.AdalexUI.Tabs.init();
+
+// Switch to specific tab programmatically
+window.AdalexUI.Tabs.switchTo(containerElement, 'tab-id');
+```
+
+**Events:**
+
+```javascript
+document.addEventListener('tabs:changed', (e) => {
+  console.log('Tab changed:', e.detail.tabId);
+});
+```
+
+**Accessibility:**
+- `role="tablist"` on tab container
+- `role="tab"` on each tab button
+- `role="tabpanel"` on each panel
+- `aria-selected` state on tabs
+- `aria-controls` linking tabs to panels
+- Keyboard navigation support
+
+**JavaScript Required:** `tabs.js`
+
+---
+
 ## Advanced Components
 
 ### Tooltip
@@ -682,6 +1083,208 @@ Accessible modal dialogs with focus trap.
 - Backdrop click to close
 - Focus trap
 - ARIA attributes
+
+---
+
+### Confirm Dialog
+
+Modal confirmation dialog with title, message, and action buttons. Supports danger variant for destructive actions.
+
+**Template Path:** `components/confirm_dialog.html`
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `id` | string | Yes | - | Unique dialog ID |
+| `title` | string | Yes | - | Dialog title |
+| `message` | string | Yes | - | Confirmation message |
+| `confirm_text` | string | No | `"Confirm"` | Confirm button text |
+| `cancel_text` | string | No | `"Cancel"` | Cancel button text |
+| `danger` | boolean | No | `False` | Use danger styling (red confirm button) |
+| `icon` | boolean | No | `False` | Show icon (info or warning based on danger) |
+
+**Usage:**
+
+```django
+{# Basic confirm dialog #}
+{% include "components/confirm_dialog.html" with
+  id="confirm-action"
+  title="Confirm Action"
+  message="Are you sure you want to proceed?"
+  confirm_text="Yes, Proceed"
+  cancel_text="Cancel"
+  icon=True
+%}
+
+{# Danger confirm dialog #}
+{% include "components/confirm_dialog.html" with
+  id="confirm-delete"
+  title="Delete Item"
+  message="This action cannot be undone. Are you sure?"
+  confirm_text="Delete"
+  cancel_text="Cancel"
+  danger=True
+  icon=True
+%}
+```
+
+**JavaScript Usage:**
+
+```javascript
+// Open dialog and wait for response
+const confirmed = await window.AdalexUI.ConfirmDialog.open('confirm-action');
+if (confirmed) {
+  // User clicked confirm
+} else {
+  // User clicked cancel or closed dialog
+}
+
+// Programmatic confirm (creates dynamic dialog)
+const result = await window.AdalexUI.ConfirmDialog.confirm({
+  title: 'Save Changes?',
+  message: 'Do you want to save before leaving?',
+  confirmText: 'Save',
+  cancelText: 'Discard',
+  danger: false
+});
+```
+
+**Data Attributes (for declarative usage):**
+
+```html
+<button data-confirm-open="confirm-action">Open Confirm</button>
+```
+
+**Events:**
+
+```javascript
+document.addEventListener('confirm:opened', (e) => {
+  console.log('Dialog opened:', e.detail.dialog);
+});
+
+document.addEventListener('confirm:closed', (e) => {
+  console.log('Dialog closed:', e.detail.confirmed);
+});
+```
+
+**Accessibility:**
+
+- `role="alertdialog"` for accessibility
+- `aria-modal="true"` for modal behavior
+- `aria-labelledby` links to title
+- `aria-describedby` links to message
+- Focus trap within dialog
+- ESC key closes dialog
+- Focus returns to trigger element
+
+**JavaScript Required:** `confirm.js`
+
+---
+
+### Drawer
+
+Slide-in panel that can appear from left or right side with focus trap and keyboard support.
+
+**Template Path:** `components/drawer.html`
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `id` | string | Yes | - | Unique drawer ID |
+| `title` | string | Yes | - | Drawer title |
+| `content` | string (HTML) | Yes | - | Drawer body content |
+| `position` | string | No | `"right"` | Slide-in position: `"left"` or `"right"` |
+| `size` | string | No | - | Drawer width: `"sm"`, `"md"`, `"lg"`, `"xl"`, `"full"` |
+| `footer` | string (HTML) | No | - | Optional footer content (buttons) |
+
+**Size Values:**
+
+| Size | Max Width |
+|------|-----------|
+| `sm` | 18rem (288px) |
+| `md` | 24rem (384px) - default |
+| `lg` | 32rem (512px) |
+| `xl` | 40rem (640px) |
+| `full` | 100% |
+
+**Usage:**
+
+```django
+{# Right drawer (default) #}
+{% include "components/drawer.html" with
+  id="settings-drawer"
+  title="Settings"
+  position="right"
+  size="md"
+  content="<p>Your settings content here.</p>"
+%}
+
+{# Left drawer with footer #}
+{% include "components/drawer.html" with
+  id="filter-drawer"
+  title="Filters"
+  position="left"
+  size="lg"
+  content="<p>Filter options here.</p>"
+  footer='<button class="a-button a-button--primary">Apply Filters</button>'
+%}
+```
+
+**JavaScript Usage:**
+
+```javascript
+// Open drawer
+window.AdalexUI.Drawer.open('settings-drawer');
+
+// Close drawer
+window.AdalexUI.Drawer.close('settings-drawer');
+
+// Toggle drawer
+window.AdalexUI.Drawer.toggle('settings-drawer');
+```
+
+**Data Attributes (for declarative usage):**
+
+```html
+<!-- Open trigger -->
+<button data-drawer-open="settings-drawer">Open Settings</button>
+
+<!-- Toggle trigger -->
+<button data-drawer-toggle="settings-drawer">Toggle Drawer</button>
+
+<!-- Close button (inside drawer) -->
+<button data-drawer-close>Close</button>
+```
+
+**Events:**
+
+```javascript
+document.addEventListener('drawer:opened', (e) => {
+  console.log('Drawer opened:', e.detail.drawer);
+});
+
+document.addEventListener('drawer:closed', (e) => {
+  console.log('Drawer closed:', e.detail.drawer);
+});
+```
+
+**Accessibility:**
+
+- `role="dialog"` for dialog semantics
+- `aria-modal="true"` for modal behavior
+- `aria-labelledby` links to title
+- Focus trap within drawer
+- ESC key closes drawer
+- Focus returns to trigger element
+- Backdrop click closes drawer
+
+**Responsive Behavior:**
+
+On mobile (< 480px), drawer expands to full width regardless of size setting.
+
+**JavaScript Required:** `drawer.js`
 
 ---
 
@@ -926,6 +1529,237 @@ def dashboard_view(request):
 
 ---
 
+## Data Components
+
+### Table
+
+Full-featured data table with search, sorting, pagination, and HTMX integration.
+
+**Template Path:** `components/table.html`
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `columns` | list | Yes | - | List of column definitions (see below) |
+| `rows` | list/queryset | Yes | - | Data rows (list of dicts or Django QuerySet) |
+| `row_actions` | list | No | - | Action buttons for each row (see below) |
+| `row_partial` | string | No | - | Custom template path for row rendering |
+| `searchable` | boolean | No | `False` | Enable search functionality |
+| `sortable` | boolean | No | `False` | Enable column sorting |
+| `paginated` | boolean | No | `False` | Enable pagination |
+| `search_query` | string | No | - | Current search query |
+| `search_id` | string | No | `"table-search"` | ID for search input |
+| `search_placeholder` | string | No | `"Search..."` | Placeholder for search input |
+| `sort_key` | string | No | - | Currently sorted column key |
+| `sort_direction` | string | No | `"none"` | Sort direction: `"asc"`, `"desc"`, or `"none"` |
+| `pagination_data` | dict | No | - | Pagination data (see Pagination component) |
+| `empty_text` | string | No | `"No data available"` | Message when no rows |
+| `aria_label` | string | No | `"Data table"` | ARIA label for table |
+
+**Column Definition:**
+
+Each item in `columns` should be a dictionary with:
+
+| Key | Type | Required | Description |
+|-----|------|----------|-------------|
+| `key` | string | Yes | Data key to display (dict key or object attribute) |
+| `label` | string | Yes | Column header text |
+| `sortable` | boolean | No | Enable sorting for this column |
+
+**Row Actions Definition:**
+
+Each item in `row_actions` should be a dictionary with:
+
+| Key | Type | Required | Description |
+|-----|------|----------|-------------|
+| `url_pattern` | string | Yes | URL pattern with `{key}` placeholders (e.g., `/users/{id}/edit/`) |
+| `text` | string | Yes | Button text |
+| `variant` | string | No | Button variant (`primary`, `secondary`, etc.) |
+| `method` | string | No | HTTP method: `"get"` (default) or `"post"` |
+
+**Usage:**
+
+```python
+# In views.py
+from adalex_ui.utils import build_pagination_data
+import math
+
+def table_view(request):
+    # Get query parameters
+    search = request.GET.get('search', '')
+    sort = request.GET.get('sort', '')
+    direction = request.GET.get('direction', 'asc')
+    page = int(request.GET.get('page', 1))
+    page_size = 10
+
+    # Fetch and filter data
+    all_data = YourModel.objects.all()
+    if search:
+        all_data = all_data.filter(name__icontains=search)
+
+    # Sort data
+    if sort:
+        order_by = f"{'-' if direction == 'desc' else ''}{sort}"
+        all_data = all_data.order_by(order_by)
+
+    # Paginate
+    total = all_data.count()
+    total_pages = math.ceil(total / page_size)
+    data = all_data[(page-1)*page_size:page*page_size]
+
+    # Build pagination
+    pagination_data = build_pagination_data(
+        page,
+        total_pages,
+        f'/your-url/?page={{page}}&search={search}&sort={sort}&direction={direction}'
+    )
+
+    # Define columns
+    columns = [
+        {'key': 'id', 'label': 'ID', 'sortable': True},
+        {'key': 'name', 'label': 'Name', 'sortable': True},
+        {'key': 'email', 'label': 'Email', 'sortable': True},
+        {'key': 'status', 'label': 'Status', 'sortable': False},
+    ]
+
+    # Define actions
+    row_actions = [
+        {'url_pattern': '/edit/{id}/', 'text': 'Edit', 'variant': 'primary'},
+        {'url_pattern': '/delete/{id}/', 'text': 'Delete', 'variant': 'secondary', 'method': 'post'},
+    ]
+
+    context = {
+        'columns': columns,
+        'rows': data,
+        'row_actions': row_actions,
+        'searchable': True,
+        'sortable': True,
+        'paginated': True,
+        'search_query': search,
+        'sort_key': sort,
+        'sort_direction': direction,
+        'pagination_data': pagination_data,
+    }
+    return render(request, 'your_template.html', context)
+```
+
+```django
+{# In your_template.html #}
+{% load a_ui_tags %}
+
+{% include "components/table.html" with
+  columns=columns
+  rows=rows
+  row_actions=row_actions
+  searchable=True
+  sortable=True
+  paginated=True
+  search_query=search_query
+  sort_key=sort_key
+  sort_direction=sort_direction
+  pagination_data=pagination_data
+%}
+```
+
+**Custom Row Template:**
+
+For advanced row rendering, use `row_partial`:
+
+```django
+{# custom_row.html #}
+{% load a_ui_tags %}
+<tr class="a-table__row">
+  <td class="a-table__cell">{{ row|get_item:"id" }}</td>
+  <td class="a-table__cell">
+    <strong>{{ row|get_item:"name" }}</strong>
+    {% include "components/badge.html" with text=row.status variant="success" size="sm" %}
+  </td>
+  <td class="a-table__cell a-table__cell--actions">
+    {# Custom actions #}
+  </td>
+</tr>
+```
+
+```django
+{# In main template #}
+{% include "components/table.html" with
+  row_partial="custom_row.html"
+  ...
+%}
+```
+
+**HTMX Integration:**
+
+The table automatically uses HTMX for search, sort, and pagination when available:
+
+```html
+<!-- Include HTMX -->
+<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+<!-- Include table JS -->
+<script src="{% static 'a-ui/js/components/table.js' %}"></script>
+```
+
+**Responsive Behavior:**
+
+Default: Horizontal scroll on mobile
+- Table remains structured
+- Scroll container preserves layout
+
+Stacked layout: Add `.a-table-container--stacked` class
+- Rows become cards
+- Labels appear inline with values
+- Better for narrow screens
+
+**Variants:**
+
+Add classes to `.a-table` element:
+- `.a-table--striped` - Alternating row colors
+- `.a-table--compact` - Reduced padding
+- `.a-table--bordered` - Cell borders
+
+**Accessibility:**
+
+- Semantic `<table>` structure with proper roles
+- Sortable headers are keyboard accessible (Enter/Space)
+- ARIA attributes for sort states
+- Screen reader announcements
+- Focus management
+- Empty state messaging
+
+**JavaScript API:**
+
+```javascript
+// Initialize tables
+window.AdalexUI.Table.init();
+
+// Refresh table data
+window.AdalexUI.Table.refresh('#my-table-container');
+
+// Listen to events
+document.addEventListener('table:sorted', (e) => {
+  console.log('Sorted by:', e.detail.sortKey, e.detail.direction);
+});
+
+document.addEventListener('table:searched', (e) => {
+  console.log('Search query:', e.detail.query);
+});
+```
+
+**Best Practices:**
+
+1. **Always provide `aria_label`** for context
+2. **Use pagination** for large datasets (>50 rows)
+3. **Limit sortable columns** to meaningful fields
+4. **Provide clear empty states** with actionable messages
+5. **Test keyboard navigation** on sortable headers
+6. **Consider custom row templates** for complex data
+7. **Use HTMX** for seamless updates without page reloads
+8. **Handle loading states** with `.a-table-container--loading`
+
+---
+
 ## JavaScript Components
 
 Components requiring JavaScript are automatically initialized on page load and after HTMX swaps.
@@ -935,11 +1769,17 @@ Components requiring JavaScript are automatically initialized on page load and a
 ```django
 {# Individual components #}
 <script src="{% static 'a-ui/js/components/alert.js' %}"></script>
+<script src="{% static 'a-ui/js/components/auth.js' %}"></script>
+<script src="{% static 'a-ui/js/components/confirm.js' %}"></script>
+<script src="{% static 'a-ui/js/components/drawer.js' %}"></script>
 <script src="{% static 'a-ui/js/components/form.js' %}"></script>
 <script src="{% static 'a-ui/js/components/modal.js' %}"></script>
-<script src="{% static 'a-ui/js/components/tooltip.js' %}"></script>
 <script src="{% static 'a-ui/js/components/navbar.js' %}"></script>
+<script src="{% static 'a-ui/js/components/notification.js' %}"></script>
 <script src="{% static 'a-ui/js/components/sidebar.js' %}"></script>
+<script src="{% static 'a-ui/js/components/table.js' %}"></script>
+<script src="{% static 'a-ui/js/components/tabs.js' %}"></script>
+<script src="{% static 'a-ui/js/components/tooltip.js' %}"></script>
 
 {# Main initialization #}
 <script src="{% static 'a-ui/js/main.js' %}"></script>

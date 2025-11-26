@@ -61,6 +61,22 @@
   // Variant styles
   &--default {
     background: var(--neutral-white);
+    border: 1px solid var(--border-light);
+  }
+
+  &--bordered {
+    background: var(--neutral-white);
+    border: 2px solid var(--border-main);
+  }
+
+  &--elevated {
+    background: var(--neutral-white);
+    box-shadow: var(--shadow-lg);
+    border: none;
+
+    &:hover {
+      box-shadow: var(--shadow-xl);
+    }
   }
 
   &--primary {

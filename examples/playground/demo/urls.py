@@ -12,5 +12,9 @@ urlpatterns = [
     path('forms/complete/', views.form_demo, name='form_demo'),
     path('components/ui/', views.components_ui, name='components_ui'),
     path('components/advanced/', views.components_advanced, name='components_advanced'),
+    path('components/complex/', views.components_complex, name='components_complex'),
     path('navigation/', views.navigation_demo, name='navigation_demo'),
+    path('table/', views.table_demo, name='table_demo'),
+    path('auth/', views.auth_demo, name='auth_demo'),
+    path('dialogs/', views.dialogs_demo, name='dialogs_demo'),
 ]

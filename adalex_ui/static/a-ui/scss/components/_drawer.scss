@@ -1,0 +1,203 @@
+/**
+ * Drawer Component
+ *
+ * Slide-in panel that can appear from left or right side.
+ * Supports focus trap, ESC close, and backdrop click.
+ */
+
+.a-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-index-modal);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-base), visibility var(--transition-base);
+
+  // Hidden state (default)
+  &[aria-hidden="true"] {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  // Visible state
+  &[aria-hidden="false"] {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  // Backdrop
+  &__backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--modal-backdrop);
+    z-index: var(--z-index-modal-backdrop);
+  }
+
+  // Panel
+  &__panel {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    z-index: calc(var(--z-index-modal) + 1);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 24rem;
+    background-color: var(--neutral-white);
+    box-shadow: var(--shadow-xl);
+    transition: transform var(--transition-base);
+  }
+
+  // Right position (default)
+  &--right {
+    .a-drawer__panel {
+      right: 0;
+      transform: translateX(100%);
+    }
+
+    &[aria-hidden="false"] .a-drawer__panel {
+      transform: translateX(0);
+    }
+  }
+
+  // Left position
+  &--left {
+    .a-drawer__panel {
+      left: 0;
+      transform: translateX(-100%);
+    }
+
+    &[aria-hidden="false"] .a-drawer__panel {
+      transform: translateX(0);
+    }
+  }
+
+  // Size variants
+  &--sm {
+    .a-drawer__panel {
+      max-width: 18rem;
+    }
+  }
+
+  &--md {
+    .a-drawer__panel {
+      max-width: 24rem;
+    }
+  }
+
+  &--lg {
+    .a-drawer__panel {
+      max-width: 32rem;
+    }
+  }
+
+  &--xl {
+    .a-drawer__panel {
+      max-width: 40rem;
+    }
+  }
+
+  &--full {
+    .a-drawer__panel {
+      max-width: none;
+    }
+  }
+
+  // Header
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    border-bottom: 1px solid var(--border-light);
+    flex-shrink: 0;
+  }
+
+  // Title
+  &__title {
+    margin: 0;
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    line-height: var(--line-height-tight);
+  }
+
+  // Close button
+  &__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    color: var(--text-tertiary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+
+    &:hover {
+      background: var(--neutral-100);
+      color: var(--text-primary);
+    }
+
+    &:active {
+      background: var(--neutral-200);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--secondary-main);
+      outline-offset: 2px;
+    }
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
+
+  // Body
+  &__body {
+    flex: 1;
+    padding: var(--spacing-xl);
+    overflow-y: auto;
+    color: var(--text-primary);
+    line-height: var(--line-height-relaxed);
+  }
+
+  // Footer
+  &__footer {
+    padding: var(--spacing-lg) var(--spacing-xl);
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--spacing-md);
+    flex-shrink: 0;
+  }
+}
+
+// Prevent body scroll when drawer is open
+body.drawer-open {
+  overflow: hidden;
+}
+
+// Mobile responsive - full width on small screens
+@media (max-width: 480px) {
+  .a-drawer {
+    &__panel {
+      max-width: 100%;
+    }
+  }
+}

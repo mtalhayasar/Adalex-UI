@@ -161,6 +161,51 @@
         {% include "components/badge.html" with text="Dashboard" variant="success" size="sm" %}
       </div>
     </a>
+
+    <!-- Table Component -->
+    <a href="{% url 'demo:table_demo' %}" class="component-card">
+      <h2>Table / DataGrid</h2>
+      <p>Full-featured data table with search, sorting, pagination, and HTMX integration.</p>
+      <div class="badge-list">
+        {% include "components/badge.html" with text="Search" variant="primary" size="sm" %}
+        {% include "components/badge.html" with text="Sort" variant="primary" size="sm" %}
+        {% include "components/badge.html" with text="Pagination" variant="primary" size="sm" %}
+        {% include "components/badge.html" with text="HTMX" variant="success" size="sm" %}
+      </div>
+    </a>
+
+    <!-- Complex Components -->
+    <a href="{% url 'demo:components_complex' %}" class="component-card">
+      <h2>Complex Components</h2>
+      <p>Advanced UI patterns including cards, notifications, and tabbed interfaces.</p>
+      <div class="badge-list">
+        {% include "components/badge.html" with text="Card" variant="secondary" size="sm" %}
+        {% include "components/badge.html" with text="Notification" variant="secondary" size="sm" %}
+        {% include "components/badge.html" with text="Tabs" variant="secondary" size="sm" %}
+      </div>
+    </a>
+
+    <!-- Authentication Components -->
+    <a href="{% url 'demo:auth_demo' %}" class="component-card">
+      <h2>Authentication</h2>
+      <p>Login and registration forms with password visibility toggle and validation states.</p>
+      <div class="badge-list">
+        {% include "components/badge.html" with text="Login" variant="primary" size="sm" %}
+        {% include "components/badge.html" with text="Register" variant="primary" size="sm" %}
+        {% include "components/badge.html" with text="Password Toggle" variant="success" size="sm" %}
+      </div>
+    </a>
+
+    <!-- Dialog Components -->
+    <a href="{% url 'demo:dialogs_demo' %}" class="component-card">
+      <h2>Dialogs & Overlays</h2>
+      <p>Confirm dialogs and drawer panels with focus trap and keyboard support.</p>
+      <div class="badge-list">
+        {% include "components/badge.html" with text="Confirm" variant="secondary" size="sm" %}
+        {% include "components/badge.html" with text="Drawer" variant="secondary" size="sm" %}
+        {% include "components/badge.html" with text="Focus Trap" variant="success" size="sm" %}
+      </div>
+    </a>
   </div>
 
   <div class="footer">

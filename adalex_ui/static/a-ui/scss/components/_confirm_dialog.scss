@@ -1,0 +1,154 @@
+/**
+ * Confirm Dialog Component
+ *
+ * Modal confirmation dialog with title, message, and action buttons.
+ * Supports danger variant for destructive actions.
+ * Includes focus trap and keyboard navigation.
+ */
+
+.a-confirm-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-index-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-base), visibility var(--transition-base);
+
+  // Hidden state (default)
+  &[aria-hidden="true"] {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    .a-confirm-dialog__container {
+      transform: scale(0.95) translateY(-10px);
+    }
+  }
+
+  // Visible state
+  &[aria-hidden="false"] {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    .a-confirm-dialog__container {
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  // Backdrop
+  &__backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--modal-backdrop);
+    z-index: var(--z-index-modal-backdrop);
+  }
+
+  // Container
+  &__container {
+    position: relative;
+    z-index: calc(var(--z-index-modal) + 1);
+    width: 100%;
+    max-width: 24rem;
+    background-color: var(--neutral-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    transition: transform var(--transition-base);
+  }
+
+  // Content wrapper
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: var(--spacing-xl);
+    gap: var(--spacing-md);
+  }
+
+  // Icon
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: var(--radius-full);
+    background: var(--info-light);
+    color: var(--info-main);
+    margin-bottom: var(--spacing-xs);
+
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+
+  // Title
+  &__title {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    line-height: var(--line-height-tight);
+  }
+
+  // Message
+  &__message {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    line-height: var(--line-height-relaxed);
+  }
+
+  // Actions
+  &__actions {
+    display: flex;
+    gap: var(--spacing-md);
+    width: 100%;
+    margin-top: var(--spacing-md);
+
+    .a-button {
+      flex: 1;
+    }
+  }
+
+  // Danger variant
+  &--danger {
+    .a-confirm-dialog__icon {
+      background: var(--error-light);
+      color: var(--error-main);
+    }
+
+    .a-confirm-dialog__actions {
+      .a-button--primary {
+        background: var(--error-main);
+        border-color: var(--error-main);
+
+        &:hover {
+          background: var(--error-dark);
+          border-color: var(--error-dark);
+        }
+
+        &:focus-visible {
+          box-shadow: var(--focus-ring-error);
+        }
+      }
+    }
+  }
+}
+
+// Prevent body scroll when confirm dialog is open
+body.confirm-dialog-open {
+  overflow: hidden;
+}

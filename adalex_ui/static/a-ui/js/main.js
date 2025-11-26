@@ -29,6 +29,21 @@
       window.AdalexUI.Alert.init();
     }
 
+    // Initialize Auth component (password toggle)
+    if (window.AdalexUI && window.AdalexUI.Auth) {
+      window.AdalexUI.Auth.init();
+    }
+
+    // Initialize ConfirmDialog component
+    if (window.AdalexUI && window.AdalexUI.ConfirmDialog) {
+      window.AdalexUI.ConfirmDialog.init();
+    }
+
+    // Initialize Drawer component
+    if (window.AdalexUI && window.AdalexUI.Drawer) {
+      window.AdalexUI.Drawer.init();
+    }
+
     // Initialize Form component
     if (window.AdalexUI && window.AdalexUI.Form) {
       window.AdalexUI.Form.init();
@@ -52,6 +67,21 @@
     // Initialize Sidebar component
     if (window.AdalexUI && window.AdalexUI.Sidebar) {
       window.AdalexUI.Sidebar.init();
+    }
+
+    // Initialize Table component
+    if (window.AdalexUI && window.AdalexUI.Table) {
+      window.AdalexUI.Table.init();
+    }
+
+    // Initialize Tabs component
+    if (window.AdalexUI && window.AdalexUI.Tabs) {
+      window.AdalexUI.Tabs.init();
+    }
+
+    // Initialize Notification component
+    if (window.AdalexUI && window.AdalexUI.Notification) {
+      window.AdalexUI.Notification.init();
     }
   }
 

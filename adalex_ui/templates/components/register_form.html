@@ -1,0 +1,107 @@
+<div
+  class="a-register-form"
+  data-auth-form
+>
+  <form
+    action="{{ action|default:'' }}"
+    method="POST"
+    class="a-register-form__form"
+    novalidate
+  >
+    {% csrf_token %}
+
+    {% if title %}
+      <h2 class="a-register-form__title">{{ title }}</h2>
+    {% endif %}
+
+    {% if subtitle %}
+      <p class="a-register-form__subtitle">{{ subtitle }}</p>
+    {% endif %}
+
+    <div class="a-register-form__fields">
+      {% if show_name %}
+        <div class="a-register-form__field">
+          {% include "components/label.html" with for_id="register-name" text="Full Name" required=True %}
+          {% include "components/text_input.html" with type="text" name="name" id="register-name" placeholder="Enter your full name" required=True error=name_error %}
+        </div>
+      {% endif %}
+
+      <div class="a-register-form__field">
+        {% include "components/label.html" with for_id="register-email" text="Email" required=True %}
+        {% include "components/text_input.html" with type="email" name="email" id="register-email" placeholder="Enter your email" required=True error=email_error %}
+      </div>
+
+      <div class="a-register-form__field">
+        {% include "components/label.html" with for_id="register-password" text="Password" required=True %}
+        <div class="a-register-form__password-wrapper" data-password-wrapper>
+          {% include "components/text_input.html" with type="password" name="password" id="register-password" placeholder="Create a password" required=True error=password_error %}
+          <button
+            type="button"
+            class="a-register-form__password-toggle"
+            data-password-toggle
+            aria-label="Toggle password visibility"
+          >
+            <svg class="a-register-form__icon a-register-form__icon--show" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 5C5.636 5 2 12 2 12C2 12 5.636 19 12 19C18.364 19 22 12 22 12C22 12 18.364 5 12 5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <svg class="a-register-form__icon a-register-form__icon--hide" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20C5.636 20 2 12 2 12A18.45 18.45 0 0 1 5.636 7.05M9.9 4.24A9.12 9.12 0 0 1 12 4C18.364 4 22 12 22 12A18.5 18.5 0 0 1 19.17 15.73" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M1 1L23 23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9.9 9.9A3 3 0 1 0 14.1 14.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        {% if password_help %}
+          <span class="a-register-form__help-text">{{ password_help }}</span>
+        {% endif %}
+      </div>
+
+      <div class="a-register-form__field">
+        {% include "components/label.html" with for_id="register-password-confirm" text="Confirm Password" required=True %}
+        <div class="a-register-form__password-wrapper" data-password-wrapper>
+          {% include "components/text_input.html" with type="password" name="password_confirm" id="register-password-confirm" placeholder="Re-enter your password" required=True error=password_confirm_error %}
+          <button
+            type="button"
+            class="a-register-form__password-toggle"
+            data-password-toggle
+            aria-label="Toggle password visibility"
+          >
+            <svg class="a-register-form__icon a-register-form__icon--show" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 5C5.636 5 2 12 2 12C2 12 5.636 19 12 19C18.364 19 22 12 22 12C22 12 18.364 5 12 5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <svg class="a-register-form__icon a-register-form__icon--hide" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20C5.636 20 2 12 2 12A18.45 18.45 0 0 1 5.636 7.05M9.9 4.24A9.12 9.12 0 0 1 12 4C18.364 4 22 12 22 12A18.5 18.5 0 0 1 19.17 15.73" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M1 1L23 23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9.9 9.9A3 3 0 1 0 14.1 14.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {% if show_terms %}
+        <div class="a-register-form__terms">
+          {% include "components/checkbox.html" with name="terms" id="register-terms" label=terms_label|default:"I agree to the Terms of Service and Privacy Policy" required=True %}
+        </div>
+      {% endif %}
+    </div>
+
+    {% if error_message %}
+      <div class="a-register-form__error" role="alert">
+        {% include "components/alert.html" with type="error" message=error_message dismissible=False %}
+      </div>
+    {% endif %}
+
+    <div class="a-register-form__actions">
+      {% include "components/button.html" with type="submit" variant="primary" text="Create Account" full_width=True %}
+    </div>
+
+    {% if show_login_link %}
+      <div class="a-register-form__links">
+        <span class="a-register-form__link-text">Already have an account?</span>
+        <a href="{{ login_url|default:'#' }}" class="a-register-form__link">Sign in</a>
+      </div>
+    {% endif %}
+  </form>
+</div>

@@ -1,0 +1,43 @@
+<div
+  id="{{ id }}"
+  class="a-confirm-dialog{% if danger %} a-confirm-dialog--danger{% endif %}"
+  data-confirm-dialog
+  role="alertdialog"
+  aria-modal="true"
+  aria-labelledby="{{ id }}-title"
+  aria-describedby="{{ id }}-message"
+  aria-hidden="true"
+>
+  <div class="a-confirm-dialog__backdrop" data-confirm-backdrop></div>
+  <div class="a-confirm-dialog__container">
+    <div class="a-confirm-dialog__content">
+      {% if icon %}
+        <div class="a-confirm-dialog__icon">
+          {% if danger %}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 9V13M12 17H12.01M12 3L21.5 21H2.5L12 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          {% else %}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+              <path d="M12 16V12M12 8H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <h3 id="{{ id }}-title" class="a-confirm-dialog__title">{{ title }}</h3>
+
+      <p id="{{ id }}-message" class="a-confirm-dialog__message">{{ message }}</p>
+
+      <div class="a-confirm-dialog__actions">
+        {% include "components/button.html" with type="button" variant="secondary" text=cancel_text|default:"Cancel" %}
+        {% if danger %}
+          {% include "components/button.html" with type="button" variant="primary" text=confirm_text|default:"Confirm" %}
+        {% else %}
+          {% include "components/button.html" with type="button" variant="primary" text=confirm_text|default:"Confirm" %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

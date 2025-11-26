@@ -1,0 +1,183 @@
+/**
+ * Notification/Toast Component
+ *
+ * Toast notifications that appear in the top-right corner.
+ * Supports multiple stacked notifications with auto-dismiss.
+ * Uses design tokens exclusively - no hard-coded values.
+ */
+
+/* Notification Container - holds all notifications */
+.a-notification-container {
+  position: fixed;
+  top: var(--spacing-lg);
+  right: var(--spacing-lg);
+  z-index: var(--z-index-tooltip);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  max-width: 24rem; /* 384px */
+  width: 100%;
+  pointer-events: none;
+}
+
+/* Individual Notification */
+.a-notification {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  background-color: var(--neutral-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  border-left: 4px solid var(--info-main);
+  pointer-events: auto;
+  animation: notification-slide-in var(--transition-base) ease-out;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+
+  &--info {
+    border-left-color: var(--info-main);
+
+    .a-notification__icon {
+      color: var(--info-icon);
+    }
+  }
+
+  &--success {
+    border-left-color: var(--success-main);
+
+    .a-notification__icon {
+      color: var(--success-icon);
+    }
+  }
+
+  &--warning {
+    border-left-color: var(--warning-main);
+
+    .a-notification__icon {
+      color: var(--warning-icon);
+    }
+  }
+
+  &--error {
+    border-left-color: var(--error-main);
+
+    .a-notification__icon {
+      color: var(--error-icon);
+    }
+  }
+
+  &--exiting {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+/* Icon */
+.a-notification__icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--info-icon);
+}
+
+/* Content */
+.a-notification__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.a-notification__message {
+  margin: 0;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+  line-height: var(--line-height-normal);
+  word-wrap: break-word;
+}
+
+/* Close Button */
+.a-notification__close {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  margin: calc(var(--spacing-xs) * -1);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+
+  &:hover {
+    background-color: var(--neutral-100);
+    color: var(--text-secondary);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: var(--focus-ring-primary);
+  }
+
+  &:active {
+    background-color: var(--neutral-200);
+  }
+}
+
+/* Animations */
+@keyframes notification-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Progress Bar for auto-dismiss */
+.a-notification__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background-color: var(--info-main);
+  border-radius: 0 0 0 var(--radius-md);
+  animation: notification-progress linear forwards;
+
+  .a-notification--success & {
+    background-color: var(--success-main);
+  }
+
+  .a-notification--warning & {
+    background-color: var(--warning-main);
+  }
+
+  .a-notification--error & {
+    background-color: var(--error-main);
+  }
+}
+
+@keyframes notification-progress {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .a-notification-container {
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    left: var(--spacing-sm);
+    max-width: none;
+  }
+}

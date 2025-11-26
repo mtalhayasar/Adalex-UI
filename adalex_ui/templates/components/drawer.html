@@ -1,0 +1,36 @@
+<div
+  id="{{ id }}"
+  class="a-drawer a-drawer--{{ position|default:'right' }}{% if size %} a-drawer--{{ size }}{% endif %}"
+  data-drawer
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="{{ id }}-title"
+  aria-hidden="true"
+>
+  <div class="a-drawer__backdrop" data-drawer-backdrop></div>
+  <div class="a-drawer__panel">
+    <div class="a-drawer__header">
+      <h2 id="{{ id }}-title" class="a-drawer__title">{{ title }}</h2>
+      <button
+        type="button"
+        class="a-drawer__close"
+        data-drawer-close
+        aria-label="Close drawer"
+      >
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="a-drawer__body">
+      {{ content|safe }}
+    </div>
+
+    {% if footer %}
+      <div class="a-drawer__footer">
+        {{ footer|safe }}
+      </div>
+    {% endif %}
+  </div>
+</div>

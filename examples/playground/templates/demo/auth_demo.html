@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} - Adalex UI</title>
+  <link rel="stylesheet" href="{% static 'a-ui/css/main.css' %}">
+  <style>
+    body {
+      font-family: var(--font-family-base);
+      padding: var(--spacing-2xl);
+      background: var(--neutral-50);
+      color: var(--text-primary);
+    }
+    .demo-header {
+      margin-bottom: var(--spacing-2xl);
+      padding-bottom: var(--spacing-lg);
+      border-bottom: 2px solid var(--border-light);
+    }
+    .demo-header h1 {
+      margin: 0 0 var(--spacing-sm) 0;
+      font-size: var(--font-size-3xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--text-primary);
+    }
+    .demo-header p {
+      margin: 0;
+      font-size: var(--font-size-lg);
+      color: var(--text-secondary);
+    }
+    .demo-section {
+      margin-bottom: var(--spacing-2xl);
+      padding: var(--spacing-xl);
+      background: var(--neutral-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+    .demo-section h2 {
+      margin: 0 0 var(--spacing-md) 0;
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-primary);
+    }
+    .demo-section > p {
+      margin: 0 0 var(--spacing-lg) 0;
+      color: var(--text-secondary);
+    }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: var(--spacing-2xl);
+      padding: var(--spacing-lg);
+      background: var(--neutral-100);
+      border-radius: var(--radius-md);
+    }
+    .demo-form-wrapper {
+      display: flex;
+      justify-content: center;
+    }
+    @media (max-width: 480px) {
+      .demo-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-header">
+    <h1>{{ title }}</h1>
+    <p>{{ description }}</p>
+  </div>
+
+  <div class="demo-section">
+    <h2>Login Form</h2>
+    <p>Authentication form with email and password fields, password visibility toggle, and optional links.</p>
+
+    <div class="demo-grid">
+      <div class="demo-form-wrapper">
+        {% include "components/login_form.html" with title="Welcome Back" subtitle="Sign in to your account" action="#" show_remember=True show_forgot_password=True show_register_link=True %}
+      </div>
+
+      <div class="demo-form-wrapper">
+        {% include "components/login_form.html" with title="Sign In" action="#" error_message="Invalid email or password. Please try again." %}
+      </div>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Register Form</h2>
+    <p>Registration form with name, email, password, password confirmation, and terms acceptance.</p>
+
+    <div class="demo-grid">
+      <div class="demo-form-wrapper">
+        {% include "components/register_form.html" with title="Create Account" subtitle="Join us today" action="#" show_name=True show_terms=True show_login_link=True password_help="Password must be at least 8 characters" %}
+      </div>
+
+      <div class="demo-form-wrapper">
+        {% include "components/register_form.html" with title="Register" action="#" show_name=True password_error="Password must be at least 8 characters" password_confirm_error="Passwords do not match" %}
+      </div>
+    </div>
+  </div>
+
+  <script src="{% static 'a-ui/js/components/auth.js' %}"></script>
+  <script src="{% static 'a-ui/js/main.js' %}"></script>
+</body>
+</html>

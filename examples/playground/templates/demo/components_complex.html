@@ -1,0 +1,221 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} - Adalex UI</title>
+  <link rel="stylesheet" href="{% static 'a-ui/css/main.css' %}">
+  <style>
+    body {
+      font-family: var(--font-family-base);
+      padding: var(--spacing-2xl);
+      background: var(--neutral-50);
+      color: var(--text-primary);
+    }
+    .demo-header {
+      margin-bottom: var(--spacing-2xl);
+      padding-bottom: var(--spacing-lg);
+      border-bottom: 2px solid var(--border-light);
+    }
+    .demo-header h1 {
+      margin: 0 0 var(--spacing-sm) 0;
+      font-size: var(--font-size-3xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--text-primary);
+    }
+    .demo-header p {
+      margin: 0;
+      font-size: var(--font-size-lg);
+      color: var(--text-secondary);
+    }
+    .demo-section {
+      margin-bottom: var(--spacing-2xl);
+      padding: var(--spacing-xl);
+      background: var(--neutral-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+    .demo-section h2 {
+      margin: 0 0 var(--spacing-md) 0;
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-primary);
+    }
+    .demo-section > p {
+      margin: 0 0 var(--spacing-lg) 0;
+      color: var(--text-secondary);
+    }
+    .demo-subtitle {
+      margin: var(--spacing-lg) 0 var(--spacing-md) 0;
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-medium);
+    }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+    }
+    .demo-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-md);
+      align-items: flex-start;
+      margin-bottom: var(--spacing-lg);
+    }
+    .notification-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-sm);
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-header">
+    <h1>{{ title }}</h1>
+    <p>{{ description }}</p>
+  </div>
+
+  <!-- Card Component Demo -->
+  <div class="demo-section">
+    <h2>Card Component</h2>
+    <p>Flexible containers for displaying content with multiple variants.</p>
+
+    <h3 class="demo-subtitle">Variants</h3>
+    <div class="demo-grid">
+      {% include "components/card.html" with title="Default Card" subtitle="Standard card style" content="This is the default card variant with a subtle border." variant="default" %}
+      {% include "components/card.html" with title="Bordered Card" subtitle="Emphasized border" content="This card has a more prominent border for emphasis." variant="bordered" %}
+      {% include "components/card.html" with title="Elevated Card" subtitle="Shadow emphasis" content="This card uses elevation (shadow) instead of borders." variant="elevated" %}
+    </div>
+
+    <h3 class="demo-subtitle">Sizes</h3>
+    <div class="demo-grid">
+      {% include "components/card.html" with title="Small Card" content="Compact padding for dense layouts." variant="default" size="sm" %}
+      {% include "components/card.html" with title="Medium Card" content="Standard padding for most use cases." variant="default" size="md" %}
+      {% include "components/card.html" with title="Large Card" content="Generous padding for emphasis." variant="default" size="lg" %}
+    </div>
+
+    <h3 class="demo-subtitle">Interactive Cards</h3>
+    <div class="demo-grid">
+      {% include "components/card.html" with title="Clickable Card" subtitle="Hover to see effect" content="This card has hover and active states for interactive use." variant="default" interactive=True %}
+      {% include "components/card.html" with title="Statistic Card" value="1,234" label="Total Users" variant="statistic" shadow=True %}
+      {% include "components/card.html" with title="Statistic Card" value="$45,678" label="Revenue" variant="statistic" shadow=True %}
+    </div>
+  </div>
+
+  <!-- Notification/Toast Component Demo -->
+  <div class="demo-section">
+    <h2>Notification/Toast Component</h2>
+    <p>Toast notifications that stack in the top-right corner with auto-dismiss.</p>
+
+    <h3 class="demo-subtitle">Trigger Notifications</h3>
+    <div class="notification-buttons">
+      {% include "components/button.html" with text="Info Notification" variant="secondary" type="button" %}
+      {% include "components/button.html" with text="Success Notification" variant="primary" type="button" %}
+      {% include "components/button.html" with text="Warning Notification" variant="secondary" type="button" %}
+      {% include "components/button.html" with text="Error Notification" variant="secondary" type="button" %}
+    </div>
+
+    <h3 class="demo-subtitle">Static Examples</h3>
+    <div style="display: flex; flex-direction: column; gap: var(--spacing-md); max-width: 400px;">
+      {% include "components/notification.html" with message="This is an info notification." type="info" dismissible=False %}
+      {% include "components/notification.html" with message="Success! Your changes have been saved." type="success" dismissible=False %}
+      {% include "components/notification.html" with message="Warning: Please review before continuing." type="warning" dismissible=False %}
+      {% include "components/notification.html" with message="Error: Something went wrong." type="error" dismissible=False %}
+    </div>
+  </div>
+
+  <!-- Tabs Component Demo -->
+  <div class="demo-section">
+    <h2>Tabs Component</h2>
+    <p>Accessible tabbed interface with keyboard navigation (Arrow keys, Home, End).</p>
+
+    <h3 class="demo-subtitle">Basic Tabs</h3>
+    {% include "components/tabs.html" with tabs=tabs_data %}
+
+    <h3 class="demo-subtitle">Tabs with Icons and Badges</h3>
+    {% include "components/tabs.html" with tabs=tabs_with_icons %}
+
+    <h3 class="demo-subtitle">Boxed Style</h3>
+    <div class="a-tabs a-tabs--boxed" data-tabs>
+      <div class="a-tabs__list" role="tablist" aria-label="Boxed tabs example">
+        <button type="button" class="a-tabs__tab a-tabs__tab--active" role="tab" id="tab-box-1" aria-controls="panel-box-1" aria-selected="true" tabindex="0" data-tab-id="box-1">
+          <span class="a-tabs__tab-label">First Tab</span>
+        </button>
+        <button type="button" class="a-tabs__tab" role="tab" id="tab-box-2" aria-controls="panel-box-2" aria-selected="false" tabindex="-1" data-tab-id="box-2">
+          <span class="a-tabs__tab-label">Second Tab</span>
+        </button>
+        <button type="button" class="a-tabs__tab" role="tab" id="tab-box-3" aria-controls="panel-box-3" aria-selected="false" tabindex="-1" data-tab-id="box-3">
+          <span class="a-tabs__tab-label">Third Tab</span>
+        </button>
+      </div>
+      <div class="a-tabs__panels">
+        <div class="a-tabs__panel a-tabs__panel--active" role="tabpanel" id="panel-box-1" aria-labelledby="tab-box-1" tabindex="0">
+          <p>Content for the first boxed tab panel.</p>
+        </div>
+        <div class="a-tabs__panel" role="tabpanel" id="panel-box-2" aria-labelledby="tab-box-2" tabindex="0" hidden>
+          <p>Content for the second boxed tab panel.</p>
+        </div>
+        <div class="a-tabs__panel" role="tabpanel" id="panel-box-3" aria-labelledby="tab-box-3" tabindex="0" hidden>
+          <p>Content for the third boxed tab panel.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="demo-subtitle">Full Width Tabs</h3>
+    <div class="a-tabs a-tabs--full-width" data-tabs>
+      <div class="a-tabs__list" role="tablist" aria-label="Full width tabs example">
+        <button type="button" class="a-tabs__tab a-tabs__tab--active" role="tab" id="tab-fw-1" aria-controls="panel-fw-1" aria-selected="true" tabindex="0" data-tab-id="fw-1">
+          <span class="a-tabs__tab-label">Tab One</span>
+        </button>
+        <button type="button" class="a-tabs__tab" role="tab" id="tab-fw-2" aria-controls="panel-fw-2" aria-selected="false" tabindex="-1" data-tab-id="fw-2">
+          <span class="a-tabs__tab-label">Tab Two</span>
+        </button>
+        <button type="button" class="a-tabs__tab" role="tab" id="tab-fw-3" aria-controls="panel-fw-3" aria-selected="false" tabindex="-1" data-tab-id="fw-3">
+          <span class="a-tabs__tab-label">Tab Three</span>
+        </button>
+      </div>
+      <div class="a-tabs__panels">
+        <div class="a-tabs__panel a-tabs__panel--active" role="tabpanel" id="panel-fw-1" aria-labelledby="tab-fw-1" tabindex="0">
+          <p>First panel with full-width tabs above.</p>
+        </div>
+        <div class="a-tabs__panel" role="tabpanel" id="panel-fw-2" aria-labelledby="tab-fw-2" tabindex="0" hidden>
+          <p>Second panel content here.</p>
+        </div>
+        <div class="a-tabs__panel" role="tabpanel" id="panel-fw-3" aria-labelledby="tab-fw-3" tabindex="0" hidden>
+          <p>Third panel content here.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load JavaScript -->
+  <script src="{% static 'a-ui/js/components/notification.js' %}"></script>
+  <script src="{% static 'a-ui/js/components/tabs.js' %}"></script>
+  <script src="{% static 'a-ui/js/main.js' %}"></script>
+  <script>
+    // Notification button handlers
+    document.addEventListener('DOMContentLoaded', function() {
+      const buttons = document.querySelectorAll('.notification-buttons .a-button');
+      const types = ['info', 'success', 'warning', 'error'];
+      const messages = [
+        'This is an informational message.',
+        'Great! Operation completed successfully.',
+        'Warning: Please check your input.',
+        'Error: Unable to process your request.'
+      ];
+
+      buttons.forEach((btn, index) => {
+        btn.addEventListener('click', function() {
+          window.AdalexUI.Notification.show({
+            message: messages[index],
+            type: types[index],
+            duration: 5000
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>
