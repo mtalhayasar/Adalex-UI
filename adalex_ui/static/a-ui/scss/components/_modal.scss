@@ -8,8 +8,8 @@
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100vw;
+  height: 100vh;
   z-index: var(--z-index-modal);
   display: flex;
   align-items: center;
@@ -19,6 +19,9 @@
   opacity: 0;
   visibility: hidden;
   transition: opacity var(--transition-base), visibility var(--transition-base);
+  /* macOS Safari fix */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 
   // Hidden state (default)
   &[aria-hidden="true"] {
@@ -27,7 +30,7 @@
     pointer-events: none;
 
     .a-modal__container {
-      transform: scale(0.95) translateY(-20px);
+      transform: translateZ(0) scale(0.95) translateY(-20px);
     }
   }
 
@@ -38,19 +41,22 @@
     pointer-events: auto;
 
     .a-modal__container {
-      transform: scale(1) translateY(0);
+      transform: translateZ(0) scale(1) translateY(0);
     }
   }
 
   // Backdrop
   &__backdrop {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    width: 100%;
+    height: 100%;
     background-color: var(--modal-backdrop);
     z-index: var(--z-index-modal-backdrop);
+    /* macOS compatibility fix */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
   }
 
   // Container
@@ -63,6 +69,7 @@
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-xl);
     transition: transform var(--transition-base);
+    margin: auto;
 
     // Size variants
     &--sm {
@@ -163,4 +170,8 @@
 // Prevent body scroll when modal is open
 body.modal-open {
   overflow: hidden;
+  position: fixed;
+  width: 100%;
+  /* macOS Safari scroll fix */
+  -webkit-overflow-scrolling: touch;
 }

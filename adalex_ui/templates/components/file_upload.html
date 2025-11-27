@@ -1,0 +1,63 @@
+{% load a_ui_tags %}
+<div class="a-file-upload{% if class %} {{ class }}{% endif %}" data-file-upload data-max-size="{{ max_size|default:'10485760' }}">
+  <input 
+    type="file" 
+    name="{{ name }}" 
+    id="{{ id }}" 
+    class="a-file-upload__input"
+    {% if accept %}accept="{{ accept }}"{% endif %}
+    {% if multiple %}multiple{% endif %}
+    aria-label="File upload"
+  />
+  
+  <label for="{{ id }}" class="a-file-upload__dropzone" tabindex="0" role="button">
+    <div class="a-file-upload__icon">
+      {% include "components/icon.html" with name="upload" size="lg" %}
+    </div>
+    <div class="a-file-upload__text">
+      <p class="a-file-upload__title">Drop files here or click to browse</p>
+      <p class="a-file-upload__subtitle">
+        {% if accept %}
+          Accepted files: {{ accept }}
+        {% else %}
+          All file types accepted
+        {% endif %}
+        {% if max_size %}
+          • Max size: <span data-max-size-display>{{ max_size|filesizeformat }}</span>
+        {% endif %}
+      </p>
+    </div>
+  </label>
+  
+  <div class="a-file-upload__preview" data-file-preview hidden>
+    <div class="a-file-upload__preview-header">
+      <h3 class="a-file-upload__preview-title">Selected Files</h3>
+      {% include "components/button.html" with variant="ghost" size="sm" text="Clear All" %}
+    </div>
+    <ul class="a-file-upload__list" data-file-list>
+    </ul>
+  </div>
+  
+  <template data-file-item-template>
+    <li class="a-file-upload__item">
+      <div class="a-file-upload__item-info">
+        {% include "components/icon.html" with name="document" size="sm" %}
+        <div class="a-file-upload__item-details">
+          <span class="a-file-upload__item-name" data-file-name></span>
+          <span class="a-file-upload__item-size" data-file-size></span>
+        </div>
+      </div>
+      <div class="a-file-upload__item-actions">
+        <div class="a-file-upload__progress" data-progress hidden>
+          <div class="a-file-upload__progress-bar" data-progress-bar></div>
+        </div>
+        {% include "components/button.html" with variant="ghost" size="xs" text="" icon="close" onclick="this.closest('[data-file-upload]').dispatchEvent(new CustomEvent('removeFile', {detail: this.closest('.a-file-upload__item')}))" %}
+      </div>
+    </li>
+  </template>
+  
+  <div class="a-file-upload__error" data-file-error hidden role="alert">
+    {% include "components/icon.html" with name="alert-circle" size="sm" %}
+    <span data-error-message></span>
+  </div>
+</div>

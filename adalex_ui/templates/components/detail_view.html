@@ -1,0 +1,35 @@
+{% load a_ui_tags %}
+<div class="a-detail-view{% if class %} {{ class }}{% endif %}" {% if id %}id="{{ id }}"{% endif %}>
+  {% if title %}
+    <div class="a-detail-view__header">
+      <h2 class="a-detail-view__title">{{ title }}</h2>
+      {% if actions %}
+        <div class="a-detail-view__actions">
+          {% for action in actions %}
+            {% include "components/button.html" with variant=action.variant|default:"secondary" text=action.text href=action.href onclick=action.onclick size=action.size|default:"sm" %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+  
+  <div class="a-detail-view__content">
+    {% for field in fields %}
+      <div class="a-detail-view__field{% if field.highlight %} a-detail-view__field--highlight{% endif %}">
+        <div class="a-detail-view__label">
+          {% include "components/label.html" with text=field.label %}
+        </div>
+        <div class="a-detail-view__value{% if field.variant %} a-detail-view__value--{{ field.variant }}{% endif %}">
+          {% if field.icon %}
+            {% include "components/icon.html" with name=field.icon size="sm" %}
+          {% endif %}
+          {% if field.badge %}
+            {% include "components/badge.html" with text=field.value variant=field.badge_variant|default:"primary" %}
+          {% else %}
+            <span class="a-detail-view__text">{{ field.value|default:"—" }}</span>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>

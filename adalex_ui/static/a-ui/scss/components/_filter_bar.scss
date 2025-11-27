@@ -1,0 +1,151 @@
+/**
+ * Filter Bar Component
+ * Horizontal form for filtering data
+ */
+
+.a-filter-bar {
+  background: var(--neutral-white);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+
+  &__form {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: flex-end;
+    flex-wrap: wrap;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+
+  &__fields {
+    display: flex;
+    flex: 1;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+    align-items: flex-end;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    min-width: 150px;
+    flex: 1;
+    max-width: 300px;
+
+    @media (max-width: 768px) {
+      max-width: none;
+    }
+  }
+
+  &__radio-group {
+    display: flex;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+  }
+
+  &__date-range {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    
+    @media (max-width: 480px) {
+      flex-direction: column;
+      align-items: stretch;
+      
+      .a-filter-bar__separator {
+        display: none;
+      }
+    }
+  }
+
+  &__separator {
+    color: var(--text-tertiary);
+    font-size: var(--font-size-sm);
+    flex-shrink: 0;
+  }
+
+  &__actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+    flex-shrink: 0;
+
+    @media (max-width: 768px) {
+      justify-content: flex-end;
+      margin-top: var(--spacing-sm);
+    }
+  }
+
+  &__active {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--border-light);
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--spacing-sm);
+    }
+  }
+
+  &__active-label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-secondary);
+    flex-shrink: 0;
+  }
+
+  &__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+  }
+
+  // Compact variant for sidebars
+  &--vertical {
+    .a-filter-bar__form {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .a-filter-bar__fields {
+      flex-direction: column;
+      gap: var(--spacing-md);
+    }
+
+    .a-filter-bar__field {
+      max-width: none;
+    }
+
+    .a-filter-bar__actions {
+      justify-content: stretch;
+      
+      button {
+        flex: 1;
+      }
+    }
+  }
+
+  // Sticky variant
+  &--sticky {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--neutral-white);
+    box-shadow: var(--shadow-md);
+  }
+}

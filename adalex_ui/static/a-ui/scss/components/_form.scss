@@ -27,7 +27,7 @@
         
         &:focus {
           border-color: var(--error-main);
-          box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+          box-shadow: 0 0 0 3px var(--focus-ring-error);
         }
       }
     }
@@ -61,7 +61,7 @@
     &:focus {
       outline: none;
       border-color: var(--primary-main);
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      box-shadow: 0 0 0 3px var(--focus-ring-primary);
     }
     
     &:disabled {
@@ -113,7 +113,7 @@
     
     &:focus {
       outline: none;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      box-shadow: 0 0 0 3px var(--focus-ring-primary);
     }
     
     &:disabled {

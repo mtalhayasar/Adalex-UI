@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} - Adalex UI</title>
+  <link rel="stylesheet" href="{% static 'a-ui/css/main.css' %}">
+  <style>
+    body {
+      font-family: var(--font-family-base);
+      padding: var(--spacing-2xl);
+      background: var(--neutral-50);
+      color: var(--text-primary);
+    }
+    .demo-header {
+      margin-bottom: var(--spacing-2xl);
+      padding-bottom: var(--spacing-lg);
+      border-bottom: 2px solid var(--border-light);
+    }
+    .demo-header h1 {
+      margin: 0 0 var(--spacing-sm) 0;
+      font-size: var(--font-size-3xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--text-primary);
+    }
+    .demo-header p {
+      margin: 0;
+      font-size: var(--font-size-lg);
+      color: var(--text-secondary);
+    }
+    .demo-section {
+      margin-bottom: var(--spacing-2xl);
+      padding: var(--spacing-xl);
+      background: var(--neutral-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+    .demo-section h2 {
+      margin: 0 0 var(--spacing-md) 0;
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-primary);
+    }
+    .demo-section p {
+      margin: 0 0 var(--spacing-lg) 0;
+      color: var(--text-secondary);
+    }
+    .demo-nav {
+      margin-bottom: var(--spacing-xl);
+      display: flex;
+      gap: var(--spacing-sm);
+    }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: var(--spacing-xl);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-header">
+    <h1>{{ title }}</h1>
+    <p>{{ description }}</p>
+  </div>
+
+  <div class="demo-section">
+    <h2>Basic File Upload</h2>
+    <p>Simple file upload with drag & drop</p>
+    {% include "components/file_upload.html" with name="file" id="file-upload-1" %}
+  </div>
+
+  <div class="demo-section">
+    <h2>Multiple Files Upload</h2>
+    <p>Upload multiple files at once</p>
+    {% include "components/file_upload.html" with name="files" id="file-upload-2" multiple=True %}
+  </div>
+
+  <div class="demo-section">
+    <h2>Image Upload</h2>
+    <p>Accept only image files</p>
+    {% include "components/file_upload.html" with name="image" id="file-upload-3" accept="image/*" max_size="5242880" %}
+  </div>
+
+  <div class="demo-section">
+    <h2>Document Upload</h2>
+    <p>Accept PDF and Word documents with size limit</p>
+    {% include "components/file_upload.html" with name="document" id="file-upload-4" accept=".pdf,.doc,.docx" max_size="10485760" %}
+  </div>
+
+  <div class="demo-grid">
+    <div class="demo-section">
+      <h2>CSV Upload</h2>
+      <p>Single CSV file only</p>
+      {% include "components/file_upload.html" with name="csv" id="file-upload-5" accept=".csv" %}
+    </div>
+
+    <div class="demo-section">
+      <h2>Archive Upload</h2>
+      <p>ZIP and RAR files</p>
+      {% include "components/file_upload.html" with name="archive" id="file-upload-6" accept=".zip,.rar,.7z" multiple=True max_size="52428800" %}
+    </div>
+  </div>
+
+  <script src="{% static 'a-ui/js/components/file_upload.js' %}"></script>
+  <script src="{% static 'a-ui/js/main.js' %}"></script>
+</body>
+</html>

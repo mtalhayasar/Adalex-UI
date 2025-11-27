@@ -36,7 +36,7 @@
   // Focus state
   &:focus:not(:disabled):not(.a-text-input--error) {
     border-color: var(--secondary-main);
-    box-shadow: 0 0 0 3px rgba(143, 163, 199, 0.1);
+    box-shadow: 0 0 0 3px var(--focus-ring-secondary);
   }
 
   // Disabled state

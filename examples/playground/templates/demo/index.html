@@ -196,6 +196,39 @@
       </div>
     </a>
 
+    <!-- Detail View Component -->
+    <a href="{% url 'demo:detail_demo' %}" class="component-card">
+      <h2>Detail View</h2>
+      <p>Label-value grid layout for displaying detailed information with actions.</p>
+      <div class="badge-list">
+        {% include "components/badge.html" with text="Grid Layout" variant="info" size="sm" %}
+        {% include "components/badge.html" with text="Actions" variant="info" size="sm" %}
+        {% include "components/badge.html" with text="Badges" variant="info" size="sm" %}
+      </div>
+    </a>
+
+    <!-- File Upload Component -->
+    <a href="{% url 'demo:upload_demo' %}" class="component-card">
+      <h2>File Upload</h2>
+      <p>Drag & drop file upload with validation, preview, and progress tracking.</p>
+      <div class="badge-list">
+        {% include "components/badge.html" with text="Drag & Drop" variant="success" size="sm" %}
+        {% include "components/badge.html" with text="Preview" variant="success" size="sm" %}
+        {% include "components/badge.html" with text="Validation" variant="success" size="sm" %}
+      </div>
+    </a>
+
+    <!-- Filter Bar Component -->
+    <a href="{% url 'demo:filter_demo' %}" class="component-card">
+      <h2>Filter Bar</h2>
+      <p>Horizontal and vertical filter forms with various input types and active filters display.</p>
+      <div class="badge-list">
+        {% include "components/badge.html" with text="Search" variant="primary" size="sm" %}
+        {% include "components/badge.html" with text="Date Range" variant="primary" size="sm" %}
+        {% include "components/badge.html" with text="Active Filters" variant="primary" size="sm" %}
+      </div>
+    </a>
+
     <!-- Dialog Components -->
     <a href="{% url 'demo:dialogs_demo' %}" class="component-card">
       <h2>Dialogs & Overlays</h2>

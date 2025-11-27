@@ -7,15 +7,11 @@
           class="a-pagination__link a-pagination__link--prev"
           aria-label="Previous page"
         >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+          {% include "components/icon.html" with name="chevron-left" size="16" %}
         </a>
       {% else %}
         <span class="a-pagination__link a-pagination__link--prev a-pagination__link--disabled" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+          {% include "components/icon.html" with name="chevron-left" size="16" %}
         </span>
       {% endif %}
     </li>
@@ -47,15 +43,11 @@
           class="a-pagination__link a-pagination__link--next"
           aria-label="Next page"
         >
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6 12l4-4-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+          {% include "components/icon.html" with name="chevron-right" size="16" %}
         </a>
       {% else %}
         <span class="a-pagination__link a-pagination__link--next a-pagination__link--disabled" aria-hidden="true">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6 12l4-4-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+          {% include "components/icon.html" with name="chevron-right" size="16" %}
         </span>
       {% endif %}
     </li>

@@ -106,6 +106,26 @@
     }
   }
 
+  // Error variant
+  &--error {
+    color: var(--neutral-white);
+    background: var(--error-main);
+    border-color: var(--error-dark);
+    box-shadow: var(--shadow-sm);
+
+    &:hover:not(:disabled) {
+      background: var(--error-dark);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+      background: var(--error-dark);
+      box-shadow: var(--shadow-sm);
+      transform: translateY(0);
+    }
+  }
+
   // Ghost variant
   &--ghost {
     color: var(--text-primary);

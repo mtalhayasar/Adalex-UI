@@ -17,4 +17,7 @@ urlpatterns = [
     path('table/', views.table_demo, name='table_demo'),
     path('auth/', views.auth_demo, name='auth_demo'),
     path('dialogs/', views.dialogs_demo, name='dialogs_demo'),
+    path('detail/', views.detail_demo, name='detail_demo'),
+    path('upload/', views.upload_demo, name='upload_demo'),
+    path('filter/', views.filter_demo, name='filter_demo'),
 ]

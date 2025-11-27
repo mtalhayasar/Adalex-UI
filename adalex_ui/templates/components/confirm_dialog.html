@@ -14,14 +14,9 @@
       {% if icon %}
         <div class="a-confirm-dialog__icon">
           {% if danger %}
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M12 9V13M12 17H12.01M12 3L21.5 21H2.5L12 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            {% include "components/icon.html" with name="warning" size="24" %}
           {% else %}
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-              <path d="M12 16V12M12 8H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+            {% include "components/icon.html" with name="info" size="24" %}
           {% endif %}
         </div>
       {% endif %}

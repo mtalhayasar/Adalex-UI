@@ -26,7 +26,9 @@
           {% include "components/checkbox.html" with name=field.name id=field.name label=field.help_text value="1" checked=field.value required=field.required %}
           {% if field.error %}
             <div id="{{ field.name }}-error" class="a-form__error" role="alert">
-              <span class="a-form__error-icon" aria-hidden="true">⚠</span>
+              <span class="a-form__error-icon" aria-hidden="true">
+                {% include "components/icon.html" with name="warning" size="16" %}
+              </span>
               {{ field.error }}
             </div>
           {% endif %}
@@ -51,7 +53,9 @@
           </div>
           {% if field.error %}
             <div id="{{ field.name }}-error" class="a-form__error" role="alert">
-              <span class="a-form__error-icon" aria-hidden="true">⚠</span>
+              <span class="a-form__error-icon" aria-hidden="true">
+                {% include "components/icon.html" with name="warning" size="16" %}
+              </span>
               {{ field.error }}
             </div>
           {% endif %}
@@ -63,7 +67,9 @@
           {% include "components/switch.html" with name=field.name id=field.name label=field.help_text checked=field.value required=field.required %}
           {% if field.error %}
             <div id="{{ field.name }}-error" class="a-form__error" role="alert">
-              <span class="a-form__error-icon" aria-hidden="true">⚠</span>
+              <span class="a-form__error-icon" aria-hidden="true">
+                {% include "components/icon.html" with name="warning" size="16" %}
+              </span>
               {{ field.error }}
             </div>
           {% endif %}

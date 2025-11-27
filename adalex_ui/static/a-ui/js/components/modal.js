@@ -10,6 +10,7 @@
 
   let activeModal = null;
   let previousActiveElement = null;
+  let previousScrollPosition = 0;
 
   /**
    * Initialize modal functionality
@@ -65,18 +66,30 @@
 
     // Store previously focused element
     previousActiveElement = document.activeElement;
+    
+    // Store scroll position for macOS Safari
+    previousScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
 
     // Show modal
     modal.setAttribute('aria-hidden', 'false');
     activeModal = modal;
 
-    // Prevent body scroll
+    // Prevent body scroll (with position fix for macOS)
+    document.body.style.top = `-${previousScrollPosition}px`;
     document.body.classList.add('modal-open');
+
+    // Force reflow for Safari/macOS positioning fix
+    modal.offsetHeight;
+    
+    // Ensure modal is in viewport (macOS fix)
+    requestAnimationFrame(() => {
+      modal.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    });
 
     // Focus first focusable element
     setTimeout(() => {
       focusFirstElement(modal);
-    }, 100);
+    }, 150);
 
     // Set up focus trap
     modal.addEventListener('keydown', handleTabKey);
@@ -105,8 +118,15 @@
     // Hide modal
     modal.setAttribute('aria-hidden', 'true');
 
-    // Allow body scroll
+    // Allow body scroll and restore scroll position
     document.body.classList.remove('modal-open');
+    document.body.style.top = '';
+    
+    // Restore scroll position (macOS Safari fix)
+    if (previousScrollPosition > 0) {
+      window.scrollTo(0, previousScrollPosition);
+      previousScrollPosition = 0;
+    }
 
     // Return focus to previous element
     if (previousActiveElement) {

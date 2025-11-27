@@ -38,6 +38,11 @@ Complete API reference for all Adalex UI components.
 
 ### Data Components
 - [Table](#table)
+- [Detail View](#detail-view)
+- [Filter Bar](#filter-bar)
+
+### File Components
+- [File Upload](#file-upload)
 
 ### Layouts
 - [Dashboard Layout](#dashboard-layout)
@@ -1461,6 +1466,234 @@ sidebar_items = [
 ```
 
 **JavaScript Required:** `sidebar.js`
+
+---
+
+### Detail View
+
+Label-value grid layout for displaying detailed information.
+
+**Template Path:** `components/detail_view.html`
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `title` | string | No | - | Header title for the detail view |
+| `fields` | list | Yes | - | List of field objects (see below) |
+| `actions` | list | No | - | List of action buttons (see below) |
+| `class` | string | No | - | Additional CSS classes |
+| `id` | string | No | - | HTML ID attribute |
+
+**Field Object:**
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `label` | string | Yes | Field label text |
+| `value` | string | Yes | Field value to display |
+| `icon` | string | No | Icon name to display with value |
+| `badge` | boolean | No | Display value as badge |
+| `badge_variant` | string | No | Badge variant (primary, success, error, warning, info) |
+| `variant` | string | No | Value text color variant (success, error, warning, info) |
+| `highlight` | boolean | No | Highlight the field with background |
+
+**Action Object:**
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `text` | string | Yes | Button text |
+| `variant` | string | No | Button variant (primary, secondary, error) |
+| `href` | string | No | Button link URL |
+| `onclick` | string | No | JavaScript onclick handler |
+| `size` | string | No | Button size (xs, sm, md, lg) |
+
+**Usage Example:**
+
+```django
+{% include "components/detail_view.html" with
+  title="User Profile"
+  fields=user_fields
+  actions=user_actions
+%}
+```
+
+**Python View Example:**
+
+```python
+context = {
+    'user_fields': [
+        {'label': 'Name', 'value': 'John Doe'},
+        {'label': 'Email', 'value': 'john@example.com', 'icon': 'mail'},
+        {'label': 'Status', 'value': 'Active', 'badge': True, 'badge_variant': 'success'},
+        {'label': 'Department', 'value': 'Engineering', 'highlight': True},
+    ],
+    'user_actions': [
+        {'text': 'Edit', 'variant': 'primary', 'href': '/edit/'},
+        {'text': 'Delete', 'variant': 'error', 'onclick': 'confirmDelete()'},
+    ]
+}
+```
+
+---
+
+### Filter Bar
+
+Horizontal or vertical filter form with various input types.
+
+**Template Path:** `components/filter_bar.html`
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `filters` | list | Yes | - | List of filter field configurations |
+| `action` | string | No | Current URL | Form action URL |
+| `active_filters` | list | No | - | List of currently active filters |
+| `class` | string | No | - | Additional CSS classes (e.g., 'a-filter-bar--vertical') |
+| `id` | string | No | - | HTML ID attribute |
+
+**Filter Field Configuration:**
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `type` | string | Yes | Field type (text, search, select, date, checkbox, radio, date_range) |
+| `name` | string | Yes | Field name attribute |
+| `placeholder` | string | No | Placeholder text |
+| `value` | string | No | Current value |
+| `label` | string | No | Label for checkbox/radio |
+| `options` | list | No | Options for select/radio |
+| `value_from` | string | No | Start value for date_range |
+| `value_to` | string | No | End value for date_range |
+| `class` | string | No | Additional field classes |
+
+**Active Filter Object:**
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `label` | string | Yes | Filter label |
+| `value` | string | Yes | Filter value |
+
+**Usage Example:**
+
+```django
+{% include "components/filter_bar.html" with
+  filters=filter_config
+  action="/search/"
+  active_filters=active_filters
+  class="a-filter-bar--sticky"
+%}
+```
+
+**Python View Example:**
+
+```python
+context = {
+    'filter_config': [
+        {
+            'type': 'search',
+            'name': 'search',
+            'placeholder': 'Search products...',
+            'value': request.GET.get('search', ''),
+        },
+        {
+            'type': 'select',
+            'name': 'category',
+            'placeholder': 'All Categories',
+            'options': [
+                {'value': '', 'label': 'All Categories'},
+                {'value': 'electronics', 'label': 'Electronics'},
+                {'value': 'clothing', 'label': 'Clothing'},
+            ],
+            'value': request.GET.get('category', ''),
+        },
+        {
+            'type': 'date_range',
+            'name': 'date',
+            'value_from': request.GET.get('date_from', ''),
+            'value_to': request.GET.get('date_to', ''),
+        },
+    ],
+    'active_filters': [
+        {'label': 'Search', 'value': 'laptop'},
+        {'label': 'Category', 'value': 'Electronics'},
+    ]
+}
+```
+
+**CSS Variants:**
+
+- `a-filter-bar--vertical`: Vertical layout for sidebars
+- `a-filter-bar--sticky`: Sticky positioning
+
+---
+
+## File Components
+
+### File Upload
+
+Drag & drop file upload with validation and preview.
+
+**Template Path:** `components/file_upload.html`
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `name` | string | Yes | - | Input name attribute |
+| `id` | string | Yes | - | Input ID attribute |
+| `accept` | string | No | - | Accepted file types (e.g., 'image/*', '.pdf,.doc') |
+| `multiple` | boolean | No | False | Allow multiple file selection |
+| `max_size` | string | No | 10485760 | Maximum file size in bytes |
+| `class` | string | No | - | Additional CSS classes |
+
+**Usage Example:**
+
+```django
+{% include "components/file_upload.html" with
+  name="documents"
+  id="doc-upload"
+  accept=".pdf,.doc,.docx"
+  multiple=True
+  max_size="5242880"
+%}
+```
+
+**Features:**
+
+- Drag & drop support
+- File type validation
+- File size validation
+- Preview with file information
+- Individual file removal
+- Progress bar ready (for AJAX uploads)
+- Keyboard accessible
+- HTMX compatible
+
+**JavaScript Required:** `file_upload.js`
+
+**JavaScript API:**
+
+```javascript
+// Manual initialization
+AdalexUI.initFileUpload(element);
+
+// Access uploaded files
+const uploadEl = document.querySelector('[data-file-upload]');
+const files = uploadEl.files; // Array of File objects
+```
+
+**Events:**
+
+The component fires these custom events:
+
+- `clearAll`: Triggered when "Clear All" is clicked
+- `removeFile`: Triggered when a file is removed (detail contains the file item)
+
+**Styling:**
+
+The component supports these states:
+- `.is-dragover`: Applied during drag over
+- `.is-error`: Applied when validation fails
 
 ---
 

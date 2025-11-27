@@ -576,3 +576,184 @@ def dialogs_demo(request):
         'description': 'Confirm Dialog and Drawer components with focus trap and keyboard support',
     }
     return render(request, 'demo/dialogs_demo.html', context)
+
+
+def detail_demo(request):
+    """
+    Demo view for Detail View component.
+
+    Args:
+        request: Django HTTP request object
+
+    Returns:
+        Rendered template showcasing Detail View component
+    """
+    # Sample user profile data
+    user_fields = [
+        {'label': 'Name', 'value': 'John Doe'},
+        {'label': 'Email', 'value': 'john.doe@example.com', 'icon': 'mail'},
+        {'label': 'Phone', 'value': '+1 (555) 123-4567', 'icon': 'phone'},
+        {'label': 'Department', 'value': 'Engineering'},
+        {'label': 'Status', 'value': 'Active', 'badge': True, 'badge_variant': 'success'},
+        {'label': 'Role', 'value': 'Senior Developer', 'highlight': True},
+        {'label': 'Location', 'value': 'New York, USA', 'icon': 'location'},
+        {'label': 'Joined', 'value': 'January 15, 2023'},
+    ]
+    
+    # Sample product data
+    product_fields = [
+        {'label': 'Product ID', 'value': 'PRD-2024-001'},
+        {'label': 'Name', 'value': 'Premium Laptop Pro'},
+        {'label': 'Category', 'value': 'Electronics / Computers'},
+        {'label': 'Price', 'value': '$1,299.99', 'variant': 'success'},
+        {'label': 'Stock', 'value': 'In Stock', 'badge': True, 'badge_variant': 'info'},
+        {'label': 'Rating', 'value': '4.5/5.0 (234 reviews)', 'icon': 'star'},
+        {'label': 'Manufacturer', 'value': 'TechCorp Inc.'},
+        {'label': 'Warranty', 'value': '2 Years', 'highlight': True},
+    ]
+    
+    # Sample order data
+    order_fields = [
+        {'label': 'Order Number', 'value': '#ORD-2024-5678'},
+        {'label': 'Customer', 'value': 'Alice Johnson'},
+        {'label': 'Date', 'value': 'November 27, 2024'},
+        {'label': 'Total', 'value': '$2,456.78', 'variant': 'info', 'highlight': True},
+        {'label': 'Payment', 'value': 'Paid', 'badge': True, 'badge_variant': 'success'},
+        {'label': 'Shipping', 'value': 'Delivered', 'badge': True, 'badge_variant': 'success'},
+        {'label': 'Tracking', 'value': 'TRK123456789', 'icon': 'package'},
+    ]
+    
+    # Actions for detail views
+    user_actions = [
+        {'text': 'Edit Profile', 'variant': 'primary', 'href': '#'},
+        {'text': 'Send Message', 'variant': 'secondary', 'href': '#'},
+    ]
+    
+    product_actions = [
+        {'text': 'Edit', 'variant': 'primary', 'href': '#'},
+        {'text': 'Delete', 'variant': 'error', 'href': '#'},
+    ]
+    
+    context = {
+        'title': 'Detail View Component',
+        'description': 'Label-value grid layout for displaying detailed information',
+        'user_fields': user_fields,
+        'product_fields': product_fields,
+        'order_fields': order_fields,
+        'user_actions': user_actions,
+        'product_actions': product_actions,
+    }
+    return render(request, 'demo/detail_demo.html', context)
+
+
+def upload_demo(request):
+    """
+    Demo view for File Upload component.
+
+    Args:
+        request: Django HTTP request object
+
+    Returns:
+        Rendered template showcasing File Upload component
+    """
+    context = {
+        'title': 'File Upload Component',
+        'description': 'Drag & drop file upload with validation and preview',
+    }
+    return render(request, 'demo/upload_demo.html', context)
+
+
+def filter_demo(request):
+    """
+    Demo view for Filter Bar component.
+
+    Args:
+        request: Django HTTP request object
+
+    Returns:
+        Rendered template showcasing Filter Bar component
+    """
+    # Sample filters for e-commerce
+    ecommerce_filters = [
+        {
+            'type': 'search',
+            'name': 'search',
+            'placeholder': 'Search products...',
+            'value': request.GET.get('search', ''),
+        },
+        {
+            'type': 'select',
+            'name': 'category',
+            'placeholder': 'All Categories',
+            'value': request.GET.get('category', ''),
+            'options': [
+                {'value': '', 'label': 'All Categories'},
+                {'value': 'electronics', 'label': 'Electronics'},
+                {'value': 'clothing', 'label': 'Clothing'},
+                {'value': 'books', 'label': 'Books'},
+                {'value': 'home', 'label': 'Home & Garden'},
+            ],
+        },
+        {
+            'type': 'date_range',
+            'name': 'date',
+            'value_from': request.GET.get('date_from', ''),
+            'value_to': request.GET.get('date_to', ''),
+        },
+        {
+            'type': 'checkbox',
+            'name': 'in_stock',
+            'label': 'In Stock Only',
+            'value': request.GET.get('in_stock', ''),
+        },
+    ]
+    
+    # Sample filters for user management
+    user_filters = [
+        {
+            'type': 'text',
+            'name': 'name',
+            'placeholder': 'Filter by name...',
+            'value': request.GET.get('name', ''),
+        },
+        {
+            'type': 'select',
+            'name': 'role',
+            'placeholder': 'All Roles',
+            'value': request.GET.get('role', ''),
+            'options': [
+                {'value': '', 'label': 'All Roles'},
+                {'value': 'admin', 'label': 'Admin'},
+                {'value': 'editor', 'label': 'Editor'},
+                {'value': 'viewer', 'label': 'Viewer'},
+            ],
+        },
+        {
+            'type': 'radio',
+            'name': 'status',
+            'value': request.GET.get('status', 'all'),
+            'options': [
+                {'value': 'all', 'label': 'All'},
+                {'value': 'active', 'label': 'Active'},
+                {'value': 'inactive', 'label': 'Inactive'},
+            ],
+        },
+    ]
+    
+    # Active filters (for display)
+    active_filters = []
+    if request.GET.get('search'):
+        active_filters.append({'label': 'Search', 'value': request.GET.get('search')})
+    if request.GET.get('category'):
+        active_filters.append({'label': 'Category', 'value': request.GET.get('category')})
+    if request.GET.get('in_stock'):
+        active_filters.append({'label': 'Stock', 'value': 'In Stock Only'})
+    
+    context = {
+        'title': 'Filter Bar Component',
+        'description': 'Horizontal filter form with various input types',
+        'ecommerce_filters': ecommerce_filters,
+        'user_filters': user_filters,
+        'active_filters': active_filters,
+    }
+    return render(request, 'demo/filter_demo.html', context)

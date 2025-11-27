@@ -26,7 +26,7 @@
     &:focus {
       outline: none;
       border-color: var(--secondary-main);
-      box-shadow: 0 0 0 3px rgba(143, 163, 199, 0.1);
+      box-shadow: 0 0 0 3px var(--focus-ring-secondary);
     }
     
     &:hover:not(:disabled) {
@@ -106,7 +106,7 @@
       
       &:focus {
         border-color: var(--error-main);
-        box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        box-shadow: 0 0 0 3px var(--focus-ring-error);
       }
     }
   }

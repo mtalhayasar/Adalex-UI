@@ -1,0 +1,57 @@
+{% load a_ui_tags %}
+<div class="a-filter-bar{% if class %} {{ class }}{% endif %}" {% if id %}id="{{ id }}"{% endif %}>
+  <form class="a-filter-bar__form" action="{{ action }}" method="GET">
+    <div class="a-filter-bar__fields">
+      {% for filter in filters %}
+        <div class="a-filter-bar__field{% if filter.class %} {{ filter.class }}{% endif %}">
+          {% if filter.type == 'text' or filter.type == 'search' %}
+            {% include "components/text_input.html" with name=filter.name id=filter.name|default:filter.name type=filter.type|default:"text" placeholder=filter.placeholder value=filter.value size="sm" %}
+          
+          {% elif filter.type == 'select' %}
+            {% include "components/select.html" with name=filter.name id=filter.name|default:filter.name options=filter.options selected=filter.value placeholder=filter.placeholder size="sm" %}
+          
+          {% elif filter.type == 'date' %}
+            {% include "components/datepicker.html" with name=filter.name id=filter.name|default:filter.name value=filter.value placeholder=filter.placeholder size="sm" %}
+          
+          {% elif filter.type == 'checkbox' %}
+            {% include "components/checkbox.html" with name=filter.name id=filter.name|default:filter.name label=filter.label value="1" checked=filter.value %}
+          
+          {% elif filter.type == 'radio' %}
+            <div class="a-filter-bar__radio-group" role="radiogroup">
+              {% for option in filter.options %}
+                {% if option.value|stringformat:"s" == filter.value|stringformat:"s" %}
+                  {% include "components/radio.html" with name=filter.name id=filter.name|add:"_"|add:forloop.counter value=option.value label=option.label checked=True %}
+                {% else %}
+                  {% include "components/radio.html" with name=filter.name id=filter.name|add:"_"|add:forloop.counter value=option.value label=option.label checked=False %}
+                {% endif %}
+              {% endfor %}
+            </div>
+          
+          {% elif filter.type == 'date_range' %}
+            <div class="a-filter-bar__date-range">
+              {% include "components/datepicker.html" with name=filter.name|add:"_from" id=filter.name|add:"_from" value=filter.value_from placeholder=filter.placeholder_from|default:"From" size="sm" %}
+              <span class="a-filter-bar__separator">—</span>
+              {% include "components/datepicker.html" with name=filter.name|add:"_to" id=filter.name|add:"_to" value=filter.value_to placeholder=filter.placeholder_to|default:"To" size="sm" %}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+    
+    <div class="a-filter-bar__actions">
+      {% include "components/button.html" with type="submit" variant="primary" text="Apply Filters" size="sm" icon="filter" %}
+      {% include "components/button.html" with type="reset" variant="ghost" text="Reset" size="sm" %}
+    </div>
+  </form>
+  
+  {% if active_filters %}
+    <div class="a-filter-bar__active">
+      <span class="a-filter-bar__active-label">Active filters:</span>
+      <div class="a-filter-bar__badges">
+        {% for filter in active_filters %}
+          {% include "components/badge.html" with text=filter.label|add:": "|add:filter.value variant="secondary" closeable=True %}
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+</div>

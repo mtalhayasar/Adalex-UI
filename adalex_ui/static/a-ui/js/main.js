@@ -44,6 +44,11 @@
       window.AdalexUI.Drawer.init();
     }
 
+    // Initialize File Upload component
+    if (window.AdalexUI && window.AdalexUI.initFileUpload) {
+      document.querySelectorAll('[data-file-upload]').forEach(window.AdalexUI.initFileUpload);
+    }
+
     // Initialize Form component
     if (window.AdalexUI && window.AdalexUI.Form) {
       window.AdalexUI.Form.init();

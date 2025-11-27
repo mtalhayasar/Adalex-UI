@@ -12,6 +12,7 @@
   let activeDialog = null;
   let previousActiveElement = null;
   let resolvePromise = null;
+  let previousScrollPosition = 0;
 
   /**
    * Initialize confirm dialog functionality
@@ -74,13 +75,25 @@
 
     // Store previously focused element
     previousActiveElement = document.activeElement;
+    
+    // Store scroll position for macOS Safari
+    previousScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
 
     // Show dialog
     dialog.setAttribute('aria-hidden', 'false');
     activeDialog = dialog;
 
-    // Prevent body scroll
+    // Prevent body scroll (with position fix for macOS)
+    document.body.style.top = `-${previousScrollPosition}px`;
     document.body.classList.add('confirm-dialog-open');
+
+    // Force reflow for Safari/macOS positioning fix
+    dialog.offsetHeight;
+    
+    // Ensure dialog is in viewport (macOS fix)
+    requestAnimationFrame(() => {
+      dialog.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    });
 
     // Focus first button (cancel button)
     setTimeout(() => {
@@ -88,7 +101,7 @@
       if (firstButton) {
         firstButton.focus();
       }
-    }, 100);
+    }, 150);
 
     // Set up focus trap
     dialog.addEventListener('keydown', handleTabKey);
@@ -123,8 +136,15 @@
     // Hide dialog
     dialog.setAttribute('aria-hidden', 'true');
 
-    // Allow body scroll
+    // Allow body scroll and restore scroll position
     document.body.classList.remove('confirm-dialog-open');
+    document.body.style.top = '';
+    
+    // Restore scroll position (macOS Safari fix)
+    if (previousScrollPosition > 0) {
+      window.scrollTo(0, previousScrollPosition);
+      previousScrollPosition = 0;
+    }
 
     // Return focus to previous element
     if (previousActiveElement) {

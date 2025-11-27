@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} - Adalex UI</title>
+  <link rel="stylesheet" href="{% static 'a-ui/css/main.css' %}">
+  <style>
+    body {
+      font-family: var(--font-family-base);
+      padding: var(--spacing-2xl);
+      background: var(--neutral-50);
+      color: var(--text-primary);
+    }
+    .demo-header {
+      margin-bottom: var(--spacing-2xl);
+      padding-bottom: var(--spacing-lg);
+      border-bottom: 2px solid var(--border-light);
+    }
+    .demo-header h1 {
+      margin: 0 0 var(--spacing-sm) 0;
+      font-size: var(--font-size-3xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--text-primary);
+    }
+    .demo-header p {
+      margin: 0;
+      font-size: var(--font-size-lg);
+      color: var(--text-secondary);
+    }
+    .demo-section {
+      margin-bottom: var(--spacing-2xl);
+      padding: var(--spacing-xl);
+      background: var(--neutral-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+    .demo-section h2 {
+      margin: 0 0 var(--spacing-md) 0;
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-primary);
+    }
+    .demo-section p {
+      margin: 0 0 var(--spacing-lg) 0;
+      color: var(--text-secondary);
+    }
+    .demo-nav {
+      margin-bottom: var(--spacing-xl);
+      display: flex;
+      gap: var(--spacing-sm);
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-header">
+    <h1>{{ title }}</h1>
+    <p>{{ description }}</p>
+  </div>
+
+  <div class="demo-section">
+    <h2>E-commerce Filter Bar</h2>
+    <p>Product filtering with search, categories, date range, and checkboxes</p>
+    {% include "components/filter_bar.html" with filters=ecommerce_filters action="/demo/filter/" active_filters=active_filters %}
+  </div>
+
+  <div class="demo-section">
+    <h2>User Management Filters</h2>
+    <p>Filter users by name, role, and status</p>
+    {% include "components/filter_bar.html" with filters=user_filters action="/demo/filter/" %}
+  </div>
+
+  <div class="demo-section">
+    <h2>Vertical Filter Bar</h2>
+    <p>Sidebar-style vertical layout</p>
+    {% include "components/filter_bar.html" with filters=ecommerce_filters action="/demo/filter/" class="a-filter-bar--vertical" %}
+  </div>
+
+  <div class="demo-section">
+    <h2>Sticky Filter Bar</h2>
+    <p>Sticky positioning for persistent filtering</p>
+    {% include "components/filter_bar.html" with filters=user_filters action="/demo/filter/" class="a-filter-bar--sticky" %}
+  </div>
+
+  <script src="{% static 'a-ui/js/main.js' %}"></script>
+</body>
+</html>

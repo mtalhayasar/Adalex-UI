@@ -28,19 +28,14 @@
                   <span class="a-table__sort-icon">
                     {% if sort_key == column.key %}
                       {% if sort_direction == 'asc' %}
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                          <path d="M8 4L12 10H4L8 4Z" fill="currentColor"/>
-                        </svg>
+                        {% include "components/icon.html" with name="chevron-up" size="16" %}
                       {% elif sort_direction == 'desc' %}
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                          <path d="M8 12L4 6H12L8 12Z" fill="currentColor"/>
-                        </svg>
+                        {% include "components/icon.html" with name="chevron-down" size="16" %}
                       {% endif %}
                     {% else %}
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path d="M8 4L12 10H4L8 4Z" fill="currentColor" opacity="0.3"/>
-                        <path d="M8 12L4 6H12L8 12Z" fill="currentColor" opacity="0.3"/>
-                      </svg>
+                      <span style="opacity: 0.3;">
+                        {% include "components/icon.html" with name="chevron-up" size="16" %}
+                      </span>
                     {% endif %}
                   </span>
                 {% endif %}
@@ -91,11 +86,7 @@
           <tr class="a-table__row a-table__row--empty">
             <td class="a-table__cell a-table__cell--empty" colspan="{% if row_actions %}{{ columns|length|add:1 }}{% else %}{{ columns|length }}{% endif %}">
               <div class="a-table__empty-state">
-                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M24 16V24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M24 32H24.02" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+                {% include "components/icon.html" with name="info" size="48" %}
                 <p class="a-table__empty-text">{{ empty_text|default:"No data available" }}</p>
               </div>
             </td>
