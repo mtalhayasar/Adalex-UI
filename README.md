@@ -29,7 +29,7 @@ adalex-ui/
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/adalex-ui.git
+   git clone https://github.com/mtalhayasar/adalex-ui.git
    cd adalex-ui
    ```
 
@@ -89,7 +89,10 @@ pytest
    ```bash
    pip install adalex-ui
    ```
-
+   or
+   ```bash
+   pip install git+https://github.com/mtalhayasar/adalex-ui.git
+   ```
 2. **Add to `INSTALLED_APPS` in `settings.py`:**
    ```python
    INSTALLED_APPS = [
@@ -149,6 +152,6 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## Resources
 
-- [Documentation](https://github.com/yourusername/adalex-ui/docs)
+- [Documentation](https://github.com/mtalhayasar/adalex-ui/docs)
 - [Issue Tracker](https://github.com/yourusername/adalex-ui/issues)
 - [Changelog](CHANGELOG.md)

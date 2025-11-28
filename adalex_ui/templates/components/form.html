@@ -1,11 +1,24 @@
 {% load a_ui_tags %}
-<form class="a-form" id="{{ id }}" action="{{ action }}" method="{{ method|default:'POST' }}" novalidate>
+<form 
+  class="a-form" 
+  id="{{ id }}" 
+  action="{{ action }}" 
+  method="{{ method|default:'POST' }}" 
+  novalidate
+  {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}
+  {% if aria_labelledby %}aria-labelledby="{{ aria_labelledby }}"{% endif %}
+  {% if aria_describedby %}aria-describedby="{{ aria_describedby }}"{% endif %}
+>
   {% if method|default:'POST' == 'POST' %}
     {% csrf_token %}
   {% endif %}
   
   {% if title %}
-    <h2 class="a-form__title">{{ title }}</h2>
+    <h2 class="a-form__title" id="{{ id }}-title">{{ title }}</h2>
+  {% endif %}
+  
+  {% if description %}
+    <p class="a-form__description" id="{{ id }}-description">{{ description }}</p>
   {% endif %}
   
   <div class="a-form__fields">

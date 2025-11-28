@@ -2,10 +2,11 @@
 <div
   class="a-notification a-notification--{{ type|default:'info' }}"
   role="alert"
-  aria-live="polite"
+  aria-live="{% if type == 'error' %}assertive{% else %}polite{% endif %}"
   aria-atomic="true"
   {% if id %}id="{{ id }}"{% endif %}
   {% if duration %}data-duration="{{ duration }}"{% endif %}
+  {% if type == 'error' %}aria-labelledby="{% if id %}{{ id }}-message{% else %}notification-message{% endif %}"{% endif %}
   data-notification
 >
   <div class="a-notification__icon">
@@ -20,7 +21,7 @@
     {% endif %}
   </div>
   <div class="a-notification__content">
-    <p class="a-notification__message">{{ message }}</p>
+    <p class="a-notification__message"{% if type == 'error' %} id="{% if id %}{{ id }}-message{% else %}notification-message{% endif %}"{% endif %}>{{ message }}</p>
   </div>
   {% if dismissible|default:True %}
     <button

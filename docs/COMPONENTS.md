@@ -2,6 +2,36 @@
 
 Complete API reference for all Adalex UI components.
 
+## Installation
+1. **Install the package:**
+   ```bash
+   pip install adalex-ui
+   ```
+   or
+   ```bash
+   pip install git+https://github.com/mtalhayasar/adalex-ui.git
+   ```
+2. **Add to `INSTALLED_APPS` in `settings.py`:**
+   ```python
+   INSTALLED_APPS = [
+       # ... other apps
+       'adalex_ui',
+   ]
+   ```
+
+3. **Include static files in your templates:**
+   ```html
+   {% load static %}
+   <link rel="stylesheet" href="{% static 'a-ui/css/main.css' %}">
+   <script src="{% static 'a-ui/js/main.js' %}" defer></script>
+   ```
+
+4. **Use components in templates:**
+   ```html
+   {% load a_ui_tags %}
+   {% include 'components/button.html' with label="Click me" variant="primary" %}
+   ```
+
 ## Table of Contents
 
 ### Form Components
@@ -23,6 +53,11 @@ Complete API reference for all Adalex UI components.
 - [Card](#card)
 - [Notification](#notification)
 - [Tabs](#tabs)
+
+### Loading Components
+- [Loading Bar](#loading-bar)
+- [Skeleton](#skeleton)
+- [Loading Manager](#loading-manager)
 
 ### Advanced Components
 - [Tooltip](#tooltip)
@@ -46,6 +81,13 @@ Complete API reference for all Adalex UI components.
 
 ### Layouts
 - [Dashboard Layout](#dashboard-layout)
+
+### Accessibility
+- [Keyboard Navigation](#keyboard-navigation)
+- [Screen Reader Support](#screen-reader-support)
+- [Focus Management](#focus-management)
+- [ARIA Attributes](#aria-attributes)
+- [WCAG 2.1 Compliance](#wcag-21-compliance)
 
 ---
 
@@ -1016,6 +1058,281 @@ document.addEventListener('tabs:changed', (e) => {
 - Keyboard navigation support
 
 **JavaScript Required:** `tabs.js`
+
+---
+
+## Loading Components
+
+### Loading Bar
+
+Global page-level loading indicator that automatically appears during HTMX requests.
+
+**Template Path:** `components/loading_bar.html`
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `id` | string | No | auto-generated | Unique ID for the loading bar |
+| `message` | string | No | - | Optional loading message to display |
+| `class` | string | No | - | Additional CSS classes |
+
+**Usage:**
+
+```django
+<!-- Basic loading bar -->
+{% include "components/loading_bar.html" %}
+
+<!-- With message -->
+{% include "components/loading_bar.html" with message="Saving changes..." %}
+
+<!-- With custom class -->
+{% include "components/loading_bar.html" with message="Loading..." class="custom-loader" %}
+```
+
+**Features:**
+- Automatically integrated with HTMX requests via `loading.js`
+- Smooth animations using design tokens
+- Support for custom loading messages
+- Fixed positioning at top of viewport
+- Z-index management for proper layering
+
+**JavaScript API:**
+
+```javascript
+// Show global loading bar
+AdalexUI.Loading.showGlobalLoader();
+AdalexUI.Loading.showGlobalLoader('Custom message...');
+
+// Hide global loading bar
+AdalexUI.Loading.hideGlobalLoader();
+```
+
+---
+
+### Skeleton
+
+Placeholder loading content with shimmer animation for various UI elements.
+
+**Template Path:** `components/skeleton.html`
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `type` | string | Yes | - | Skeleton type: `text`, `image`, `avatar`, `button`, `card`, `table-cell` |
+| `size` | string | No | `md` | Size variant: `sm`, `md`, `lg`, `xl` |
+| `width` | string | No | - | Custom width (e.g., "100px", "50%") |
+| `height` | string | No | - | Custom height (e.g., "20px", "100px") |
+| `count` | integer | No | 1 | Number of skeleton items to generate |
+| `class` | string | No | - | Additional CSS classes |
+| `aria_label` | string | No | "Loading content..." | Accessibility label |
+
+**Usage:**
+
+```django
+<!-- Text skeletons -->
+{% include "components/skeleton.html" with type="text" %}
+{% include "components/skeleton.html" with type="text" size="sm" count=3 %}
+{% include "components/skeleton.html" with type="text" size="lg" width="80%" %}
+
+<!-- Other types -->
+{% include "components/skeleton.html" with type="avatar" size="lg" %}
+{% include "components/skeleton.html" with type="button" size="sm" %}
+{% include "components/skeleton.html" with type="image" %}
+{% include "components/skeleton.html" with type="card" %}
+
+<!-- Custom dimensions -->
+{% include "components/skeleton.html" with type="text" width="200px" height="30px" %}
+
+<!-- Table cells -->
+{% include "components/skeleton.html" with type="table-cell" count=4 %}
+```
+
+**Skeleton Types:**
+
+| Type | Description | Size Variants |
+|------|-------------|---------------|
+| `text` | Text line placeholder | `sm`, `md`, `lg`, `xl` |
+| `image` | Image placeholder | N/A (responsive) |
+| `avatar` | Circular avatar placeholder | `sm`, `md`, `lg` |
+| `button` | Button-shaped placeholder | `sm`, `md`, `lg` |
+| `card` | Card container placeholder | N/A (responsive) |
+| `table-cell` | Table cell content | N/A |
+
+**Features:**
+- Shimmer animation using CSS gradients
+- Responsive design with flexible sizing
+- ARIA accessibility labels
+- All styles use design tokens
+- Smooth animation performance
+
+---
+
+### Loading Manager
+
+JavaScript utility for managing loading states across buttons, forms, tables, and global indicators.
+
+**JavaScript File:** `components/loading.js`
+
+**Features:**
+- Automatic HTMX integration
+- Button loading states with spinners
+- Form loading overlays
+- Table skeleton loaders
+- Global loading indicators
+- Error handling and cleanup
+
+**API Reference:**
+
+#### Button Loading
+
+```javascript
+// Set button loading state
+AdalexUI.Loading.setButtonLoading(buttonElement, true, 'Loading...');
+
+// Clear button loading state  
+AdalexUI.Loading.setButtonLoading(buttonElement, false);
+```
+
+**Parameters:**
+- `button` (HTMLElement): Button element to modify
+- `isLoading` (boolean): Loading state (true/false)
+- `loadingText` (string, optional): Text to display during loading
+
+**Features:**
+- Adds spinner icon to button
+- Preserves original button text
+- Disables button interaction
+- Supports all button variants and sizes
+
+#### Form Loading
+
+```javascript
+// Set form loading state
+AdalexUI.Loading.setFormLoading(formElement, true);
+
+// Clear form loading state
+AdalexUI.Loading.setFormLoading(formElement, false);
+```
+
+**Parameters:**
+- `form` (HTMLElement): Form element to modify
+- `isLoading` (boolean): Loading state (true/false)
+
+**Features:**
+- Semi-transparent overlay with spinner
+- Disables all form controls
+- Maintains form accessibility
+- Automatic cleanup on completion
+
+#### Table Skeleton
+
+```javascript
+// Show table skeleton loader
+AdalexUI.Loading.showTableSkeleton(tableContainer, 5);
+
+// Hide table skeleton loader
+AdalexUI.Loading.hideTableSkeleton(tableContainer);
+```
+
+**Parameters:**
+- `tableContainer` (HTMLElement): Table container element
+- `rows` (number, optional): Number of skeleton rows (default: 5)
+
+**Features:**
+- Replaces table content with skeleton rows
+- Maintains table structure and styling
+- Smooth transition animations
+- Restores original content when hidden
+
+#### Global Loading
+
+```javascript
+// Show global loading indicator
+AdalexUI.Loading.showGlobalLoader();
+AdalexUI.Loading.showGlobalLoader('Processing request...');
+
+// Hide global loading indicator
+AdalexUI.Loading.hideGlobalLoader();
+```
+
+**Features:**
+- Top-of-page progress bar
+- Optional loading messages
+- Reference counting for multiple concurrent operations
+- Automatic integration with HTMX events
+
+**HTMX Integration:**
+
+The loading manager automatically handles HTMX events:
+
+```javascript
+// Automatic handlers for HTMX events
+document.body.addEventListener('htmx:beforeRequest', showGlobalLoader);
+document.body.addEventListener('htmx:afterRequest', hideGlobalLoader);
+
+// Form-specific handlers
+form.addEventListener('htmx:beforeRequest', setFormLoading);
+form.addEventListener('htmx:afterRequest', clearFormLoading);
+```
+
+**Customization:**
+
+Override automatic loading behavior:
+
+```html
+<!-- Skip automatic loading for this form -->
+<form class="a-form" data-skip-auto-loading="true">
+  <!-- form content -->
+</form>
+
+<!-- Skip automatic loading for this button -->
+<button class="a-button" data-skip-auto-loading="true">
+  Submit
+</button>
+```
+
+**CSS Classes:**
+
+The loading manager adds these classes:
+
+| Class | Element | Description |
+|-------|---------|-------------|
+| `.a-button--loading` | Button | Button in loading state |
+| `.a-form--loading` | Form | Form in loading state |
+| `.a-table-container--skeleton` | Table | Table showing skeleton |
+| `.a-loading-bar--visible` | Loading bar | Visible loading bar |
+
+**Error Handling:**
+
+All loading functions include error boundaries:
+
+```javascript
+try {
+  AdalexUI.Loading.setButtonLoading(button, true);
+} catch (error) {
+  console.error('[Loading] Error setting button loading state:', error);
+  // Graceful degradation - button remains functional
+}
+```
+
+**Best Practices:**
+
+1. **Use semantic loading states** - Button loading for form submission, skeleton for data fetching
+2. **Provide loading messages** - Help users understand what's happening
+3. **Handle errors gracefully** - Always clear loading states on errors
+4. **Test accessibility** - Ensure loading states don't break keyboard navigation
+5. **Performance** - Use skeleton loaders for perceived performance improvement
+
+**Accessibility:**
+
+- Loading states include `aria-busy="true"` attributes
+- Skeleton loaders have proper `role="status"` and `aria-label`
+- Screen reader announcements for state changes
+- Keyboard navigation maintained during loading states
+
+**JavaScript Required:** `loading.js`
 
 ---
 
@@ -2056,6 +2373,316 @@ All components use CSS variables from `_tokens.scss`:
 5. **Test keyboard navigation** on all interactive components
 6. **Use design tokens** instead of hard-coded values
 7. **Keep components isolated** - no global style dependencies
+
+---
+
+## Accessibility
+
+Adalex UI is designed with accessibility as a core principle, following Web Content Accessibility Guidelines (WCAG) 2.1 AA standards. All components include proper semantic markup, ARIA attributes, and comprehensive keyboard navigation support.
+
+### Keyboard Navigation
+
+#### Global Keyboard Shortcuts
+
+| Key | Action |
+|-----|--------|
+| `Tab` | Move forward through interactive elements |
+| `Shift + Tab` | Move backward through interactive elements |
+| `Enter` | Activate buttons and form submissions |
+| `Space` | Activate buttons and toggles |
+| `Escape` | Close modals, drawers, tooltips, and dismiss alerts |
+
+#### Component-Specific Navigation
+
+**Tabs Component**
+| Key | Action |
+|-----|--------|
+| `Left Arrow` | Previous tab (horizontal layout) |
+| `Right Arrow` | Next tab (horizontal layout) |
+| `Up Arrow` | Previous tab (vertical layout) |
+| `Down Arrow` | Next tab (vertical layout) |
+| `Home` | First tab |
+| `End` | Last tab |
+
+**Table Component**
+| Key | Action |
+|-----|--------|
+| `Up/Down Arrows` | Navigate between rows |
+| `Left/Right Arrows` | Navigate between cells |
+| `Home` | First cell in current row |
+| `End` | Last cell in current row |
+| `Ctrl/Cmd + Home` | First cell of table |
+| `Ctrl/Cmd + End` | Last cell of table |
+| `Enter/Space` | Activate sortable headers |
+
+**Modal/Drawer Focus Trap**
+- Focus is automatically moved to the first focusable element
+- `Tab` and `Shift+Tab` cycle through focusable elements within the modal/drawer
+- Focus is returned to the trigger element when closed
+- `Escape` key closes the modal/drawer
+
+### Screen Reader Support
+
+All components are tested with popular screen readers:
+- **NVDA** (Windows) - Free and open source
+- **JAWS** (Windows) - Commercial screen reader
+- **VoiceOver** (macOS/iOS) - Built into Apple devices
+- **TalkBack** (Android) - Built into Android devices
+
+#### Screen Reader Features
+
+**Form Components**
+- Proper label associations with `for` and `id` attributes
+- Error messages linked via `aria-describedby`
+- Required fields indicated with `aria-required="true"`
+- Invalid states announced with `aria-invalid="true"`
+
+**Interactive Components**
+- Descriptive button labels and `aria-label` attributes
+- State changes announced for toggles and selections
+- Loading states communicated via `aria-busy` and live regions
+
+**Dynamic Content**
+- Alert and notification components use `aria-live` regions
+- Error alerts use `aria-live="assertive"` for immediate announcement
+- Info/success alerts use `aria-live="polite"` for non-intrusive announcement
+
+### Focus Management
+
+#### Visual Focus Indicators
+
+All interactive elements have clearly visible focus indicators using CSS design tokens:
+- `--focus-ring-primary` - Main focus ring color
+- `--focus-ring-error` - Error state focus ring
+- `--focus-ring-success` - Success state focus ring
+
+#### Focus Trapping
+
+Modal and drawer components implement robust focus trapping:
+- Focus moves to the first focusable element when opened
+- Tab navigation is constrained within the component
+- Focus returns to the trigger element when closed
+- Escape key provides alternative dismissal method
+
+#### Focus Restoration
+
+The keyboard navigation utility provides focus restoration:
+- Saves focus state before component interactions
+- Restores focus after dynamic content changes
+- Handles edge cases where original element is no longer available
+
+### ARIA Attributes
+
+#### Roles and Properties
+
+**Form Controls**
+```html
+<!-- Text Input with Error -->
+<input 
+  aria-required="true"
+  aria-invalid="true" 
+  aria-describedby="field-error"
+/>
+<span id="field-error" role="alert">Error message</span>
+
+<!-- Select with Options -->
+<select aria-label="Choose country">
+  <option>United States</option>
+  <option disabled>Canada (unavailable)</option>
+</select>
+```
+
+**Interactive Widgets**
+```html
+<!-- Modal -->
+<div 
+  role="dialog" 
+  aria-modal="true"
+  aria-labelledby="modal-title"
+  aria-hidden="false"
+>
+  <h2 id="modal-title">Modal Title</h2>
+</div>
+
+<!-- Tabs -->
+<div role="tablist" aria-label="Settings">
+  <button role="tab" aria-selected="true" aria-controls="panel-1">
+    General
+  </button>
+  <button role="tab" aria-selected="false" aria-controls="panel-2">
+    Privacy
+  </button>
+</div>
+<div role="tabpanel" id="panel-1">...</div>
+```
+
+**Data Tables**
+```html
+<table role="table" aria-label="User data">
+  <thead>
+    <tr>
+      <th scope="col" 
+          role="button" 
+          tabindex="0"
+          aria-sort="ascending">
+        Name
+      </th>
+    </tr>
+  </thead>
+</table>
+```
+
+#### Live Regions
+
+Dynamic content uses appropriate `aria-live` regions:
+
+```html
+<!-- Polite announcements (non-urgent) -->
+<div aria-live="polite" aria-atomic="true">
+  Form saved successfully
+</div>
+
+<!-- Assertive announcements (urgent) -->
+<div aria-live="assertive" aria-atomic="true">
+  Connection lost - please try again
+</div>
+
+<!-- Status updates -->
+<div role="status" aria-live="polite">
+  Loading... 45% complete
+</div>
+```
+
+### WCAG 2.1 Compliance
+
+#### Level AA Requirements Met
+
+**Perceivable**
+- ✅ **1.3.1 Info and Relationships**: Semantic markup and ARIA labels
+- ✅ **1.3.2 Meaningful Sequence**: Logical tab order and heading structure
+- ✅ **1.4.3 Contrast (Minimum)**: 4.5:1 ratio for normal text, 3:1 for large text
+- ✅ **1.4.11 Non-text Contrast**: 3:1 ratio for UI components and graphics
+
+**Operable**
+- ✅ **2.1.1 Keyboard**: All functionality available via keyboard
+- ✅ **2.1.2 No Keyboard Trap**: Focus can always move away from components
+- ✅ **2.4.3 Focus Order**: Logical and predictable focus sequence
+- ✅ **2.4.7 Focus Visible**: Clear visual focus indicators
+
+**Understandable**
+- ✅ **3.2.1 On Focus**: No unexpected context changes on focus
+- ✅ **3.2.2 On Input**: No unexpected context changes on input
+- ✅ **3.3.1 Error Identification**: Errors clearly identified and described
+- ✅ **3.3.2 Labels or Instructions**: Clear labels and instructions provided
+
+**Robust**
+- ✅ **4.1.2 Name, Role, Value**: Proper ARIA implementation
+- ✅ **4.1.3 Status Messages**: Important messages communicated to assistive technology
+
+#### Testing Recommendations
+
+**Keyboard Testing**
+1. Tab through all interactive elements
+2. Verify focus indicators are visible
+3. Test escape key on dismissible components
+4. Verify arrow key navigation in applicable components
+
+**Screen Reader Testing**
+1. Navigate with screen reader only
+2. Verify all content is announced
+3. Test form field labels and error messages
+4. Confirm live region announcements
+
+**Automated Testing**
+- Use tools like axe-core, WAVE, or Lighthouse accessibility audit
+- Integrate accessibility testing in CI/CD pipeline
+- Regular manual testing with real assistive technologies
+
+#### Implementation Examples
+
+**Accessible Form**
+```django
+{% include "components/form.html" with 
+  id="contact-form"
+  title="Contact Us"
+  description="Send us a message and we'll get back to you"
+  fields=form_fields
+  aria_label="Contact form"
+%}
+```
+
+**Accessible Table with Keyboard Navigation**
+```django
+{% include "components/table.html" with
+  columns=columns
+  rows=data
+  aria_label="User management table"
+  searchable=True
+  sortable=True
+%}
+```
+
+**Accessible Modal**
+```django
+{% include "components/modal.html" with
+  id="delete-confirmation"
+  title="Confirm Deletion"
+  content="Are you sure you want to delete this item?"
+  aria_describedby="delete-warning"
+%}
+```
+
+### Best Practices
+
+#### Development Guidelines
+
+1. **Always use semantic HTML** as the foundation
+2. **Pair every form control with a proper label**
+3. **Provide alternative text** for meaningful images
+4. **Use ARIA attributes** to enhance semantics, not replace them
+5. **Test with keyboard only** during development
+6. **Verify screen reader experience** regularly
+7. **Maintain logical heading structure** (h1 → h2 → h3)
+8. **Ensure sufficient color contrast** for all text
+9. **Make interactive elements large enough** (44px minimum touch target)
+10. **Provide clear error messages** with recovery suggestions
+
+#### Common Patterns
+
+**Error Handling**
+```django
+{% include "components/text_input.html" with
+  id="email"
+  name="email"
+  type="email"
+  label="Email Address"
+  required=True
+  error="Please enter a valid email address"
+  aria_describedby="email-help"
+%}
+<span id="email-help">We'll use this to send you updates</span>
+```
+
+**Loading States**
+```html
+<button aria-busy="true" aria-describedby="loading-status">
+  Save Changes
+</button>
+<div id="loading-status" aria-live="polite">
+  Saving your changes...
+</div>
+```
+
+**Progressive Enhancement**
+```html
+<!-- Works without JavaScript -->
+<form method="POST" action="/submit">
+  <!-- Enhanced with JavaScript for better UX -->
+  <div data-component="enhanced-form">
+    <!-- Form fields -->
+  </div>
+</form>
+```
 
 ---
 

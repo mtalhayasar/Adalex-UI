@@ -757,3 +757,37 @@ def filter_demo(request):
         'active_filters': active_filters,
     }
     return render(request, 'demo/filter_demo.html', context)
+
+
+def loading_demo(request):
+    """
+    Demo view for Loading State Management components.
+
+    Args:
+        request: Django HTTP request object
+
+    Returns:
+        Rendered template showcasing loading states for buttons, forms, tables, and global indicators
+    """
+    context = {
+        'title': 'Loading State Management',
+        'description': 'Comprehensive loading states: buttons, forms, tables, skeleton loaders, and global indicators',
+    }
+    return render(request, 'demo/loading_demo.html', context)
+
+
+def accessibility_demo(request):
+    """
+    Demo view for Accessibility and Keyboard Navigation features.
+
+    Args:
+        request: Django HTTP request object
+
+    Returns:
+        Rendered template showcasing accessibility features and keyboard navigation
+    """
+    context = {
+        'title': 'Accessibility & Keyboard Navigation',
+        'description': 'Comprehensive keyboard navigation and screen reader support for all components',
+    }
+    return render(request, 'demo/accessibility_demo.html', context)

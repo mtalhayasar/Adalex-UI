@@ -6,11 +6,17 @@
     class="a-checkbox__input"
     {% if value %}value="{{ value }}"{% endif %}
     {% if checked %}checked{% endif %}
-    {% if disabled %}disabled{% endif %}
+    {% if disabled %}disabled aria-disabled="true"{% endif %}
+    {% if required %}required aria-required="true"{% endif %}
+    {% if error %}aria-invalid="true" aria-describedby="{{ id }}-error"{% endif %}
+    {% if aria_describedby %}aria-describedby="{{ aria_describedby }}"{% endif %}
   />
   {% if label %}
     <label for="{{ id }}" class="a-checkbox__label">
       {{ label }}
+      {% if required %}
+        <span class="a-checkbox__required-mark" aria-label="required">*</span>
+      {% endif %}
     </label>
   {% endif %}
 </div>

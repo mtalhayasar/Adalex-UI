@@ -162,6 +162,24 @@
     }
   }
 
+  // Loading state
+  &--loading {
+    position: relative;
+    pointer-events: none;
+    
+    .a-button__text {
+      opacity: 0.7;
+    }
+  }
+
+  &__spinner {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-right: var(--spacing-xs);
+  }
+
   // Disabled state
   &:disabled {
     opacity: 0.5;

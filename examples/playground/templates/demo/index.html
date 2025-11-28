@@ -239,6 +239,18 @@
         {% include "components/badge.html" with text="Focus Trap" variant="success" size="sm" %}
       </div>
     </a>
+
+    <!-- Accessibility Demo -->
+    <a href="{% url 'demo:accessibility_demo' %}" class="component-card">
+      <h2>Accessibility & Keyboard Navigation</h2>
+      <p>Comprehensive keyboard navigation, screen reader support, and WCAG 2.1 AA compliance demonstration.</p>
+      <div class="badge-list">
+        {% include "components/badge.html" with text="Keyboard Nav" variant="success" size="sm" %}
+        {% include "components/badge.html" with text="ARIA" variant="success" size="sm" %}
+        {% include "components/badge.html" with text="Screen Readers" variant="success" size="sm" %}
+        {% include "components/badge.html" with text="WCAG 2.1 AA" variant="success" size="sm" %}
+      </div>
+    </a>
   </div>
 
   <div class="footer">

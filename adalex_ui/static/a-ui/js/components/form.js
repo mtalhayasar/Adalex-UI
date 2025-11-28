@@ -9,33 +9,109 @@
         return;
       }
 
-      setupValidation(form);
       setupHTMXListeners(form);
       form.dataset.formInitialized = 'true';
     });
   }
 
-  function setupValidation(form) {
-    const inputs = form.querySelectorAll('input, textarea, select');
-
-    inputs.forEach(input => {
-      input.addEventListener('blur', () => {
-        validateField(input);
-      });
-
-      input.addEventListener('input', () => {
-        clearFieldError(input);
-      });
+  function setupHTMXListeners(form) {
+    form.addEventListener('htmx:beforeRequest', (event) => {
+      if (!validateForm(form)) {
+        event.preventDefault();
+        return;
+      }
+      
+      // Set loading state if Loading component is available
+      if (window.AdalexUI && window.AdalexUI.Loading && !form.dataset.skipAutoLoading) {
+        const submitButton = form.querySelector('button[type="submit"]') || 
+                           form.querySelector('input[type="submit"]');
+        if (submitButton) {
+          window.AdalexUI.Loading.setButtonLoading(submitButton, true);
+        }
+        window.AdalexUI.Loading.setFormLoading(form, true);
+      }
     });
 
-    form.addEventListener('submit', (e) => {
-      if (!validateForm(form)) {
-        e.preventDefault();
-        const firstError = form.querySelector('.a-form__group--error');
-        if (firstError) {
-          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          const input = firstError.querySelector('input, textarea, select');
-          if (input) input.focus();
+    form.addEventListener('htmx:afterRequest', (event) => {
+      // Clear loading state if Loading component is available
+      if (window.AdalexUI && window.AdalexUI.Loading) {
+        const submitButton = form.querySelector('button[type="submit"]') || 
+                           form.querySelector('input[type="submit"]');
+        if (submitButton) {
+          window.AdalexUI.Loading.setButtonLoading(submitButton, false);
+        }
+        window.AdalexUI.Loading.setFormLoading(form, false);
+      }
+
+      if (event.detail.successful) {
+        showFeedback(form, 'Form submitted successfully!', 'success');
+        if (form.dataset.resetOnSuccess === 'true') {
+          setTimeout(() => {
+            form.reset();
+            clearAllErrors(form);
+          }, 1500);
+        }
+      } else {
+        showFeedback(form, 'An error occurred. Please try again.', 'error');
+      }
+    });
+
+    // Handle errors and timeout scenarios
+    form.addEventListener('htmx:responseError', () => {
+      if (window.AdalexUI && window.AdalexUI.Loading) {
+        const submitButton = form.querySelector('button[type="submit"]') || 
+                           form.querySelector('input[type="submit"]');
+        if (submitButton) {
+          window.AdalexUI.Loading.setButtonLoading(submitButton, false);
+        }
+        window.AdalexUI.Loading.setFormLoading(form, false);
+      }
+    });
+
+    form.addEventListener('htmx:sendError', () => {
+      if (window.AdalexUI && window.AdalexUI.Loading) {
+        const submitButton = form.querySelector('button[type="submit"]') || 
+                           form.querySelector('input[type="submit"]');
+        if (submitButton) {
+          window.AdalexUI.Loading.setButtonLoading(submitButton, false);
+        }
+        window.AdalexUI.Loading.setFormLoading(form, false);
+      }
+    });
+  }
+
+  // Event delegation setup
+  function setupEventDelegation() {
+    // Handle input blur events for validation
+    document.body.addEventListener('blur', (e) => {
+      const input = e.target.closest('input, textarea, select');
+      const form = input?.closest('.a-form');
+      if (form && input) {
+        validateField(input);
+      }
+    }, true); // Use capture phase for blur events
+
+    // Handle input events to clear errors
+    document.body.addEventListener('input', (e) => {
+      const input = e.target.closest('input, textarea, select');
+      const form = input?.closest('.a-form');
+      if (form && input) {
+        clearFieldError(input);
+      }
+    });
+
+    // Handle form submissions for validation
+    document.body.addEventListener('submit', (e) => {
+      const form = e.target.closest('.a-form');
+      if (form) {
+        if (!validateForm(form)) {
+          e.preventDefault();
+          const firstError = form.querySelector('.a-form__group--error');
+          if (firstError) {
+            firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            const input = firstError.querySelector('input, textarea, select');
+            if (input) input.focus();
+          }
         }
       }
     });
@@ -137,28 +213,6 @@
     }
   }
 
-  function setupHTMXListeners(form) {
-    form.addEventListener('htmx:afterRequest', (event) => {
-      if (event.detail.successful) {
-        showFeedback(form, 'Form submitted successfully!', 'success');
-        if (form.dataset.resetOnSuccess === 'true') {
-          setTimeout(() => {
-            form.reset();
-            clearAllErrors(form);
-          }, 1500);
-        }
-      } else {
-        showFeedback(form, 'An error occurred. Please try again.', 'error');
-      }
-    });
-
-    form.addEventListener('htmx:beforeRequest', (event) => {
-      if (!validateForm(form)) {
-        event.preventDefault();
-      }
-    });
-  }
-
   function showFeedback(form, message, type = 'info', duration = 5000) {
     let feedbackEl = form.querySelector('.a-form__feedback');
     if (!feedbackEl) {
@@ -199,9 +253,13 @@
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initForms);
+    document.addEventListener('DOMContentLoaded', () => {
+      initForms();
+      setupEventDelegation();
+    });
   } else {
     initForms();
+    setupEventDelegation();
   }
 
   document.addEventListener('htmx:afterSwap', initForms);

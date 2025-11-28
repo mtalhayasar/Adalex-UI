@@ -2,7 +2,10 @@
 <a
   href="{{ href }}"
   class="a-button a-button--{{ variant|default:'primary' }} a-button--{{ size|default:'md' }}{% if icon %} a-button--with-icon{% endif %}{% if full_width %} a-button--full-width{% endif %}"
-  {% if disabled %}aria-disabled="true"{% endif %}
+  {% if disabled %}aria-disabled="true" tabindex="-1"{% endif %}
+  {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}
+  {% if aria_describedby %}aria-describedby="{{ aria_describedby }}"{% endif %}
+  {% if target %}target="{{ target }}"{% if target == "_blank" %} rel="noopener noreferrer"{% endif %}{% endif %}
 >
   {% if icon %}
     <span class="a-button__icon">
@@ -16,6 +19,11 @@
   type="{{ type|default:'button' }}"
   class="a-button a-button--{{ variant|default:'primary' }} a-button--{{ size|default:'md' }}{% if icon %} a-button--with-icon{% endif %}{% if full_width %} a-button--full-width{% endif %}"
   {% if disabled %}disabled aria-disabled="true"{% endif %}
+  {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}
+  {% if aria_describedby %}aria-describedby="{{ aria_describedby }}"{% endif %}
+  {% if aria_expanded %}aria-expanded="{{ aria_expanded }}"{% endif %}
+  {% if aria_controls %}aria-controls="{{ aria_controls }}"{% endif %}
+  {% if aria_pressed %}aria-pressed="{{ aria_pressed }}"{% endif %}
 >
   {% if icon %}
     <span class="a-button__icon">

@@ -9,53 +9,118 @@
 (function() {
   'use strict';
 
+  const COMPONENT_NAME = 'ConfirmDialog';
+  
   let activeDialog = null;
   let previousActiveElement = null;
   let resolvePromise = null;
   let previousScrollPosition = 0;
 
   /**
+   * Get error handler utility (with fallback)
+   */
+  function getErrorHandler() {
+    return window.AdalexUI && window.AdalexUI.ErrorHandler
+      ? window.AdalexUI.ErrorHandler
+      : {
+          handle: (component, error, context) => {
+            console.error(`[AdalexUI.${component}]`, error, context);
+          },
+          makeSafeEventHandler: (component, handler) => handler,
+          safeExecute: (component, fn) => {
+            try { return fn(); } catch (e) { console.error(`[AdalexUI.${component}]`, e); return null; }
+          },
+          makeSafeAsync: (component, fn) => fn
+        };
+  }
+
+  /**
    * Initialize confirm dialog functionality
    * Idempotent - can be called multiple times safely
    */
   function initConfirmDialogs() {
-    const dialogs = document.querySelectorAll('[data-confirm-dialog]');
+    const errorHandler = getErrorHandler();
+    
+    return errorHandler.safeExecute(COMPONENT_NAME, () => {
+      const dialogs = document.querySelectorAll('[data-confirm-dialog]');
 
-    dialogs.forEach(dialog => {
-      // Skip if already initialized
-      if (dialog.dataset.confirmInitialized === 'true') {
-        return;
-      }
+      dialogs.forEach(dialog => {
+        try {
+          // Skip if already initialized
+          if (dialog.dataset.confirmInitialized === 'true') {
+            return;
+          }
 
-      const backdrop = dialog.querySelector('[data-confirm-backdrop]');
-      const actions = dialog.querySelector('.a-confirm-dialog__actions');
+          const backdrop = dialog.querySelector('[data-confirm-backdrop]');
+          const actions = dialog.querySelector('.a-confirm-dialog__actions');
 
-      // Backdrop click
-      if (backdrop) {
-        backdrop.addEventListener('click', () => {
-          closeDialog(dialog, false);
-        });
-      }
+          // Backdrop click with error handling
+          if (backdrop) {
+            const safeBackdropHandler = errorHandler.makeSafeEventHandler(
+              COMPONENT_NAME,
+              () => closeDialog(dialog, false),
+              {
+                level: errorHandler.levels?.MEDIUM || 'medium',
+                recovery: errorHandler.strategies?.SILENT || 'silent',
+                details: { action: 'backdrop_click' }
+              }
+            );
+            backdrop.addEventListener('click', safeBackdropHandler);
+          }
 
-      // Action button clicks
-      if (actions) {
-        const buttons = actions.querySelectorAll('.a-button');
-        buttons.forEach((button, index) => {
-          button.addEventListener('click', () => {
-            // First button is cancel, second is confirm
-            const confirmed = index === 1;
-            closeDialog(dialog, confirmed);
+          // Action button clicks with error handling
+          if (actions) {
+            const buttons = actions.querySelectorAll('.a-button');
+            buttons.forEach((button, index) => {
+              const safeButtonHandler = errorHandler.makeSafeEventHandler(
+                COMPONENT_NAME,
+                () => {
+                  // First button is cancel, second is confirm
+                  const confirmed = index === 1;
+                  closeDialog(dialog, confirmed);
+                },
+                {
+                  level: errorHandler.levels?.MEDIUM || 'medium',
+                  recovery: errorHandler.strategies?.SILENT || 'silent',
+                  details: { 
+                    action: 'button_click',
+                    buttonIndex: index,
+                    dialogId: dialog.id || 'unknown'
+                  }
+                }
+              );
+              button.addEventListener('click', safeButtonHandler);
+            });
+          }
+
+          // Mark as initialized
+          dialog.dataset.confirmInitialized = 'true';
+        } catch (error) {
+          errorHandler.handle(COMPONENT_NAME, error, {
+            level: errorHandler.levels?.MEDIUM || 'medium',
+            recovery: errorHandler.strategies?.SILENT || 'silent',
+            details: { 
+              action: 'init_single_dialog',
+              dialogId: dialog.id || 'unknown'
+            }
           });
-        });
-      }
+        }
+      });
 
-      // Mark as initialized
-      dialog.dataset.confirmInitialized = 'true';
+      // Global ESC key handler with error handling
+      const safeEscHandler = errorHandler.makeSafeEventHandler(
+        COMPONENT_NAME,
+        handleEscKey,
+        {
+          level: errorHandler.levels?.MEDIUM || 'medium',
+          recovery: errorHandler.strategies?.SILENT || 'silent',
+          details: { action: 'global_esc_key' }
+        }
+      );
+      
+      document.removeEventListener('keydown', handleEscKey);
+      document.addEventListener('keydown', safeEscHandler);
     });
-
-    // Global ESC key handler
-    document.removeEventListener('keydown', handleEscKey);
-    document.addEventListener('keydown', handleEscKey);
   }
 
   /**
@@ -64,59 +129,97 @@
    * @returns {Promise<boolean>} Promise that resolves to true if confirmed, false otherwise
    */
   function openDialog(dialogOrId) {
-    const dialog = typeof dialogOrId === 'string'
-      ? document.getElementById(dialogOrId)
-      : dialogOrId;
-
-    if (!dialog) {
-      console.error('ConfirmDialog: Dialog not found:', dialogOrId);
-      return Promise.resolve(false);
-    }
-
-    // Store previously focused element
-    previousActiveElement = document.activeElement;
+    const errorHandler = getErrorHandler();
     
-    // Store scroll position for macOS Safari
-    previousScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+    const safeAsyncFn = errorHandler.makeSafeAsync(COMPONENT_NAME, async () => {
+      const dialog = typeof dialogOrId === 'string'
+        ? document.getElementById(dialogOrId)
+        : dialogOrId;
 
-    // Show dialog
-    dialog.setAttribute('aria-hidden', 'false');
-    activeDialog = dialog;
-
-    // Prevent body scroll (with position fix for macOS)
-    document.body.style.top = `-${previousScrollPosition}px`;
-    document.body.classList.add('confirm-dialog-open');
-
-    // Force reflow for Safari/macOS positioning fix
-    dialog.offsetHeight;
-    
-    // Ensure dialog is in viewport (macOS fix)
-    requestAnimationFrame(() => {
-      dialog.scrollIntoView({ block: 'center', behavior: 'smooth' });
-    });
-
-    // Focus first button (cancel button)
-    setTimeout(() => {
-      const firstButton = dialog.querySelector('.a-confirm-dialog__actions .a-button');
-      if (firstButton) {
-        firstButton.focus();
+      if (!dialog) {
+        throw new Error(`Dialog not found: ${dialogOrId}`);
       }
-    }, 150);
 
-    // Set up focus trap
-    dialog.addEventListener('keydown', handleTabKey);
+      // Store previously focused element
+      previousActiveElement = document.activeElement;
+      
+      // Store scroll position for macOS Safari
+      previousScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
 
-    // Dispatch custom event
-    const event = new CustomEvent('confirm:opened', {
-      detail: { dialog },
-      bubbles: true
+      // Show dialog
+      dialog.setAttribute('aria-hidden', 'false');
+      activeDialog = dialog;
+
+      // Prevent body scroll (with position fix for macOS)
+      document.body.style.top = `-${previousScrollPosition}px`;
+      document.body.classList.add('confirm-dialog-open');
+
+      // Force reflow for Safari/macOS positioning fix
+      dialog.offsetHeight;
+      
+      // Ensure dialog is in viewport (macOS fix)
+      requestAnimationFrame(() => {
+        try {
+          dialog.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        } catch (scrollError) {
+          errorHandler.handle(COMPONENT_NAME, scrollError, {
+            level: errorHandler.levels?.LOW || 'low',
+            recovery: errorHandler.strategies?.SILENT || 'silent',
+            details: { action: 'scroll_into_view' }
+          });
+        }
+      });
+
+      // Focus first button (cancel button)
+      setTimeout(() => {
+        try {
+          const firstButton = dialog.querySelector('.a-confirm-dialog__actions .a-button');
+          if (firstButton) {
+            firstButton.focus();
+          }
+        } catch (focusError) {
+          errorHandler.handle(COMPONENT_NAME, focusError, {
+            level: errorHandler.levels?.LOW || 'low',
+            recovery: errorHandler.strategies?.SILENT || 'silent',
+            details: { action: 'focus_first_button' }
+          });
+        }
+      }, 150);
+
+      // Set up focus trap with error handling
+      const safeTabHandler = errorHandler.makeSafeEventHandler(
+        COMPONENT_NAME,
+        handleTabKey,
+        {
+          level: errorHandler.levels?.MEDIUM || 'medium',
+          recovery: errorHandler.strategies?.SILENT || 'silent',
+          details: { action: 'focus_trap_tab_key' }
+        }
+      );
+      dialog.addEventListener('keydown', safeTabHandler);
+
+      // Dispatch custom event
+      try {
+        const event = new CustomEvent('confirm:opened', {
+          detail: { dialog },
+          bubbles: true
+        });
+        dialog.dispatchEvent(event);
+      } catch (eventError) {
+        errorHandler.handle(COMPONENT_NAME, eventError, {
+          level: errorHandler.levels?.LOW || 'low',
+          recovery: errorHandler.strategies?.SILENT || 'silent',
+          details: { action: 'dispatch_opened_event' }
+        });
+      }
+
+      // Return promise for async usage
+      return new Promise((resolve) => {
+        resolvePromise = resolve;
+      });
     });
-    dialog.dispatchEvent(event);
-
-    // Return promise for async usage
-    return new Promise((resolve) => {
-      resolvePromise = resolve;
-    });
+    
+    return safeAsyncFn() || Promise.resolve(false);
   }
 
   /**
@@ -125,50 +228,86 @@
    * @param {boolean} confirmed - Whether the user confirmed the action
    */
   function closeDialog(dialog, confirmed) {
-    if (!dialog) {
-      dialog = activeDialog;
-    }
-
-    if (!dialog) {
-      return;
-    }
-
-    // Hide dialog
-    dialog.setAttribute('aria-hidden', 'true');
-
-    // Allow body scroll and restore scroll position
-    document.body.classList.remove('confirm-dialog-open');
-    document.body.style.top = '';
+    const errorHandler = getErrorHandler();
     
-    // Restore scroll position (macOS Safari fix)
-    if (previousScrollPosition > 0) {
-      window.scrollTo(0, previousScrollPosition);
-      previousScrollPosition = 0;
-    }
+    return errorHandler.safeExecute(COMPONENT_NAME, () => {
+      if (!dialog) {
+        dialog = activeDialog;
+      }
 
-    // Return focus to previous element
-    if (previousActiveElement) {
-      previousActiveElement.focus();
-      previousActiveElement = null;
-    }
+      if (!dialog) {
+        return;
+      }
 
-    // Remove focus trap
-    dialog.removeEventListener('keydown', handleTabKey);
+      // Hide dialog
+      dialog.setAttribute('aria-hidden', 'true');
 
-    // Resolve promise if exists
-    if (resolvePromise) {
-      resolvePromise(confirmed);
-      resolvePromise = null;
-    }
+      // Allow body scroll and restore scroll position
+      document.body.classList.remove('confirm-dialog-open');
+      document.body.style.top = '';
+      
+      // Restore scroll position (macOS Safari fix)
+      try {
+        if (previousScrollPosition > 0) {
+          window.scrollTo(0, previousScrollPosition);
+          previousScrollPosition = 0;
+        }
+      } catch (scrollError) {
+        errorHandler.handle(COMPONENT_NAME, scrollError, {
+          level: errorHandler.levels?.LOW || 'low',
+          recovery: errorHandler.strategies?.SILENT || 'silent',
+          details: { action: 'restore_scroll_position' }
+        });
+      }
 
-    activeDialog = null;
+      // Return focus to previous element
+      try {
+        if (previousActiveElement) {
+          previousActiveElement.focus();
+          previousActiveElement = null;
+        }
+      } catch (focusError) {
+        errorHandler.handle(COMPONENT_NAME, focusError, {
+          level: errorHandler.levels?.LOW || 'low',
+          recovery: errorHandler.strategies?.SILENT || 'silent',
+          details: { action: 'restore_focus' }
+        });
+      }
 
-    // Dispatch custom event
-    const event = new CustomEvent('confirm:closed', {
-      detail: { dialog, confirmed },
-      bubbles: true
+      // Remove focus trap
+      dialog.removeEventListener('keydown', handleTabKey);
+
+      // Resolve promise if exists
+      try {
+        if (resolvePromise) {
+          resolvePromise(confirmed);
+          resolvePromise = null;
+        }
+      } catch (promiseError) {
+        errorHandler.handle(COMPONENT_NAME, promiseError, {
+          level: errorHandler.levels?.MEDIUM || 'medium',
+          recovery: errorHandler.strategies?.SILENT || 'silent',
+          details: { action: 'resolve_promise' }
+        });
+      }
+
+      activeDialog = null;
+
+      // Dispatch custom event
+      try {
+        const event = new CustomEvent('confirm:closed', {
+          detail: { dialog, confirmed },
+          bubbles: true
+        });
+        dialog.dispatchEvent(event);
+      } catch (eventError) {
+        errorHandler.handle(COMPONENT_NAME, eventError, {
+          level: errorHandler.levels?.LOW || 'low',
+          recovery: errorHandler.strategies?.SILENT || 'silent',
+          details: { action: 'dispatch_closed_event' }
+        });
+      }
     });
-    dialog.dispatchEvent(event);
   }
 
   /**
@@ -176,9 +315,13 @@
    * @param {KeyboardEvent} e - Keyboard event
    */
   function handleEscKey(e) {
-    if (e.key === 'Escape' && activeDialog) {
-      closeDialog(activeDialog, false);
-    }
+    const errorHandler = getErrorHandler();
+    
+    return errorHandler.safeExecute(COMPONENT_NAME, () => {
+      if (e.key === 'Escape' && activeDialog) {
+        closeDialog(activeDialog, false);
+      }
+    });
   }
 
   /**
@@ -186,34 +329,42 @@
    * @param {KeyboardEvent} e - Keyboard event
    */
   function handleTabKey(e) {
-    if (e.key !== 'Tab') {
-      return;
-    }
-
-    const dialog = e.currentTarget;
-    const focusableElements = getFocusableElements(dialog);
-
-    if (focusableElements.length === 0) {
-      return;
-    }
-
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
-
-    // Shift + Tab
-    if (e.shiftKey) {
-      if (document.activeElement === firstElement) {
-        e.preventDefault();
-        lastElement.focus();
+    const errorHandler = getErrorHandler();
+    
+    return errorHandler.safeExecute(COMPONENT_NAME, () => {
+      if (e.key !== 'Tab') {
+        return;
       }
-    }
-    // Tab
-    else {
-      if (document.activeElement === lastElement) {
-        e.preventDefault();
-        firstElement.focus();
+
+      const dialog = e.currentTarget;
+      if (!dialog) {
+        throw new Error('No dialog element found for focus trap');
       }
-    }
+      
+      const focusableElements = getFocusableElements(dialog);
+
+      if (focusableElements.length === 0) {
+        return;
+      }
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+
+      // Shift + Tab
+      if (e.shiftKey) {
+        if (document.activeElement === firstElement) {
+          e.preventDefault();
+          lastElement.focus();
+        }
+      }
+      // Tab
+      else {
+        if (document.activeElement === lastElement) {
+          e.preventDefault();
+          firstElement.focus();
+        }
+      }
+    });
   }
 
   /**
@@ -222,16 +373,24 @@
    * @returns {Array} Array of focusable elements
    */
   function getFocusableElements(container) {
-    const selector = [
-      'a[href]',
-      'button:not([disabled])',
-      'textarea:not([disabled])',
-      'input:not([disabled])',
-      'select:not([disabled])',
-      '[tabindex]:not([tabindex="-1"])'
-    ].join(', ');
+    const errorHandler = getErrorHandler();
+    
+    return errorHandler.safeExecute(COMPONENT_NAME, () => {
+      if (!container || !container.querySelectorAll) {
+        throw new Error('Invalid container provided to getFocusableElements');
+      }
+      
+      const selector = [
+        'a[href]',
+        'button:not([disabled])',
+        'textarea:not([disabled])',
+        'input:not([disabled])',
+        'select:not([disabled])',
+        '[tabindex]:not([tabindex="-1"])'
+      ].join(', ');
 
-    return Array.from(container.querySelectorAll(selector));
+      return Array.from(container.querySelectorAll(selector));
+    }) || [];
   }
 
   /**
@@ -352,22 +511,43 @@
     });
   }
 
-  // Initialize on DOM ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
+  // Initialize on DOM ready with error handling
+  const errorHandler = getErrorHandler();
+  
+  const safeInitAll = errorHandler.makeSafeEventHandler(
+    COMPONENT_NAME,
+    () => {
       initConfirmDialogs();
       initConfirmTriggers();
-    });
+    },
+    {
+      level: errorHandler.levels?.HIGH || 'high',
+      recovery: errorHandler.strategies?.SILENT || 'silent',
+      details: { action: 'dom_ready_init' }
+    }
+  );
+
+  const safeHTMXInit = errorHandler.makeSafeEventHandler(
+    COMPONENT_NAME,
+    () => {
+      initConfirmDialogs();
+      initConfirmTriggers();
+    },
+    {
+      level: errorHandler.levels?.MEDIUM || 'medium',
+      recovery: errorHandler.strategies?.SILENT || 'silent',
+      details: { action: 'htmx_after_swap_init' }
+    }
+  );
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', safeInitAll);
   } else {
-    initConfirmDialogs();
-    initConfirmTriggers();
+    safeInitAll();
   }
 
   // Re-initialize after HTMX swaps
-  document.addEventListener('htmx:afterSwap', () => {
-    initConfirmDialogs();
-    initConfirmTriggers();
-  });
+  document.addEventListener('htmx:afterSwap', safeHTMXInit);
 
   // Expose API to window
   window.AdalexUI = window.AdalexUI || {};

@@ -5,6 +5,8 @@
   {% if required %}required aria-required="true"{% endif %}
   {% if disabled %}disabled aria-disabled="true"{% endif %}
   {% if error %}aria-invalid="true" aria-describedby="{{ id }}-error"{% endif %}
+  {% if aria_label %}aria-label="{{ aria_label }}"{% endif %}
+  {% if aria_describedby %}aria-describedby="{% if error %}{{ id }}-error {% endif %}{{ aria_describedby }}"{% endif %}
 >
   {% if placeholder %}
     <option value="" disabled selected>{{ placeholder }}</option>
@@ -13,6 +15,7 @@
     <option
       value="{{ option.value }}"
       {% if option.value == selected %}selected{% endif %}
+      {% if option.disabled %}disabled{% endif %}
     >
       {{ option.label }}
     </option>

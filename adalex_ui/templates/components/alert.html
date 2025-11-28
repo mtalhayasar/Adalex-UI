@@ -2,7 +2,9 @@
   {% if id %}id="{{ id }}"{% endif %}
   class="a-alert a-alert--{{ type|default:'info' }}"
   role="alert"
-  aria-live="polite"
+  aria-live="{% if type == 'error' %}assertive{% else %}polite{% endif %}"
+  aria-atomic="true"
+  {% if type == 'error' %}aria-labelledby="{% if id %}{{ id }}-content{% else %}alert-content{% endif %}"{% endif %}
 >
   <div class="a-alert__icon">
     {% if type == 'success' %}
@@ -16,7 +18,7 @@
     {% endif %}
   </div>
 
-  <div class="a-alert__content">
+  <div class="a-alert__content"{% if type == 'error' %} id="{% if id %}{{ id }}-content{% else %}alert-content{% endif %}"{% endif %}>
     {{ message }}
   </div>
 

@@ -8,12 +8,40 @@
 (function() {
   'use strict';
 
+  const COMPONENT_NAME = 'Notification';
+  
   // Default settings
   const DEFAULTS = {
     duration: 5000,        // Auto-dismiss after 5 seconds (0 = no auto-dismiss)
     position: 'top-right', // Container position
     maxNotifications: 5    // Maximum visible notifications
   };
+  
+  /**
+   * Get error handler utility (with fallback)
+   */
+  function getErrorHandler() {
+    return window.AdalexUI && window.AdalexUI.ErrorHandler
+      ? window.AdalexUI.ErrorHandler
+      : {
+          handle: (component, error, context) => {
+            console.error(`[AdalexUI.${component}]`, error, context);
+          },
+          makeSafeEventHandler: (component, handler) => handler,
+          safeExecute: (component, fn) => {
+            try { return fn(); } catch (e) { console.error(`[AdalexUI.${component}]`, e); return null; }
+          }
+        };
+  }
+
+  /**
+   * Get keyboard navigation utility (with fallback)
+   */
+  function getKeyboardNav() {
+    return window.AdalexUI && window.AdalexUI.KeyboardNav
+      ? window.AdalexUI.KeyboardNav
+      : null;
+  }
 
   // Container element reference
   let container = null;
@@ -65,9 +93,13 @@
     const notification = document.createElement('div');
     notification.className = `a-notification a-notification--${type}`;
     notification.setAttribute('role', 'alert');
-    notification.setAttribute('aria-live', 'polite');
+    notification.setAttribute('aria-live', type === 'error' ? 'assertive' : 'polite');
     notification.setAttribute('aria-atomic', 'true');
     notification.dataset.notification = '';
+    
+    // Generate unique ID for accessibility
+    const notificationId = `notification-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    notification.id = notificationId;
 
     // Icon based on type
     const icons = {
@@ -91,11 +123,57 @@
       ` : ''}
     `;
 
-    // Add close button handler
+    // Add close button handler with keyboard support
     const closeBtn = notification.querySelector('[data-notification-close]');
     if (closeBtn) {
-      closeBtn.addEventListener('click', () => dismiss(notification));
+      const errorHandler = getErrorHandler();
+      
+      const safeClickHandler = errorHandler.makeSafeEventHandler(
+        COMPONENT_NAME,
+        () => dismiss(notification),
+        {
+          level: errorHandler.levels?.MEDIUM || 'medium',
+          recovery: errorHandler.strategies?.SILENT || 'silent',
+          details: { action: 'dismiss_notification_click' }
+        }
+      );
+      
+      const safeKeydownHandler = errorHandler.makeSafeEventHandler(
+        COMPONENT_NAME,
+        (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            dismiss(notification);
+          }
+          if (e.key === 'Escape') {
+            e.preventDefault();
+            dismiss(notification);
+          }
+        },
+        {
+          level: errorHandler.levels?.MEDIUM || 'medium',
+          recovery: errorHandler.strategies?.SILENT || 'silent',
+          details: { action: 'dismiss_notification_keyboard' }
+        }
+      );
+      
+      closeBtn.addEventListener('click', safeClickHandler);
+      closeBtn.addEventListener('keydown', safeKeydownHandler);
     }
+    
+    // Set up global ESC key handling for this notification
+    const globalKeydownHandler = (e) => {
+      if (e.key === 'Escape' && notification.contains(document.activeElement)) {
+        e.preventDefault();
+        dismiss(notification);
+      }
+    };
+    
+    document.addEventListener('keydown', globalKeydownHandler);
+    
+    // Store handler for cleanup
+    notification.dataset.globalKeydownHandler = 'true';
+    notification._globalKeydownHandler = globalKeydownHandler;
 
     // Add to container
     containerEl.appendChild(notification);
@@ -129,37 +207,54 @@
    * @param {HTMLElement} notification - Notification element to dismiss
    */
   function dismiss(notification) {
-    if (!notification || notification.classList.contains('a-notification--exiting')) {
-      return;
-    }
-
-    // Clear timeout if exists
-    if (notification._timeout) {
-      clearTimeout(notification._timeout);
-    }
-
-    // Add exiting class for animation
-    notification.classList.add('a-notification--exiting');
-
-    // Remove after animation
-    setTimeout(() => {
-      if (notification.parentNode) {
-        notification.parentNode.removeChild(notification);
+    const errorHandler = getErrorHandler();
+    
+    return errorHandler.safeExecute(COMPONENT_NAME, () => {
+      if (!notification || notification.classList.contains('a-notification--exiting')) {
+        return;
       }
 
-      // Remove from array
-      const index = notifications.indexOf(notification);
-      if (index > -1) {
-        notifications.splice(index, 1);
+      // Clear timeout if exists
+      if (notification._timeout) {
+        clearTimeout(notification._timeout);
+      }
+      
+      // Clean up global keydown handler
+      if (notification._globalKeydownHandler) {
+        document.removeEventListener('keydown', notification._globalKeydownHandler);
       }
 
-      // Dispatch event
-      const event = new CustomEvent('notification:dismissed', {
-        detail: { notification },
-        bubbles: true
-      });
-      document.dispatchEvent(event);
-    }, 200);
+      // Add exiting class for animation
+      notification.classList.add('a-notification--exiting');
+
+      // Remove after animation
+      setTimeout(() => {
+        try {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+
+          // Remove from array
+          const index = notifications.indexOf(notification);
+          if (index > -1) {
+            notifications.splice(index, 1);
+          }
+
+          // Dispatch event
+          const event = new CustomEvent('notification:dismissed', {
+            detail: { notification },
+            bubbles: true
+          });
+          document.dispatchEvent(event);
+        } catch (cleanupError) {
+          errorHandler.handle(COMPONENT_NAME, cleanupError, {
+            level: errorHandler.levels?.MEDIUM || 'medium',
+            recovery: errorHandler.strategies?.SILENT || 'silent',
+            details: { action: 'notification_cleanup_after_animation' }
+          });
+        }
+      }, 200);
+    });
   }
 
   /**
@@ -185,29 +280,71 @@
    * Idempotent - can be called multiple times safely
    */
   function initNotifications() {
-    const existingNotifications = document.querySelectorAll('[data-notification]');
+    const errorHandler = getErrorHandler();
+    
+    return errorHandler.safeExecute(COMPONENT_NAME, () => {
+      const existingNotifications = document.querySelectorAll('[data-notification]');
 
-    existingNotifications.forEach(notification => {
-      // Skip if already initialized
-      if (notification.dataset.notificationInitialized === 'true') {
-        return;
-      }
+      existingNotifications.forEach(notification => {
+        try {
+          // Skip if already initialized
+          if (notification.dataset.notificationInitialized === 'true') {
+            return;
+          }
 
-      // Add close handler
-      const closeBtn = notification.querySelector('[data-notification-close]');
-      if (closeBtn) {
-        closeBtn.addEventListener('click', () => dismiss(notification));
-      }
+          // Add close handler with keyboard support
+          const closeBtn = notification.querySelector('[data-notification-close]');
+          if (closeBtn) {
+            const safeClickHandler = errorHandler.makeSafeEventHandler(
+              COMPONENT_NAME,
+              () => dismiss(notification),
+              {
+                level: errorHandler.levels?.MEDIUM || 'medium',
+                recovery: errorHandler.strategies?.SILENT || 'silent',
+                details: { action: 'dismiss_existing_notification_click' }
+              }
+            );
+            
+            const safeKeydownHandler = errorHandler.makeSafeEventHandler(
+              COMPONENT_NAME,
+              (e) => {
+                if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
+                  e.preventDefault();
+                  dismiss(notification);
+                }
+              },
+              {
+                level: errorHandler.levels?.MEDIUM || 'medium',
+                recovery: errorHandler.strategies?.SILENT || 'silent',
+                details: { action: 'dismiss_existing_notification_keyboard' }
+              }
+            );
+            
+            closeBtn.addEventListener('click', safeClickHandler);
+            closeBtn.addEventListener('keydown', safeKeydownHandler);
+          }
 
-      // Auto-dismiss if duration is set
-      const duration = parseInt(notification.dataset.duration, 10);
-      if (duration > 0) {
-        notification._timeout = setTimeout(() => {
-          dismiss(notification);
-        }, duration);
-      }
+          // Auto-dismiss if duration is set
+          const duration = parseInt(notification.dataset.duration, 10);
+          if (duration > 0) {
+            notification._timeout = setTimeout(() => {
+              dismiss(notification);
+            }, duration);
+          }
 
-      notification.dataset.notificationInitialized = 'true';
+          notification.dataset.notificationInitialized = 'true';
+          notifications.push(notification);
+        } catch (error) {
+          errorHandler.handle(COMPONENT_NAME, error, {
+            level: errorHandler.levels?.MEDIUM || 'medium',
+            recovery: errorHandler.strategies?.SILENT || 'silent',
+            details: { 
+              action: 'init_single_notification',
+              notificationId: notification.id || 'unknown'
+            }
+          });
+        }
+      });
     });
   }
 
@@ -228,15 +365,37 @@
     return show({ ...options, message, type: 'error' });
   }
 
-  // Initialize on DOM ready
+  // Initialize on DOM ready with error handling
+  const errorHandler = getErrorHandler();
+  
+  const safeInitNotifications = errorHandler.makeSafeEventHandler(
+    COMPONENT_NAME,
+    initNotifications,
+    {
+      level: errorHandler.levels?.HIGH || 'high',
+      recovery: errorHandler.strategies?.SILENT || 'silent',
+      details: { action: 'dom_ready_init' }
+    }
+  );
+
+  const safeHTMXInit = errorHandler.makeSafeEventHandler(
+    COMPONENT_NAME,
+    initNotifications,
+    {
+      level: errorHandler.levels?.MEDIUM || 'medium',
+      recovery: errorHandler.strategies?.SILENT || 'silent',
+      details: { action: 'htmx_after_swap_init' }
+    }
+  );
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initNotifications);
+    document.addEventListener('DOMContentLoaded', safeInitNotifications);
   } else {
-    initNotifications();
+    safeInitNotifications();
   }
 
   // Re-initialize after HTMX swaps
-  document.addEventListener('htmx:afterSwap', initNotifications);
+  document.addEventListener('htmx:afterSwap', safeHTMXInit);
 
   // Expose API to window
   window.AdalexUI = window.AdalexUI || {};

@@ -20,4 +20,6 @@ urlpatterns = [
     path('detail/', views.detail_demo, name='detail_demo'),
     path('upload/', views.upload_demo, name='upload_demo'),
     path('filter/', views.filter_demo, name='filter_demo'),
+    path('loading/', views.loading_demo, name='loading_demo'),
+    path('accessibility/', views.accessibility_demo, name='accessibility_demo'),
 ]
