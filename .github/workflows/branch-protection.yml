@@ -1,0 +1,22 @@
+# Branch Protection CI
+# Bu workflow main branch'e yapılan PR'ları kontrol eder
+
+name: Branch Protection Check
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  pr-check:
+    runs-on: ubuntu-latest
+    name: PR Validation
+    steps:
+      - name: Check PR Target
+        run: |
+          echo "PR hedef branch: ${{ github.base_ref }}"
+          echo "PR kaynak branch: ${{ github.head_ref }}"
+          echo "PR açan kullanıcı: ${{ github.actor }}"
+          echo "✅ PR kontrolü başarılı"

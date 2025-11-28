@@ -1,0 +1,5 @@
+# CODEOWNERS - Bu dosya repository'deki dosyaların sahiplerini tanımlar
+# Daha fazla bilgi: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Varsayılan olarak tüm dosyalar için repository sahibi onay gerektirir
+* @mtalhayasar
