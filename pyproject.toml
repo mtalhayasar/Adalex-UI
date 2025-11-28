@@ -47,11 +47,11 @@ Documentation = "https://github.com/mtalhayasar/Adalex-UI/tree/main/docs"
 Repository = "https://github.com/mtalhayasar/Adalex-UI"
 Issues = "https://github.com/mtalhayasar/Adalex-UI/issues"
 
-[tool.setuptools.packages.find]
-include = ["adalex_ui*"]
-
 [tool.setuptools]
 include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["adalex_ui*"]
 
 [tool.setuptools.package-data]
 adalex_ui = [
