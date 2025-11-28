@@ -17,17 +17,17 @@
     "scss",
     "css"
   ],
-  "author": "Your Name",
+  "author": "mtalhayasar",
   "license": "MIT",
   "devDependencies": {
     "sass": "^1.69.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/adalex-ui.git"
+    "url": "https://github.com/mtalhayasar/Adalex-UI.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/adalex-ui/issues"
+    "url": "https://github.com/mtalhayasar/Adalex-UI/issues"
   },
-  "homepage": "https://github.com/yourusername/adalex-ui#readme"
+  "homepage": "https://github.com/mtalhayasar/Adalex-UI#readme"
 }
