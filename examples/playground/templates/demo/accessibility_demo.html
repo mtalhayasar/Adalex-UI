@@ -1,0 +1,236 @@
+{% extends "demo/base.html" %}
+{% load a_ui_tags %}
+
+{% block title %}Accessibility & Keyboard Navigation - Adalex UI{% endblock %}
+
+{% block content %}
+<div class="demo-container">
+  <div class="demo-header">
+    <h1>Accessibility & Keyboard Navigation</h1>
+    <p>Comprehensive keyboard navigation and screen reader support for all Adalex UI components.</p>
+    
+    <div class="demo-keyboard-shortcuts">
+      <h2>Global Keyboard shortcuts</h2>
+      <ul>
+        <li><strong>ESC</strong> - Close modals, drawers, tooltips, and alerts</li>
+        <li><strong>Tab / Shift+Tab</strong> - Navigate through interactive elements</li>
+        <li><strong>Enter / Space</strong> - Activate buttons and interactive elements</li>
+        <li><strong>Arrow Keys</strong> - Navigate within components (tabs, tables, menus)</li>
+        <li><strong>Home / End</strong> - Jump to first/last items in navigable components</li>
+      </ul>
+    </div>
+  </div>
+
+  <section class="demo-section">
+    <h2>Modal & Drawer Focus Management</h2>
+    <p>Modals and drawers implement focus traps with proper ESC key handling and focus restoration.</p>
+    
+    <div class="demo-grid">
+      <div class="demo-card">
+        <h3>Modal Example</h3>
+        <p>Try navigating with Tab/Shift+Tab inside the modal. Focus stays trapped within the modal until closed.</p>
+        
+        {% include "components/modal.html" with id="accessibility-modal" title="Accessible Modal" content="<p>This modal demonstrates proper focus management:</p><ul><li>Focus is trapped within the modal</li><li>Tab/Shift+Tab cycles through focusable elements</li><li>ESC key closes the modal</li><li>Focus returns to the trigger button after closing</li></ul><br><button type='button' class='a-button a-button--primary'>Sample Button</button> <button type='button' class='a-button a-button--secondary'>Another Button</button>" %}
+        
+        <button type="button" data-modal-open="accessibility-modal" class="a-button a-button--primary">
+          Open Modal (Keyboard Accessible)
+        </button>
+      </div>
+
+      <div class="demo-card">
+        <h3>Drawer Example</h3>
+        <p>Drawers also implement focus traps with the same keyboard behavior as modals.</p>
+        
+        {% include "components/drawer.html" with id="accessibility-drawer" title="Accessible Drawer" content="<p>This drawer demonstrates:</p><ul><li>Focus trap with Tab/Shift+Tab navigation</li><li>ESC key dismissal</li><li>Proper focus restoration</li><li>Screen reader announcements</li></ul><br><input type='text' placeholder='Sample input' class='a-text-input'> <button type='button' class='a-button a-button--secondary'>Sample Button</button>" %}
+        
+        <button type="button" data-drawer-open="accessibility-drawer" class="a-button a-button--primary">
+          Open Drawer (Try Keyboard Navigation)
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Tabs with Arrow Key Navigation</h2>
+    <p>Use left/right arrow keys to navigate between tabs. Home/End jump to first/last tab.</p>
+    
+    {% with tabs_data='[{"id": "tab1", "label": "First Tab", "content": "Content for the first tab. You can navigate here using arrow keys."}, {"id": "tab2", "label": "Second Tab", "content": "Content for the second tab. Try pressing the arrow keys while focused on the tab list."}, {"id": "tab3", "label": "Third Tab", "content": "Content for the third tab. Home and End keys jump to the first and last tabs."}, {"id": "tab4", "label": "Fourth Tab", "content": "Content for the fourth tab. This demonstrates wraparound navigation."}]'|from_json %}
+      {% include "components/tabs.html" with tabs=tabs_data %}
+    {% endwith %}
+  </section>
+
+  <section class="demo-section">
+    <h2>Table Keyboard Navigation</h2>
+    <p>Use arrow keys to navigate table cells, Enter/Space to sort columns.</p>
+    
+    {% with table_data='[{"name": "John Doe", "email": "john@example.com", "role": "Admin", "status": "Active"}, {"name": "Jane Smith", "email": "jane@example.com", "role": "User", "status": "Active"}, {"name": "Bob Johnson", "email": "bob@example.com", "role": "Manager", "status": "Inactive"}]'|from_json %}
+    {% with columns='[{"key": "name", "label": "Name", "sortable": true}, {"key": "email", "label": "Email", "sortable": true}, {"key": "role", "label": "Role", "sortable": false}, {"key": "status", "label": "Status", "sortable": true}]'|from_json %}
+      {% include "components/table.html" with columns=columns rows=table_data searchable=True aria_label="Accessibility demo table" %}
+    {% endwith %}
+  </section>
+
+  <section class="demo-section">
+    <h2>Form Accessibility</h2>
+    <p>All form elements have proper labels, error associations, and required field indicators.</p>
+    
+    {% with form_fields='[{"name": "fullname", "label": "Full Name", "type": "text", "required": true, "help_text": "Enter your full legal name"}, {"name": "email", "label": "Email Address", "type": "email", "required": true, "error": "Please enter a valid email address"}, {"name": "message", "label": "Message", "type": "textarea", "rows": 4, "help_text": "Optional message or comments"}, {"name": "newsletter", "label": "Subscribe to newsletter", "type": "checkbox", "help_text": "Receive updates about our products"}, {"name": "priority", "label": "Priority Level", "type": "radio", "options": [{"value": "low", "label": "Low"}, {"value": "medium", "label": "Medium"}, {"value": "high", "label": "High"}], "value": "medium"}]'|from_json %}
+      {% include "components/form.html" with id="accessibility-form" title="Accessible Form Example" description="This form demonstrates proper accessibility practices" fields=form_fields submit_text="Submit Form" %}
+    {% endwith %}
+  </section>
+
+  <section class="demo-section">
+    <h2>Interactive Tooltips</h2>
+    <p>Tooltips appear on focus and can be dismissed with ESC key.</p>
+    
+    <div class="demo-grid">
+      <div class="demo-card">
+        {% include "components/tooltip.html" with text="This tooltip appears when you focus the button and can be dismissed with the ESC key." trigger_content="<button type='button' class='a-button a-button--primary'>Hover or Focus Me</button>" position="top" %}
+      </div>
+      
+      <div class="demo-card">
+        {% include "components/tooltip.html" with text="Tooltips are announced to screen readers and support keyboard navigation." trigger_content="<button type='button' class='a-button a-button--secondary'>Another Tooltip Example</button>" position="bottom" %}
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Alerts & Notifications</h2>
+    <p>Alerts and notifications use aria-live regions and can be dismissed with keyboard.</p>
+    
+    <div class="demo-grid">
+      <div class="demo-card">
+        <h3>Alert Examples</h3>
+        {% include "components/alert.html" with type="info" message="This is an informational alert with aria-live='polite'." dismissible=True %}
+        <br><br>
+        {% include "components/alert.html" with type="error" message="This is an error alert with aria-live='assertive' for immediate announcement." dismissible=True %}
+      </div>
+      
+      <div class="demo-card">
+        <h3>Notification Examples</h3>
+        <button type="button" onclick="showAccessibilityNotification('info')" class="a-button a-button--primary">
+          Show Info Notification
+        </button>
+        <br><br>
+        <button type="button" onclick="showAccessibilityNotification('success')" class="a-button a-button--primary a-button--success">
+          Show Success Notification
+        </button>
+        <br><br>
+        <button type="button" onclick="showAccessibilityNotification('error')" class="a-button a-button--primary a-button--danger">
+          Show Error Notification
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Screen Reader Testing</h2>
+    <div class="demo-card">
+      <h3>Testing with Screen Readers</h3>
+      <p>This UI library has been designed to work with popular screen readers:</p>
+      <ul>
+        <li><strong>NVDA</strong> (Windows) - Free and open source</li>
+        <li><strong>JAWS</strong> (Windows) - Commercial screen reader</li>
+        <li><strong>VoiceOver</strong> (macOS/iOS) - Built into Apple devices</li>
+        <li><strong>TalkBack</strong> (Android) - Built into Android devices</li>
+      </ul>
+      
+      <h4>Quick Screen Reader Test:</h4>
+      <p>Try navigating this page with a screen reader to experience:</p>
+      <ul>
+        <li>Proper heading structure and landmarks</li>
+        <li>Descriptive link and button labels</li>
+        <li>Form field labels and error associations</li>
+        <li>Live region announcements for dynamic content</li>
+        <li>Table header associations</li>
+      </ul>
+      
+      <div role="region" aria-label="Live announcement region">
+        <button type="button" onclick="announceMessage()" class="a-button a-button--primary">
+          Test Live Region Announcement
+        </button>
+        <div id="announcement-area" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="demo-section">
+    <h2>Accessibility Best Practices</h2>
+    <div class="demo-card">
+      <h3>WCAG 2.1 AA Compliance</h3>
+      <p>Adalex UI components follow Web Content Accessibility Guidelines:</p>
+      
+      <dl>
+        <dt><strong>Perceivable</strong></dt>
+        <dd>Content is presented in ways users can perceive (proper contrast, alt text, captions)</dd>
+        
+        <dt><strong>Operable</strong></dt>
+        <dd>Interface components and navigation must be operable (keyboard accessible, no seizure-inducing content)</dd>
+        
+        <dt><strong>Understandable</strong></dt>
+        <dd>Information and UI operation must be understandable (clear labels, predictable navigation)</dd>
+        
+        <dt><strong>Robust</strong></dt>
+        <dd>Content must be robust enough for various assistive technologies (semantic markup, ARIA attributes)</dd>
+      </dl>
+      
+      <h4>Key Features Implemented:</h4>
+      <ul>
+        <li>✓ Semantic HTML structure</li>
+        <li>✓ Proper heading hierarchy</li>
+        <li>✓ Focus management and visual indicators</li>
+        <li>✓ Keyboard navigation support</li>
+        <li>✓ ARIA attributes for complex widgets</li>
+        <li>✓ Error identification and description</li>
+        <li>✓ Live regions for dynamic content</li>
+        <li>✓ High contrast color schemes</li>
+        <li>✓ Scalable text (supports 200% zoom)</li>
+      </ul>
+    </div>
+  </section>
+</div>
+
+<script>
+function showAccessibilityNotification(type) {
+  if (window.AdalexUI && window.AdalexUI.Notification) {
+    const messages = {
+      info: 'This is an informational notification that uses aria-live="polite".',
+      success: 'Success! This notification demonstrates proper accessibility features.',
+      error: 'Error notifications use aria-live="assertive" for immediate announcement to screen readers.'
+    };
+    
+    window.AdalexUI.Notification[type](messages[type], {
+      duration: 5000,
+      dismissible: true
+    });
+  }
+}
+
+function announceMessage() {
+  const announceArea = document.getElementById('announcement-area');
+  if (announceArea) {
+    announceArea.textContent = 'This message was announced to screen readers using aria-live="polite". The announcement happened when the button was pressed.';
+    
+    // Clear after a moment
+    setTimeout(() => {
+      announceArea.textContent = '';
+    }, 5000);
+  }
+}
+
+// Demonstrate dynamic ARIA attribute updates
+document.addEventListener('DOMContentLoaded', function() {
+  // Add some interactive examples for testing
+  const buttons = document.querySelectorAll('button[data-modal-open], button[data-drawer-open]');
+  buttons.forEach(button => {
+    button.addEventListener('click', function() {
+      // Announce what's happening for demo purposes
+      if (window.AdalexUI && window.AdalexUI.KeyboardNav) {
+        setTimeout(() => {
+          window.AdalexUI.KeyboardNav.announce('Dialog opened. Use Tab and Shift+Tab to navigate, ESC to close.');
+        }, 500);
+      }
+    });
+  });
+});
+</script>
+{% endblock %}

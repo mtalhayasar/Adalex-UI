@@ -1,0 +1,480 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} - Adalex UI</title>
+  <link rel="stylesheet" href="{% static 'a-ui/css/main.css' %}">
+  <style>
+    body {
+      font-family: var(--font-family-base);
+      padding: var(--spacing-2xl);
+      background: var(--neutral-50);
+      color: var(--text-primary);
+    }
+    .demo-header {
+      margin-bottom: var(--spacing-2xl);
+      padding-bottom: var(--spacing-lg);
+      border-bottom: 2px solid var(--border-light);
+    }
+    .demo-header h1 {
+      margin: 0 0 var(--spacing-sm) 0;
+      font-size: var(--font-size-3xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--text-primary);
+    }
+    .demo-header p {
+      margin: 0;
+      font-size: var(--font-size-lg);
+      color: var(--text-secondary);
+    }
+    .demo-section {
+      margin-bottom: var(--spacing-2xl);
+      padding: var(--spacing-xl);
+      background: var(--neutral-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+    .demo-section h2 {
+      margin: 0 0 var(--spacing-md) 0;
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-primary);
+    }
+    .demo-section h3 {
+      margin: var(--spacing-lg) 0 var(--spacing-md) 0;
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-medium);
+      color: var(--text-primary);
+    }
+    .demo-section p {
+      margin: 0 0 var(--spacing-lg) 0;
+      color: var(--text-secondary);
+    }
+    .demo-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-md);
+      align-items: center;
+      margin-bottom: var(--spacing-lg);
+    }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+    }
+    .demo-item {
+      padding: var(--spacing-lg);
+      background: var(--neutral-50);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-light);
+    }
+    .demo-item h4 {
+      margin: 0 0 var(--spacing-sm) 0;
+      font-size: var(--font-size-base);
+      font-weight: var(--font-weight-medium);
+      color: var(--text-primary);
+    }
+    .demo-item p {
+      margin: 0 0 var(--spacing-md) 0;
+      font-size: var(--font-size-sm);
+      color: var(--text-tertiary);
+    }
+    .skeleton-demo {
+      display: flex;
+      gap: var(--spacing-xl);
+      flex-wrap: wrap;
+      padding: var(--spacing-lg);
+      background: var(--neutral-50);
+      border-radius: var(--radius-md);
+    }
+    .skeleton-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      align-items: center;
+      min-width: 120px;
+    }
+    .skeleton-label {
+      font-size: var(--font-size-sm);
+      color: var(--text-tertiary);
+      text-align: center;
+    }
+    .spinner-demo {
+      display: flex;
+      gap: var(--spacing-xl);
+      align-items: center;
+      padding: var(--spacing-lg);
+      background: var(--neutral-50);
+      border-radius: var(--radius-md);
+    }
+    .table-demo {
+      width: 100%;
+      max-width: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-header">
+    <h1>{{ title }}</h1>
+    <p>{{ description }}</p>
+  </div>
+
+  <!-- Global Loading Bar Demo -->
+  <div class="demo-section">
+    <h2>Global Loading Bar</h2>
+    <p>Page-level loading indicator automatically triggered by HTMX requests.</p>
+
+    <div class="demo-item">
+      <h4>Global Loading Bar</h4>
+      <p>Appears at the top of the page during page loads and HTMX requests.</p>
+      <div class="demo-row">
+        <button type="button" class="a-button a-button--primary" onclick="showGlobalDemo()">
+          Show Global Loading
+        </button>
+        <button type="button" class="a-button a-button--secondary" onclick="hideGlobalDemo()">
+          Hide Global Loading
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Button Loading States Demo -->
+  <div class="demo-section">
+    <h2>Button Loading States</h2>
+    <p>Buttons with loading spinners and automatic disabling during processing.</p>
+
+    <h3>Basic Button Loading</h3>
+    <div class="demo-row">
+      {% include "components/button.html" with text="Normal Button" variant="primary" id="btn-normal" %}
+      {% include "components/button.html" with text="Secondary Button" variant="secondary" id="btn-secondary" %}
+      {% include "components/button.html" with text="Ghost Button" variant="ghost" id="btn-ghost" %}
+    </div>
+
+    <div class="demo-row">
+      <button type="button" class="a-button a-button--primary" onclick="toggleButtonLoading('btn-normal')">
+        Toggle Primary Loading
+      </button>
+      <button type="button" class="a-button a-button--secondary" onclick="toggleButtonLoading('btn-secondary')">
+        Toggle Secondary Loading
+      </button>
+      <button type="button" class="a-button a-button--ghost" onclick="toggleButtonLoading('btn-ghost')">
+        Toggle Ghost Loading
+      </button>
+    </div>
+
+    <h3>Different Sizes</h3>
+    <div class="demo-row">
+      {% include "components/button.html" with text="Small" variant="primary" size="sm" id="btn-small" %}
+      {% include "components/button.html" with text="Medium" variant="primary" size="md" id="btn-medium" %}
+      {% include "components/button.html" with text="Large" variant="primary" size="lg" id="btn-large" %}
+    </div>
+
+    <div class="demo-row">
+      <button type="button" class="a-button a-button--primary a-button--sm" onclick="toggleButtonLoading('btn-small')">
+        Toggle Small
+      </button>
+      <button type="button" class="a-button a-button--primary" onclick="toggleButtonLoading('btn-medium')">
+        Toggle Medium
+      </button>
+      <button type="button" class="a-button a-button--primary a-button--lg" onclick="toggleButtonLoading('btn-large')">
+        Toggle Large
+      </button>
+    </div>
+  </div>
+
+  <!-- Form Loading States Demo -->
+  <div class="demo-section">
+    <h2>Form Loading States</h2>
+    <p>Forms with loading overlays and automatic input disabling during submission.</p>
+
+    <div class="demo-grid">
+      <div class="demo-item">
+        <h4>Basic Form</h4>
+        <p>Form with loading overlay that covers all inputs.</p>
+        
+        <form class="a-form" id="demo-form-1" style="max-width: 300px;">
+          <div class="a-form__group">
+            <label class="a-label" for="demo-input-1">
+              <span class="a-label__text">Name</span>
+            </label>
+            <input type="text" id="demo-input-1" class="a-text-input" placeholder="Enter your name">
+          </div>
+
+          <div class="a-form__group">
+            <label class="a-label" for="demo-input-2">
+              <span class="a-label__text">Email</span>
+            </label>
+            <input type="email" id="demo-input-2" class="a-text-input" placeholder="Enter your email">
+          </div>
+
+          <div class="a-form__actions">
+            <button type="submit" class="a-button a-button--primary">Submit Form</button>
+            <button type="button" class="a-button a-button--ghost">Cancel</button>
+          </div>
+        </form>
+
+        <div class="demo-row" style="margin-top: var(--spacing-md);">
+          <button type="button" class="a-button a-button--secondary a-button--sm" onclick="toggleFormLoading('demo-form-1')">
+            Toggle Form Loading
+          </button>
+        </div>
+      </div>
+
+      <div class="demo-item">
+        <h4>Login Form Example</h4>
+        <p>Realistic login form with loading states.</p>
+        
+        <form class="a-form" id="demo-form-2" style="max-width: 300px;">
+          <div class="a-form__group">
+            <label class="a-label" for="demo-login">
+              <span class="a-label__text">Username</span>
+            </label>
+            <input type="text" id="demo-login" class="a-text-input" placeholder="Enter username">
+          </div>
+
+          <div class="a-form__group">
+            <label class="a-label" for="demo-password">
+              <span class="a-label__text">Password</span>
+            </label>
+            <input type="password" id="demo-password" class="a-text-input" placeholder="Enter password">
+          </div>
+
+          <div class="a-form__actions">
+            <button type="submit" class="a-button a-button--primary a-button--full-width">Sign In</button>
+          </div>
+        </form>
+
+        <div class="demo-row" style="margin-top: var(--spacing-md);">
+          <button type="button" class="a-button a-button--secondary a-button--sm" onclick="toggleFormLoading('demo-form-2')">
+            Toggle Login Loading
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skeleton Loaders Demo -->
+  <div class="demo-section">
+    <h2>Skeleton Loaders</h2>
+    <p>Placeholder content with shimmer animation while data loads.</p>
+
+    <h3>Text Skeletons</h3>
+    <div class="skeleton-demo">
+      <div class="skeleton-group">
+        {% include "components/skeleton.html" with type="text" size="sm" %}
+        <span class="skeleton-label">Small Text</span>
+      </div>
+      <div class="skeleton-group">
+        {% include "components/skeleton.html" with type="text" %}
+        <span class="skeleton-label">Normal Text</span>
+      </div>
+      <div class="skeleton-group">
+        {% include "components/skeleton.html" with type="text" size="lg" %}
+        <span class="skeleton-label">Large Text</span>
+      </div>
+      <div class="skeleton-group">
+        {% include "components/skeleton.html" with type="text" size="xl" %}
+        <span class="skeleton-label">XL Text</span>
+      </div>
+    </div>
+
+    <h3>Other Types</h3>
+    <div class="skeleton-demo">
+      <div class="skeleton-group">
+        {% include "components/skeleton.html" with type="avatar" %}
+        <span class="skeleton-label">Avatar</span>
+      </div>
+      <div class="skeleton-group">
+        {% include "components/skeleton.html" with type="avatar" size="lg" %}
+        <span class="skeleton-label">Large Avatar</span>
+      </div>
+      <div class="skeleton-group">
+        {% include "components/skeleton.html" with type="button" %}
+        <span class="skeleton-label">Button</span>
+      </div>
+      <div class="skeleton-group">
+        {% include "components/skeleton.html" with type="button" size="lg" %}
+        <span class="skeleton-label">Large Button</span>
+      </div>
+    </div>
+
+    <h3>Image and Card Skeletons</h3>
+    <div class="demo-grid">
+      <div class="demo-item">
+        <h4>Image Skeleton</h4>
+        {% include "components/skeleton.html" with type="image" %}
+      </div>
+      <div class="demo-item">
+        <h4>Card Skeleton</h4>
+        {% include "components/skeleton.html" with type="card" %}
+      </div>
+    </div>
+
+    <h3>Table Skeleton Demo</h3>
+    <div class="demo-item">
+      <h4>Table with Skeleton Rows</h4>
+      <p>Click the button to simulate table loading with skeleton rows.</p>
+      
+      <div class="table-demo" data-table-container id="skeleton-table">
+        <table class="a-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>John Doe</td>
+              <td>john@example.com</td>
+              <td><span class="a-badge a-badge--success">Active</span></td>
+              <td><button class="a-button a-button--sm a-button--ghost">Edit</button></td>
+            </tr>
+            <tr>
+              <td>Jane Smith</td>
+              <td>jane@example.com</td>
+              <td><span class="a-badge a-badge--warning">Pending</span></td>
+              <td><button class="a-button a-button--sm a-button--ghost">Edit</button></td>
+            </tr>
+            <tr>
+              <td>Bob Johnson</td>
+              <td>bob@example.com</td>
+              <td><span class="a-badge a-badge--success">Active</span></td>
+              <td><button class="a-button a-button--sm a-button--ghost">Edit</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="demo-row" style="margin-top: var(--spacing-md);">
+        <button type="button" class="a-button a-button--primary" onclick="showTableSkeleton()">
+          Show Table Skeleton
+        </button>
+        <button type="button" class="a-button a-button--secondary" onclick="hideTableSkeleton()">
+          Hide Table Skeleton
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Spinner Component Demo -->
+  <div class="demo-section">
+    <h2>Spinner Component</h2>
+    <p>Loading spinners with different sizes and colors for various use cases.</p>
+
+    <h3>Sizes</h3>
+    <div class="spinner-demo">
+      <div style="display: flex; flex-direction: column; gap: var(--spacing-xs); align-items: center;">
+        {% include "components/spinner.html" with size="sm" %}
+        <span style="font-size: var(--font-size-sm); color: var(--text-tertiary);">Small</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: var(--spacing-xs); align-items: center;">
+        {% include "components/spinner.html" with size="md" %}
+        <span style="font-size: var(--font-size-sm); color: var(--text-tertiary);">Medium</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: var(--spacing-xs); align-items: center;">
+        {% include "components/spinner.html" with size="lg" %}
+        <span style="font-size: var(--font-size-sm); color: var(--text-tertiary);">Large</span>
+      </div>
+    </div>
+
+    <h3>In Context</h3>
+    <div class="demo-row">
+      <div style="display: flex; gap: var(--spacing-sm); align-items: center; padding: var(--spacing-md); background: var(--neutral-50); border-radius: var(--radius-md);">
+        {% include "components/spinner.html" with size="sm" %}
+        <span>Loading data...</span>
+      </div>
+      <div style="display: flex; gap: var(--spacing-sm); align-items: center; padding: var(--spacing-md); background: var(--primary-light); border-radius: var(--radius-md);">
+        {% include "components/spinner.html" with size="sm" %}
+        <span>Processing request...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load JavaScript -->
+  <script src="{% static 'a-ui/js/utils/error-handler.js' %}"></script>
+  <script src="{% static 'a-ui/js/components/loading.js' %}"></script>
+  <script src="{% static 'a-ui/js/main.js' %}"></script>
+  
+  <script>
+    // Demo interaction handlers
+    let buttonStates = {};
+    let formStates = {};
+
+    function showGlobalDemo() {
+      if (window.AdalexUI && window.AdalexUI.Loading) {
+        window.AdalexUI.Loading.showGlobalLoader('Demo loading message...');
+      }
+    }
+
+    function hideGlobalDemo() {
+      if (window.AdalexUI && window.AdalexUI.Loading) {
+        window.AdalexUI.Loading.hideGlobalLoader();
+      }
+    }
+
+    function toggleButtonLoading(buttonId) {
+      const button = document.getElementById(buttonId);
+      if (!button || !window.AdalexUI || !window.AdalexUI.Loading) return;
+
+      const isLoading = buttonStates[buttonId] || false;
+      buttonStates[buttonId] = !isLoading;
+
+      if (buttonStates[buttonId]) {
+        window.AdalexUI.Loading.setButtonLoading(button, true, 'Loading...');
+      } else {
+        window.AdalexUI.Loading.setButtonLoading(button, false);
+      }
+    }
+
+    function toggleFormLoading(formId) {
+      const form = document.getElementById(formId);
+      if (!form || !window.AdalexUI || !window.AdalexUI.Loading) return;
+
+      const isLoading = formStates[formId] || false;
+      formStates[formId] = !isLoading;
+
+      window.AdalexUI.Loading.setFormLoading(form, formStates[formId]);
+    }
+
+    function showTableSkeleton() {
+      const table = document.getElementById('skeleton-table');
+      if (table && window.AdalexUI && window.AdalexUI.Loading) {
+        window.AdalexUI.Loading.showTableSkeleton(table, 5);
+      }
+    }
+
+    function hideTableSkeleton() {
+      const table = document.getElementById('skeleton-table');
+      if (table && window.AdalexUI && window.AdalexUI.Loading) {
+        window.AdalexUI.Loading.hideTableSkeleton(table);
+      }
+    }
+
+    // Demo form submission handlers (prevent actual submission)
+    document.addEventListener('DOMContentLoaded', function() {
+      const forms = document.querySelectorAll('form');
+      forms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+          e.preventDefault(); // Prevent actual submission in demo
+          
+          // Simulate loading for 3 seconds
+          const formId = form.id;
+          if (window.AdalexUI && window.AdalexUI.Loading) {
+            window.AdalexUI.Loading.setFormLoading(form, true);
+            
+            setTimeout(() => {
+              window.AdalexUI.Loading.setFormLoading(form, false);
+            }, 3000);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

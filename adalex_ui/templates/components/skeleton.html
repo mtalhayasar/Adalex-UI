@@ -1,0 +1,38 @@
+{% comment %}
+Skeleton Loader Component
+
+A versatile skeleton loader for different content types with shimmer animation.
+All styles use design tokens - NO hard-coded colors.
+
+Parameters:
+- type: Skeleton type (text|image|avatar|button|card|table-cell) [required]
+- size: Size variant for certain types (sm|md|lg|xl)
+- width: Custom width (e.g., "100px", "50%")
+- height: Custom height (e.g., "20px", "100px")  
+- class: Additional CSS classes
+- count: Number of skeleton items to generate (default: 1)
+- aria_label: Accessibility label (default: "Loading content...")
+
+Examples:
+{% include 'components/skeleton.html' with type='text' %}
+{% include 'components/skeleton.html' with type='text' size='sm' count=3 %}
+{% include 'components/skeleton.html' with type='image' %}
+{% include 'components/skeleton.html' with type='avatar' size='lg' %}
+{% include 'components/skeleton.html' with type='button' size='sm' %}
+{% include 'components/skeleton.html' with type='card' %}
+{% include 'components/skeleton.html' with type='table-cell' width='80%' %}
+{% include 'components/skeleton.html' with type='text' height='30px' width='200px' %}
+{% endcomment %}
+
+{% with skeleton_count=count|default:1 %}
+{% for i in "x"|ljust:skeleton_count %}
+<div
+  class="a-skeleton a-skeleton--{{ type }}{% if size %} a-skeleton--{{ type }}-{{ size }}{% endif %}{% if class %} {{ class }}{% endif %}"
+  {% if width %}style="{% if width %}width: {{ width }};{% endif %}{% if height %}height: {{ height }};{% endif %}"{% endif %}
+  role="status"
+  aria-label="{{ aria_label|default:'Loading content...' }}"
+>
+  <span class="a-spinner__sr-only">{{ aria_label|default:'Loading content...' }}</span>
+</div>
+{% endfor %}
+{% endwith %}

@@ -1,0 +1,30 @@
+{% comment %}
+Loading Bar Component
+
+A global page-level loading indicator that appears at the top of the page.
+Automatically integrated with HTMX requests via loading.js
+
+Parameters:
+- id: Optional ID for the loading bar (default: auto-generated)
+- message: Optional loading message to display
+- class: Additional CSS classes
+
+Example:
+{% include 'components/loading_bar.html' %}
+{% include 'components/loading_bar.html' with message="Saving changes..." %}
+{% endcomment %}
+
+<div
+  {% if id %}id="{{ id }}"{% endif %}
+  class="a-loading-bar{% if class %} {{ class }}{% endif %}"
+  role="progressbar"
+  aria-label="Page loading"
+  {% if message %}data-message="{{ message }}"{% endif %}
+>
+  <div class="a-loading-bar__progress"></div>
+  {% if message %}
+  <div class="a-loading-bar__message">
+    {{ message }}
+  </div>
+  {% endif %}
+</div>
