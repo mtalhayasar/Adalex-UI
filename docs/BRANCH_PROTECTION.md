@@ -5,7 +5,7 @@ Bu dokümantasyon, GitHub repository'sinde branch protection kurallarının nas�
 ## 🔒 GitHub'da Branch Protection Ayarlama
 
 ### Adım 1: Repository Settings'e Gidin
-1. GitHub'da repository sayfasına gidin: `https://github.com/mtalhayasar/Adalex-UI`
+1. GitHub'da repository sayfanıza gidin
 2. **Settings** sekmesine tıklayın (üst menüde)
 
 ### Adım 2: Branch Protection Rules Bölümüne Gidin

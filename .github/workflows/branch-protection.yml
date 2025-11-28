@@ -9,14 +9,30 @@ on:
       - main
       - master
 
+permissions:
+  contents: read
+
 jobs:
   pr-check:
     runs-on: ubuntu-latest
     name: PR Validation
     steps:
-      - name: Check PR Target
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate PR
         run: |
-          echo "PR hedef branch: ${{ github.base_ref }}"
-          echo "PR kaynak branch: ${{ github.head_ref }}"
-          echo "PR açan kullanıcı: ${{ github.actor }}"
-          echo "✅ PR kontrolü başarılı"
+          echo "🔍 PR Bilgileri:"
+          echo "  - Hedef branch: ${{ github.base_ref }}"
+          echo "  - Kaynak branch: ${{ github.head_ref }}"
+          echo "  - PR açan: ${{ github.actor }}"
+          echo ""
+          
+          # PR başlığının boş olmadığını kontrol et
+          if [ -z "${{ github.event.pull_request.title }}" ]; then
+            echo "❌ PR başlığı boş olamaz!"
+            exit 1
+          fi
+          
+          echo "✅ PR başlığı mevcut: ${{ github.event.pull_request.title }}"
+          echo "✅ PR doğrulaması başarılı"
