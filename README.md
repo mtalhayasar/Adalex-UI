@@ -91,7 +91,7 @@ pytest
    ```
    or
    ```bash
-   pip install git+https://github.com/mtalhayasar/adalex-ui.git
+   pip install git+https://github.com/mtalhayasar/Adalex-UI.git
    ```
 2. **Add to `INSTALLED_APPS` in `settings.py`:**
    ```python
@@ -152,6 +152,6 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## Resources
 
-- [Documentation](https://github.com/mtalhayasar/adalex-ui/docs)
-- [Issue Tracker](https://github.com/yourusername/adalex-ui/issues)
+- [Documentation](https://github.com/mtalhayasar/Adalex-UI/tree/main/docs)
+- [Issue Tracker](https://github.com/mtalhayasar/Adalex-UI/issues)
 - [Changelog](CHANGELOG.md)
