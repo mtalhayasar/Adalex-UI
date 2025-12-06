@@ -25,6 +25,8 @@
       const menu = navbar.querySelector('[data-navbar-menu]');
       const userToggle = navbar.querySelector('[data-navbar-user-toggle]');
       const userMenu = navbar.querySelector('[data-navbar-user-menu]');
+      const dropdownToggles = navbar.querySelectorAll('[data-navbar-dropdown-toggle]');
+      const dropdownMenus = navbar.querySelectorAll('[data-navbar-dropdown-menu]');
 
       // Mobile menu toggle
       if (toggle && menu) {
@@ -80,6 +82,82 @@
           }
         });
       }
+
+      // Dropdown menus
+      dropdownToggles.forEach((dropdownToggle, index) => {
+        const dropdownMenu = dropdownMenus[index];
+        
+        if (!dropdownMenu) return;
+
+        dropdownToggle.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isExpanded = dropdownToggle.getAttribute('aria-expanded') === 'true';
+
+          // Close all other dropdowns first
+          closeAllDropdowns(navbar);
+
+          if (isExpanded) {
+            closeDropdown(dropdownToggle, dropdownMenu);
+          } else {
+            openDropdown(dropdownToggle, dropdownMenu);
+          }
+        });
+
+        // Keyboard navigation
+        dropdownToggle.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            dropdownToggle.click();
+          } else if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            openDropdown(dropdownToggle, dropdownMenu);
+            const firstLink = dropdownMenu.querySelector('.a-navbar__dropdown-link');
+            if (firstLink) firstLink.focus();
+          }
+        });
+
+        // Dropdown menu keyboard navigation
+        const dropdownLinks = dropdownMenu.querySelectorAll('.a-navbar__dropdown-link');
+        dropdownLinks.forEach((link, linkIndex) => {
+          link.addEventListener('keydown', (e) => {
+            switch (e.key) {
+              case 'ArrowDown':
+                e.preventDefault();
+                const nextLink = dropdownLinks[linkIndex + 1];
+                if (nextLink) nextLink.focus();
+                break;
+              case 'ArrowUp':
+                e.preventDefault();
+                if (linkIndex === 0) {
+                  dropdownToggle.focus();
+                } else {
+                  const prevLink = dropdownLinks[linkIndex - 1];
+                  if (prevLink) prevLink.focus();
+                }
+                break;
+              case 'Escape':
+                e.preventDefault();
+                closeDropdown(dropdownToggle, dropdownMenu);
+                dropdownToggle.focus();
+                break;
+            }
+          });
+        });
+      });
+
+      // Close dropdowns when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!navbar.contains(e.target)) {
+          closeAllDropdowns(navbar);
+        }
+      });
+
+      // Close dropdowns on ESC key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeAllDropdowns(navbar);
+        }
+      });
 
       // Mark as initialized
       navbar.dataset.navbarInitialized = 'true';
@@ -146,6 +224,51 @@
       bubbles: true
     });
     menu.dispatchEvent(event);
+  }
+
+  /**
+   * Open dropdown menu
+   */
+  function openDropdown(toggle, menu) {
+    toggle.setAttribute('aria-expanded', 'true');
+    menu.classList.add('is-open');
+
+    // Dispatch custom event
+    const event = new CustomEvent('navbar:dropdownOpened', {
+      detail: { menu },
+      bubbles: true
+    });
+    menu.dispatchEvent(event);
+  }
+
+  /**
+   * Close dropdown menu
+   */
+  function closeDropdown(toggle, menu) {
+    toggle.setAttribute('aria-expanded', 'false');
+    menu.classList.remove('is-open');
+
+    // Dispatch custom event
+    const event = new CustomEvent('navbar:dropdownClosed', {
+      detail: { menu },
+      bubbles: true
+    });
+    menu.dispatchEvent(event);
+  }
+
+  /**
+   * Close all dropdown menus in a navbar
+   */
+  function closeAllDropdowns(navbar) {
+    const dropdownToggles = navbar.querySelectorAll('[data-navbar-dropdown-toggle]');
+    const dropdownMenus = navbar.querySelectorAll('[data-navbar-dropdown-menu]');
+
+    dropdownToggles.forEach((toggle, index) => {
+      const menu = dropdownMenus[index];
+      if (menu && toggle.getAttribute('aria-expanded') === 'true') {
+        closeDropdown(toggle, menu);
+      }
+    });
   }
 
   // Initialize on DOM ready

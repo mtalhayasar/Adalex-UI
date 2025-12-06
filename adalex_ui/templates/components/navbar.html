@@ -25,14 +25,41 @@
       {% if nav_items %}
         <ul class="a-navbar__nav">
           {% for item in nav_items %}
-            <li class="a-navbar__nav-item">
-              <a
-                href="{{ item.url }}"
-                class="a-navbar__nav-link{% if item.active %} a-navbar__nav-link--active{% endif %}"
-                {% if item.active %}aria-current="page"{% endif %}
-              >
-                {{ item.text }}
-              </a>
+            <li class="a-navbar__nav-item{% if item.children %} a-navbar__nav-item--has-dropdown{% endif %}">
+              {% if item.children %}
+                <button
+                  type="button"
+                  class="a-navbar__nav-link a-navbar__nav-dropdown-toggle{% if item.active %} a-navbar__nav-link--active{% endif %}"
+                  data-navbar-dropdown-toggle
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  {% if item.active %}aria-current="page"{% endif %}
+                >
+                  {{ item.text }}
+                  {% include "components/icon.html" with name="chevron-right" size="sm" class="a-navbar__dropdown-icon" %}
+                </button>
+                <ul class="a-navbar__dropdown-menu" data-navbar-dropdown-menu>
+                  {% for child in item.children %}
+                    <li class="a-navbar__dropdown-item">
+                      <a
+                        href="{{ child.url }}"
+                        class="a-navbar__dropdown-link{% if child.active %} a-navbar__dropdown-link--active{% endif %}"
+                        {% if child.active %}aria-current="page"{% endif %}
+                      >
+                        {{ child.text }}
+                      </a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <a
+                  href="{{ item.url }}"
+                  class="a-navbar__nav-link{% if item.active %} a-navbar__nav-link--active{% endif %}"
+                  {% if item.active %}aria-current="page"{% endif %}
+                >
+                  {{ item.text }}
+                </a>
+              {% endif %}
             </li>
           {% endfor %}
         </ul>

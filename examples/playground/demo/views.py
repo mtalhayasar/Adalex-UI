@@ -101,11 +101,28 @@ def navigation_demo(request):
     Returns:
         Rendered template showcasing navigation components
     """
-    # Navbar data
+    # Navbar data with dropdown examples
     nav_items = [
         {'url': '#dashboard', 'text': 'Dashboard', 'active': True},
-        {'url': '#products', 'text': 'Products', 'active': False},
-        {'url': '#orders', 'text': 'Orders', 'active': False},
+        {
+            'text': 'Products', 
+            'active': False,
+            'children': [
+                {'url': '#products/list', 'text': 'Product List', 'active': False},
+                {'url': '#products/add', 'text': 'Add Product', 'active': False},
+                {'url': '#products/categories', 'text': 'Categories', 'active': False},
+                {'url': '#products/inventory', 'text': 'Inventory', 'active': False},
+            ]
+        },
+        {
+            'text': 'Sales', 
+            'active': False,
+            'children': [
+                {'url': '#sales/orders', 'text': 'Orders', 'active': False},
+                {'url': '#sales/invoices', 'text': 'Invoices', 'active': False},
+                {'url': '#sales/reports', 'text': 'Sales Reports', 'active': False},
+            ]
+        },
         {'url': '#customers', 'text': 'Customers', 'active': False},
     ]
 

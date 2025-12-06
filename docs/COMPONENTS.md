@@ -1715,9 +1715,25 @@ Responsive navigation bar with mobile menu and user dropdown.
 
 **Nav Items Format:**
 ```python
+# Simple links
 nav_items = [
     {'url': '/dashboard/', 'text': 'Dashboard', 'active': True},
     {'url': '/products/', 'text': 'Products', 'active': False},
+]
+
+# With dropdown menus (using 'children')
+nav_items = [
+    {'url': '/', 'text': 'Home', 'active': True},
+    {
+        'text': 'Products',  # No URL for parent with children
+        'active': False,
+        'children': [
+            {'url': '/products/list/', 'text': 'Product List', 'active': False},
+            {'url': '/products/add/', 'text': 'Add Product', 'active': False},
+            {'url': '/products/categories/', 'text': 'Categories', 'active': False},
+        ]
+    },
+    {'url': '/contact/', 'text': 'Contact', 'active': False},
 ]
 ```
 
@@ -1746,8 +1762,23 @@ user_menu = [
 **Features:**
 - Sticky positioning (managed by layout)
 - Mobile hamburger menu
+- **NEW:** Dropdown menus with nested navigation
 - User dropdown
-- Keyboard accessible
+- Keyboard accessible (Tab, Arrow keys, Enter, Escape)
+- Click outside to close dropdowns
+- Mobile responsive dropdown behavior
+
+**Dropdown Navigation:**
+- **Desktop:** Dropdown appears below the parent menu item
+- **Mobile:** Dropdown expands inline within hamburger menu
+- **Keyboard:** Use Tab to focus, Arrow keys to navigate, Enter to activate, Escape to close
+- **Accessibility:** Full ARIA attributes and screen reader support
+
+**Best Practices:**
+- Limit dropdown depth to 1 level (avoid nested dropdowns)
+- Use descriptive text labels for better accessibility
+- Keep dropdown items to 3-7 items for optimal UX
+- Don't add URL to parent items that have children
 
 ---
 

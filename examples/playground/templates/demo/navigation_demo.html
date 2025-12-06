@@ -6,9 +6,10 @@
 {% block content %}
   <!-- Navigation Component Demos -->
   <div class="a-card-grid a-card-grid--auto-fit" style="margin-bottom: var(--spacing-2xl);">
-    {% include "components/card.html" with title="Navbar Component" content="Responsive navigation bar with mobile menu and user dropdown. Check the top of this page!" shadow=True %}
+    {% include "components/card.html" with title="Navbar Component" content="Responsive navigation bar with dropdown menus! Try hovering over 'Products' and 'Sales' in the navbar above. Works on mobile too!" shadow=True %}
+    {% include "components/card.html" with title="Dropdown Features" content="✓ Keyboard navigation (Tab, Arrow keys, Enter, Escape) ✓ Click outside to close ✓ Mobile responsive ✓ Screen reader accessible" shadow=True %}
     {% include "components/card.html" with title="Sidebar Component" content="Collapsible sidebar navigation with icons. Try clicking the collapse button on the left!" shadow=True %}
-    {% include "components/card.html" with title="Dashboard Layout" content="This page combines navbar, sidebar, and main content area." shadow=True %}
+    {% include "components/card.html" with title="Dashboard Layout" content="This page combines navbar, sidebar, and main content area for a complete dashboard experience." shadow=True %}
   </div>
 
   <!-- Statistics Cards -->
