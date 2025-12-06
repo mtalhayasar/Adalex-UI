@@ -11,52 +11,54 @@
  */
 
 /* === Foundation === */
-/* Design tokens must be loaded first */
-@import 'tokens';
+/* Design tokens must be loaded first - using @forward to make them available globally */
+@forward 'tokens';
+@use 'tokens' as *;
 
 /* Reset browser defaults */
-@import 'reset';
+@use 'reset';
 
 /* Utility classes */
-@import 'utilities';
+@use 'utilities';
 
 /* === Components === */
 /* Component styles will be imported here as they are created */
-@import 'components/alert';
-@import 'components/badge';
-@import 'components/button';
-@import 'components/card';
-@import 'components/carousel';
-@import 'components/checkbox';
-@import 'components/confirm_dialog';
-@import 'components/datepicker';
-@import 'components/detail_view';
-@import 'components/drawer';
-@import 'components/file_upload';
-@import 'components/filter_bar';
-@import 'components/form';
-@import 'components/icon';
-@import 'components/label';
-@import 'components/login_form';
-@import 'components/modal';
-@import 'components/navbar';
-@import 'components/notification';
-@import 'components/pagination';
-@import 'components/radio';
-@import 'components/register_form';
-@import 'components/select';
-@import 'components/sidebar';
-@import 'components/spinner';
-@import 'components/switch';
-@import 'components/table';
-@import 'components/tabs';
-@import 'components/text_input';
-@import 'components/textarea';
-@import 'components/tooltip';
+@use 'components/alert';
+@use 'components/badge';
+@use 'components/button';
+@use 'components/card';
+@use 'components/carousel';
+@use 'components/checkbox';
+@use 'components/confirm_dialog';
+@use 'components/datepicker';
+@use 'components/detail_view';
+@use 'components/drawer';
+@use 'components/file_upload';
+@use 'components/filter_bar';
+@use 'components/form';
+@use 'components/icon';
+@use 'components/label';
+@use 'components/login_form';
+@use 'components/modal';
+@use 'components/navbar';
+@use 'components/notification';
+@use 'components/pagination';
+@use 'components/radio';
+@use 'components/register_form';
+@use 'components/select';
+@use 'components/sidebar';
+@use 'components/spinner';
+@use 'components/switch';
+@use 'components/table';
+@use 'components/tabs';
+@use 'components/text_input';
+@use 'components/textarea';
+@use 'components/tooltip';
+@use 'components/loading' as loading;
 
 /* === Layouts === */
 /* Layout styles for page structures */
-@import 'layouts/dashboard';
+@use 'layouts/dashboard';
 
 /**
  * Import Order Guidelines:
