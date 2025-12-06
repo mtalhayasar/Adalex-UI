@@ -26,9 +26,40 @@
     console.warn('[AdalexUI.Main] Keyboard navigation utility not available. Accessibility features may be limited.');
   }
 
-  // Import component modules
-  // Note: In production, you might use a bundler like webpack or rollup
-  // For now, components are loaded via individual script tags
+  // Load all component scripts dynamically
+  // This ensures all components are available when main.js runs
+  const componentScripts = [
+    'utils/error-handler.js',
+    'utils/keyboard-nav.js',
+    'components/alert.js',
+    'components/auth.js',
+    'components/carousel.js',
+    'components/confirm.js',
+    'components/drawer.js',
+    'components/file_upload.js',
+    'components/form.js',
+    'components/loading.js',
+    'components/modal.js',
+    'components/navbar.js',
+    'components/notification.js',
+    'components/sidebar.js',
+    'components/table.js',
+    'components/tabs.js',
+    'components/tooltip.js'
+  ];
+
+  // Function to load scripts dynamically
+  function loadComponentScripts() {
+    return Promise.all(componentScripts.map(script => {
+      return new Promise((resolve, reject) => {
+        const scriptElement = document.createElement('script');
+        scriptElement.src = `/static/a-ui/js/${script}`;
+        scriptElement.onload = resolve;
+        scriptElement.onerror = reject;
+        document.head.appendChild(scriptElement);
+      });
+    }));
+  }
 
   /**
    * Initialize all components
@@ -110,14 +141,20 @@
       }
     ) : initializeComponents;
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', safeInitializeComponents);
-  } else {
+  // Load scripts and then initialize
+  async function initializeWhenReady() {
     try {
+      await loadComponentScripts();
       safeInitializeComponents();
     } catch (error) {
-      console.error('[AdalexUI.Main] Failed to initialize components on page load:', error);
+      console.error('[AdalexUI.Main] Failed to load component scripts:', error);
     }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeWhenReady);
+  } else {
+    initializeWhenReady();
   }
 
   // Re-initialize after HTMX swaps
