@@ -47,8 +47,7 @@ yarn-error.log*
 package-lock.json
 yarn.lock
 
-# Compiled CSS
-adalex_ui/static/a-ui/css/*.css
+# Compiled CSS maps (but not the CSS files themselves)
 adalex_ui/static/a-ui/css/*.css.map
 
 # IDEs
