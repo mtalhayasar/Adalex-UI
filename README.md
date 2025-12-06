@@ -85,6 +85,8 @@ pytest
 
 ## Usage in Your Django Project
 
+### Option 1: Using Pre-compiled CSS (Recommended)
+
 1. **Install the package:**
    ```bash
    pip install adalex-ui
@@ -93,6 +95,7 @@ pytest
    ```bash
    pip install git+https://github.com/mtalhayasar/Adalex-UI.git
    ```
+
 2. **Add to `INSTALLED_APPS` in `settings.py`:**
    ```python
    INSTALLED_APPS = [
@@ -112,6 +115,84 @@ pytest
    ```html
    {% load a_ui_tags %}
    {% include 'components/button.html' with label="Click me" variant="primary" %}
+   ```
+
+### Option 2: Compiling SCSS Yourself (For Customization)
+
+If you want to customize design tokens or modify SCSS:
+
+1. **Copy SCSS files to your project:**
+   ```bash
+   # Copy the scss directory from adalex_ui/static/a-ui/scss/ to your project
+   cp -r path/to/adalex_ui/static/a-ui/scss/ your_project/static/scss/
+   ```
+
+2. **Install Node.js dependencies in your project:**
+   ```bash
+   npm init -y  # If you don't have package.json
+   npm install --save-dev sass
+   ```
+
+3. **Add build scripts to your `package.json`:**
+   ```json
+   {
+     "scripts": {
+       "css:build": "sass static/scss/main.scss static/css/adalex-ui.css --style=compressed",
+       "css:watch": "sass static/scss/main.scss static/css/adalex-ui.css --watch"
+     }
+   }
+   ```
+
+4. **Customize tokens in `_tokens.scss`:**
+   ```scss
+   // Modify colors, shadows, or any design tokens
+   :root {
+     --primary-main: #your-color;
+     // ... other customizations
+   }
+   ```
+
+5. **Build CSS:**
+   ```bash
+   npm run css:build
+   ```
+
+6. **Include your custom CSS:**
+   ```html
+   <link rel="stylesheet" href="{% static 'css/adalex-ui.css' %}">
+   ```
+
+### Option 3: Django-Compressor Integration
+
+For automatic SCSS compilation in Django:
+
+1. **Install django-compressor and django-sass-processor:**
+   ```bash
+   pip install django-compressor django-sass-processor
+   ```
+
+2. **Configure in `settings.py`:**
+   ```python
+   INSTALLED_APPS = [
+       # ... other apps
+       'adalex_ui',
+       'compressor',
+       'sass_processor',
+   ]
+
+   STATICFILES_FINDERS = [
+       'django.contrib.staticfiles.finders.FileSystemFinder',
+       'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+       'sass_processor.finders.CssFinder',
+   ]
+
+   SASS_PROCESSOR_ROOT = STATIC_ROOT
+   ```
+
+3. **Use in templates:**
+   ```html
+   {% load sass_tags %}
+   <link rel="stylesheet" href="{% sass_src 'a-ui/scss/main.scss' %}">
    ```
 
 ## Development Principles
