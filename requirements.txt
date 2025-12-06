@@ -1,11 +1,11 @@
 # Adalex UI - Python Dependencies
 
 # Core Framework
-Django>=4.2,<5.0
+Django>=5.0,<6.0
 
 # Development & Testing
-pytest>=7.0
-pytest-django>=4.5
+pytest>=8.0
+pytest-django>=4.8
 
 # Optional: For enhanced development experience
-django-debug-toolbar>=4.0
+django-debug-toolbar>=4.3
