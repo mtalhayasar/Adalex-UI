@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} - Adalex UI</title>
+  <link rel="stylesheet" href="{% static 'a-ui/css/main.css' %}">
+  <style>
+    body {
+      font-family: var(--font-family-base);
+      padding: var(--spacing-2xl);
+      background: var(--neutral-50);
+      color: var(--text-primary);
+    }
+    .demo-header {
+      margin-bottom: var(--spacing-2xl);
+      padding-bottom: var(--spacing-lg);
+      border-bottom: 2px solid var(--border-light);
+    }
+    .demo-header h1 {
+      margin: 0 0 var(--spacing-sm) 0;
+      font-size: var(--font-size-3xl);
+      font-weight: var(--font-weight-bold);
+      color: var(--text-primary);
+    }
+    .demo-header p {
+      margin: 0;
+      font-size: var(--font-size-lg);
+      color: var(--text-secondary);
+    }
+    .demo-section {
+      margin-bottom: var(--spacing-2xl);
+      padding: var(--spacing-xl);
+      background: var(--neutral-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+    }
+    .demo-section h2 {
+      margin: 0 0 var(--spacing-md) 0;
+      font-size: var(--font-size-2xl);
+      font-weight: var(--font-weight-semibold);
+      color: var(--text-primary);
+    }
+    .demo-section p {
+      margin: 0 0 var(--spacing-lg) 0;
+      color: var(--text-secondary);
+    }
+    .demo-example--full {
+      margin-left: -2rem;
+      margin-right: -2rem;
+    }
+    .demo-features {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: var(--spacing-sm);
+    }
+    .demo-features li {
+      padding: var(--spacing-sm);
+      background: var(--neutral-50);
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+    }
+    @media (max-width: 768px) {
+      body {
+        padding: var(--spacing-lg);
+      }
+      .demo-example--full {
+        margin-left: -1rem;
+        margin-right: -1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-header">
+    <h1>{{ title }}</h1>
+    <p>{{ description }}</p>
+  </div>
+
+  <div class="demo-section">
+    <h2>Default Carousel</h2>
+    <p>Standard image carousel with navigation arrows and indicators</p>
+    
+    {% include 'components/carousel.html' with id='carousel-default' items=default_items variant='default' show_indicators=True show_arrows=True loop=True %}
+  </div>
+
+  <div class="demo-section">
+    <h2>Hero Carousel</h2>
+    <p>Full-width carousel with overlay text and call-to-action buttons</p>
+    
+    <div class="demo-example--full">
+      {% include 'components/carousel.html' with id='carousel-hero' items=hero_items variant='hero' autoplay=True autoplay_interval=7000 show_indicators=True show_arrows=True loop=True %}
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Card Carousel</h2>
+    <p>Carousel displaying multiple cards simultaneously</p>
+    
+    {% include 'components/carousel.html' with id='carousel-cards' items=card_items variant='card' slides_per_view=3 show_indicators=True show_arrows=True loop=True %}
+  </div>
+
+  <div class="demo-section">
+    <h2>Thumbnail Carousel</h2>
+    <p>Gallery carousel with thumbnail navigation at the bottom</p>
+    
+    {% include 'components/carousel.html' with id='carousel-thumbnail' items=thumbnail_items variant='thumbnail' show_indicators=False show_arrows=True loop=True %}
+  </div>
+
+  <div class="demo-section">
+    <h2>Autoplay Carousel</h2>
+    <p>Carousel with automatic slide progression and pause on hover</p>
+    
+    {% include 'components/carousel.html' with id='carousel-autoplay' items=default_items variant='default' autoplay=True autoplay_interval=3000 show_indicators=True show_arrows=True loop=True %}
+  </div>
+
+  <div class="demo-section">
+    <h2>Multiple Slides View</h2>
+    <p>Display 2 slides at once on desktop</p>
+    
+    {% include 'components/carousel.html' with id='carousel-multi' items=default_items variant='default' slides_per_view=2 show_indicators=True show_arrows=True loop=False %}
+  </div>
+
+  <div class="demo-section">
+    <h2>Features</h2>
+    <ul class="demo-features">
+      <li>Touch/swipe support for mobile devices</li>
+      <li>Keyboard navigation (Arrow Left/Right, Space for play/pause)</li>
+      <li>Multiple variants: default, hero, card, thumbnail</li>
+      <li>Autoplay with customizable interval</li>
+      <li>Loop option for continuous navigation</li>
+      <li>Multiple slides per view option</li>
+      <li>ARIA labels for accessibility</li>
+      <li>Pause autoplay on hover</li>
+      <li>Smooth transitions with CSS animations</li>
+      <li>Responsive design for all screen sizes</li>
+      <li>HTMX compatible with idempotent initialization</li>
+      <li>Custom events: carousel:change, carousel:slide-start, carousel:slide-end</li>
+    </ul>
+  </div>
+
+  <!-- Load JavaScript -->
+  <script src="{% static 'a-ui/js/components/carousel.js' %}"></script>
+  <script src="{% static 'a-ui/js/main.js' %}"></script>
+</body>
+</html>

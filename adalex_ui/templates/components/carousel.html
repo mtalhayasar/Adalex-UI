@@ -1,0 +1,164 @@
+{% load a_ui_tags %}
+
+<div class="a-carousel a-carousel--{{ variant|default:'default' }}" 
+     id="{{ id }}"
+     data-autoplay="{{ autoplay|default:False|lower }}"
+     data-autoplay-interval="{{ autoplay_interval|default:5000 }}"
+     data-loop="{{ loop|default:True|lower }}"
+     data-slides-per-view="{{ slides_per_view|default:1 }}"
+     role="region"
+     aria-roledescription="carousel"
+     aria-label="{{ aria_label|default:'Image carousel' }}">
+    
+    <div class="a-carousel__container">
+        <div class="a-carousel__track">
+            {% for item in items %}
+            <div class="a-carousel__slide"
+                 role="group"
+                 aria-roledescription="slide"
+                 aria-label="Slide {{ forloop.counter }} of {{ items|length }}"
+                 {% if forloop.first %}data-active="true"{% endif %}>
+                
+                {% if variant == 'hero' %}
+                    <div class="a-carousel__slide-hero">
+                        <img src="{{ item.image_url }}" 
+                             alt="{{ item.alt }}"
+                             class="a-carousel__image a-carousel__image--hero" />
+                        {% if item.title or item.description %}
+                        <div class="a-carousel__overlay">
+                            {% if item.title %}
+                            <h2 class="a-carousel__overlay-title">{{ item.title }}</h2>
+                            {% endif %}
+                            {% if item.description %}
+                            <p class="a-carousel__overlay-description">{{ item.description }}</p>
+                            {% endif %}
+                            {% if item.link %}
+                            <a href="{{ item.link }}" class="a-carousel__overlay-link">
+                                {% include 'components/button.html' with text='Learn More' variant='secondary' size='medium' %}
+                            </a>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                {% elif variant == 'card' %}
+                    <div class="a-carousel__slide-card">
+                        <div class="a-card a-card--default">
+                            <img src="{{ item.image_url }}" 
+                                 alt="{{ item.alt }}"
+                                 class="a-carousel__card-image" />
+                            {% if item.title or item.description %}
+                            <div class="a-card__body">
+                                {% if item.title %}
+                                <h3 class="a-card__title">{{ item.title }}</h3>
+                                {% endif %}
+                                {% if item.description %}
+                                <div class="a-card__content">{{ item.description }}</div>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                            {% if item.link %}
+                            <div class="a-card__footer">
+                                <a href="{{ item.link }}" class="a-carousel__card-link">
+                                    {% include 'components/button.html' with text='View Details' variant='primary' size='sm' %}
+                                </a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                {% elif variant == 'thumbnail' %}
+                    <div class="a-carousel__slide-thumbnail">
+                        <img src="{{ item.image_url }}" 
+                             alt="{{ item.alt }}"
+                             class="a-carousel__image a-carousel__image--thumbnail" />
+                        {% if item.title %}
+                        <div class="a-carousel__caption">
+                            <span class="a-carousel__caption-title">{{ item.title }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                {% else %}
+                    {% if item.link %}
+                    <a href="{{ item.link }}" class="a-carousel__slide-link">
+                    {% endif %}
+                        <img src="{{ item.image_url }}" 
+                             alt="{{ item.alt }}"
+                             class="a-carousel__image" />
+                        {% if item.title or item.description %}
+                        <div class="a-carousel__content">
+                            {% if item.title %}
+                            <h3 class="a-carousel__title">{{ item.title }}</h3>
+                            {% endif %}
+                            {% if item.description %}
+                            <p class="a-carousel__description">{{ item.description }}</p>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    {% if item.link %}
+                    </a>
+                    {% endif %}
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        
+        {% if show_arrows|default:True %}
+        <button class="a-carousel__arrow a-carousel__arrow--prev"
+                aria-label="Previous slide"
+                type="button">
+            {% include 'components/icon.html' with name='chevron-left' size='medium' %}
+        </button>
+        <button class="a-carousel__arrow a-carousel__arrow--next"
+                aria-label="Next slide"
+                type="button">
+            {% include 'components/icon.html' with name='chevron-right' size='medium' %}
+        </button>
+        {% endif %}
+        
+        {% if autoplay %}
+        <button class="a-carousel__play-pause"
+                aria-label="Pause carousel"
+                data-playing="true"
+                type="button">
+            <span class="a-carousel__play-icon">
+                {% include 'components/icon.html' with name='play' size='small' %}
+            </span>
+            <span class="a-carousel__pause-icon">
+                {% include 'components/icon.html' with name='pause' size='small' %}
+            </span>
+        </button>
+        {% endif %}
+    </div>
+    
+    {% if show_indicators|default:True %}
+    <div class="a-carousel__indicators" role="tablist">
+        {% for item in items %}
+        <button class="a-carousel__indicator {% if forloop.first %}a-carousel__indicator--active{% endif %}"
+                aria-label="Go to slide {{ forloop.counter }}"
+                {% if forloop.first %}aria-current="true"{% endif %}
+                data-slide="{{ forloop.counter0 }}"
+                role="tab"
+                type="button">
+            <span class="a-carousel__indicator-dot"></span>
+        </button>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    {% if variant == 'thumbnail' %}
+    <div class="a-carousel__thumbnails">
+        {% for item in items %}
+        <button class="a-carousel__thumbnail-item {% if forloop.first %}a-carousel__thumbnail-item--active{% endif %}"
+                data-slide="{{ forloop.counter0 }}"
+                aria-label="View slide {{ forloop.counter }}"
+                type="button">
+            <img src="{{ item.image_url }}" 
+                 alt="Thumbnail {{ forloop.counter }}: {{ item.alt }}"
+                 class="a-carousel__thumbnail-image" />
+        </button>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>

@@ -791,3 +791,163 @@ def accessibility_demo(request):
         'description': 'Comprehensive keyboard navigation and screen reader support for all components',
     }
     return render(request, 'demo/accessibility_demo.html', context)
+
+
+def carousel_demo(request):
+    """
+    Demo view for Carousel/Slider component.
+
+    Args:
+        request: Django HTTP request object
+
+    Returns:
+        Rendered template showcasing Carousel component in all variants
+    """
+    # Sample image items for default carousel
+    default_items = [
+        {
+            'image_url': 'https://picsum.photos/800/400?random=1',
+            'alt': 'Beautiful landscape',
+            'title': 'Explore Nature',
+            'description': 'Discover breathtaking landscapes from around the world',
+        },
+        {
+            'image_url': 'https://picsum.photos/800/400?random=2',
+            'alt': 'Modern architecture',
+            'title': 'Urban Design',
+            'description': 'Experience modern architectural marvels',
+        },
+        {
+            'image_url': 'https://picsum.photos/800/400?random=3',
+            'alt': 'Technology workspace',
+            'title': 'Innovation Hub',
+            'description': 'Where creativity meets technology',
+        },
+        {
+            'image_url': 'https://picsum.photos/800/400?random=4',
+            'alt': 'Ocean view',
+            'title': 'Coastal Dreams',
+            'description': 'Relax with stunning ocean views',
+        },
+        {
+            'image_url': 'https://picsum.photos/800/400?random=5',
+            'alt': 'Mountain peaks',
+            'title': 'Summit Adventures',
+            'description': 'Reach new heights with mountain expeditions',
+        },
+    ]
+    
+    # Hero carousel items with call-to-action
+    hero_items = [
+        {
+            'image_url': 'https://picsum.photos/1200/500?random=11',
+            'alt': 'Hero banner 1',
+            'title': 'Welcome to Adalex UI',
+            'description': 'Build beautiful Django applications with our comprehensive component library',
+            'link': '#get-started',
+        },
+        {
+            'image_url': 'https://picsum.photos/1200/500?random=12',
+            'alt': 'Hero banner 2',
+            'title': 'Responsive & Modern',
+            'description': 'Every component is designed to work seamlessly across all devices',
+            'link': '#features',
+        },
+        {
+            'image_url': 'https://picsum.photos/1200/500?random=13',
+            'alt': 'Hero banner 3',
+            'title': 'Built for Developers',
+            'description': 'Clean, semantic HTML with comprehensive documentation',
+            'link': '#documentation',
+        },
+    ]
+    
+    # Card carousel items
+    card_items = [
+        {
+            'image_url': 'https://picsum.photos/400/250?random=21',
+            'alt': 'Product 1',
+            'title': 'Premium Laptop',
+            'description': 'High-performance laptop with latest specifications for professionals',
+            'link': '#product-1',
+        },
+        {
+            'image_url': 'https://picsum.photos/400/250?random=22',
+            'alt': 'Product 2',
+            'title': 'Wireless Headphones',
+            'description': 'Premium sound quality with active noise cancellation',
+            'link': '#product-2',
+        },
+        {
+            'image_url': 'https://picsum.photos/400/250?random=23',
+            'alt': 'Product 3',
+            'title': 'Smart Watch',
+            'description': 'Track your fitness and stay connected on the go',
+            'link': '#product-3',
+        },
+        {
+            'image_url': 'https://picsum.photos/400/250?random=24',
+            'alt': 'Product 4',
+            'title': 'Camera Pro',
+            'description': 'Capture stunning photos with professional-grade equipment',
+            'link': '#product-4',
+        },
+        {
+            'image_url': 'https://picsum.photos/400/250?random=25',
+            'alt': 'Product 5',
+            'title': 'Gaming Console',
+            'description': 'Next-generation gaming experience with 4K graphics',
+            'link': '#product-5',
+        },
+        {
+            'image_url': 'https://picsum.photos/400/250?random=26',
+            'alt': 'Product 6',
+            'title': 'Tablet Pro',
+            'description': 'Versatile tablet for work and entertainment',
+            'link': '#product-6',
+        },
+    ]
+    
+    # Thumbnail carousel items
+    thumbnail_items = [
+        {
+            'image_url': 'https://picsum.photos/600/400?random=31',
+            'alt': 'Gallery image 1',
+            'title': 'Sunset',
+        },
+        {
+            'image_url': 'https://picsum.photos/600/400?random=32',
+            'alt': 'Gallery image 2',
+            'title': 'City Lights',
+        },
+        {
+            'image_url': 'https://picsum.photos/600/400?random=33',
+            'alt': 'Gallery image 3',
+            'title': 'Forest Path',
+        },
+        {
+            'image_url': 'https://picsum.photos/600/400?random=34',
+            'alt': 'Gallery image 4',
+            'title': 'Beach View',
+        },
+        {
+            'image_url': 'https://picsum.photos/600/400?random=35',
+            'alt': 'Gallery image 5',
+            'title': 'Mountain Lake',
+        },
+        {
+            'image_url': 'https://picsum.photos/600/400?random=36',
+            'alt': 'Gallery image 6',
+            'title': 'Desert Dunes',
+        },
+    ]
+    
+    context = {
+        'title': 'Carousel Component',
+        'description': 'Interactive image carousel with multiple variants and features',
+        'default_items': default_items,
+        'hero_items': hero_items,
+        'card_items': card_items,
+        'thumbnail_items': thumbnail_items,
+    }
+    return render(request, 'demo/carousel_demo.html', context)

@@ -251,6 +251,18 @@
         {% include "components/badge.html" with text="WCAG 2.1 AA" variant="success" size="sm" %}
       </div>
     </a>
+
+    <!-- Carousel Component -->
+    <a href="{% url 'demo:carousel_demo' %}" class="component-card">
+      <h2>Carousel/Slider</h2>
+      <p>Interactive image carousel with multiple variants, touch support, and autoplay.</p>
+      <div class="badge-list">
+        {% include "components/badge.html" with text="Touch/Swipe" variant="primary" size="sm" %}
+        {% include "components/badge.html" with text="Autoplay" variant="primary" size="sm" %}
+        {% include "components/badge.html" with text="Hero" variant="success" size="sm" %}
+        {% include "components/badge.html" with text="Thumbnails" variant="success" size="sm" %}
+      </div>
+    </a>
   </div>
 
   <div class="footer">

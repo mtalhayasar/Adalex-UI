@@ -22,4 +22,5 @@ urlpatterns = [
     path('filter/', views.filter_demo, name='filter_demo'),
     path('loading/', views.loading_demo, name='loading_demo'),
     path('accessibility/', views.accessibility_demo, name='accessibility_demo'),
+    path('carousel/', views.carousel_demo, name='carousel_demo'),
 ]

@@ -41,6 +41,7 @@
     const components = [
       { name: 'Alert', init: () => window.AdalexUI.Alert?.init?.() },
       { name: 'Auth', init: () => window.AdalexUI.Auth?.init?.() },
+      { name: 'Carousel', init: () => window.initCarousels?.() },
       { name: 'ConfirmDialog', init: () => window.AdalexUI.ConfirmDialog?.init?.() },
       { name: 'Drawer', init: () => window.AdalexUI.Drawer?.init?.() },
       { 

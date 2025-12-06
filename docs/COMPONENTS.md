@@ -2686,6 +2686,255 @@ Dynamic content uses appropriate `aria-live` regions:
 
 ---
 
+## Carousel Component
+
+### Overview
+Interactive image carousel/slider with multiple variants, touch support, keyboard navigation, and autoplay functionality.
+
+### Parameters
+
+| Parameter | Type | Default | Required | Description |
+|-----------|------|---------|----------|-------------|
+| `id` | string | - | Yes | Unique carousel identifier |
+| `items` | list | - | Yes | List of carousel items (see item structure below) |
+| `autoplay` | boolean | False | No | Enable automatic slide progression |
+| `autoplay_interval` | number | 5000 | No | Autoplay interval in milliseconds |
+| `show_indicators` | boolean | True | No | Show slide indicator dots |
+| `show_arrows` | boolean | True | No | Show navigation arrows |
+| `loop` | boolean | True | No | Enable continuous loop navigation |
+| `slides_per_view` | number | 1 | No | Number of slides visible at once (1, 2, or 3) |
+| `variant` | string | 'default' | No | Carousel variant (default, hero, card, thumbnail) |
+| `aria_label` | string | 'Image carousel' | No | Accessibility label for the carousel |
+
+### Item Structure
+
+Each item in the `items` list should have:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `image_url` | string | Yes | URL of the image to display |
+| `alt` | string | Yes | Alternative text for the image |
+| `title` | string | No | Title text (displayed in some variants) |
+| `description` | string | No | Description text (displayed in some variants) |
+| `link` | string | No | Optional link URL |
+
+### Variants
+
+#### Default
+Standard image carousel with optional title and description below the image.
+
+```django
+{% include 'components/carousel.html' with 
+  id='carousel-1'
+  items=product_images
+  variant='default'
+  autoplay=False
+  show_indicators=True
+  show_arrows=True
+%}
+```
+
+#### Hero
+Full-width carousel with overlay text and call-to-action buttons. Perfect for landing page banners.
+
+```django
+{% include 'components/carousel.html' with 
+  id='hero-carousel'
+  items=hero_slides
+  variant='hero'
+  autoplay=True
+  autoplay_interval=7000
+  loop=True
+%}
+```
+
+#### Card
+Carousel displaying multiple card components simultaneously. Great for product showcases.
+
+```django
+{% include 'components/carousel.html' with 
+  id='product-carousel'
+  items=products
+  variant='card'
+  slides_per_view=3
+  show_indicators=True
+  show_arrows=True
+%}
+```
+
+#### Thumbnail
+Gallery-style carousel with thumbnail navigation at the bottom instead of dot indicators.
+
+```django
+{% include 'components/carousel.html' with 
+  id='gallery'
+  items=gallery_images
+  variant='thumbnail'
+  show_indicators=False
+  show_arrows=True
+%}
+```
+
+### JavaScript API
+
+```javascript
+// Get carousel instance
+const carousel = document.querySelector('#my-carousel');
+const instance = carousel.adalexCarousel;
+
+// Navigate programmatically
+instance.next();
+instance.prev();
+instance.goToSlide(2);
+
+// Control autoplay
+instance.togglePlayPause();
+instance.startAutoplay();
+instance.pauseAutoplay();
+
+// Listen to events
+carousel.addEventListener('carousel:change', (e) => {
+  console.log('Current slide:', e.detail.index);
+});
+
+carousel.addEventListener('carousel:slide-start', (e) => {
+  console.log('Sliding from', e.detail.from, 'to', e.detail.to);
+});
+
+carousel.addEventListener('carousel:slide-end', (e) => {
+  console.log('Slide complete');
+});
+```
+
+### Features
+
+#### Touch/Swipe Support
+- Natural swipe gestures on mobile devices
+- Mouse drag support on desktop
+- Smooth transitions with momentum
+
+#### Keyboard Navigation
+- `Arrow Left`: Previous slide
+- `Arrow Right`: Next slide
+- `Space`: Toggle play/pause (when autoplay is enabled)
+
+#### Autoplay Controls
+- Automatic pause on hover
+- Play/pause button when autoplay is enabled
+- Respects `prefers-reduced-motion` preference
+
+#### Responsive Design
+- Single slide on mobile by default
+- Multiple slides on larger screens (when configured)
+- Touch-friendly navigation controls
+
+### Accessibility
+
+- **ARIA Labels**: Complete carousel region labeling
+- **Role Descriptions**: Proper carousel and slide roles
+- **Current State**: `aria-current` on active indicator
+- **Live Regions**: Announcements for slide changes
+- **Keyboard Support**: Full keyboard navigation
+- **Focus Management**: Proper focus trap when interacting
+- **Reduced Motion**: Respects user preference for reduced motion
+
+### Usage Examples
+
+#### Basic Image Slider
+```django
+{% with images=product.images.all %}
+  {% include 'components/carousel.html' with 
+    id='product-images'
+    items=images
+    variant='default'
+    show_indicators=True
+    show_arrows=True
+    loop=True
+  %}
+{% endwith %}
+```
+
+#### Hero Banner with Autoplay
+```django
+{% include 'components/carousel.html' with 
+  id='homepage-hero'
+  items=hero_banners
+  variant='hero'
+  autoplay=True
+  autoplay_interval=5000
+  show_indicators=True
+  show_arrows=False
+%}
+```
+
+#### Product Showcase (Multiple Cards)
+```django
+{% include 'components/carousel.html' with 
+  id='featured-products'
+  items=featured_products
+  variant='card'
+  slides_per_view=3
+  show_indicators=False
+  show_arrows=True
+  loop=True
+%}
+```
+
+#### Image Gallery with Thumbnails
+```django
+{% include 'components/carousel.html' with 
+  id='property-gallery'
+  items=property_photos
+  variant='thumbnail'
+  show_indicators=False
+  show_arrows=True
+  loop=False
+%}
+```
+
+### CSS Customization
+
+The carousel component uses design tokens for all colors and styling:
+
+```scss
+// Override carousel styles
+.a-carousel {
+  // Custom height for hero variant
+  &--hero .a-carousel__image--hero {
+    height: 600px;
+  }
+  
+  // Custom indicator styles
+  &__indicator-dot {
+    background: var(--primary-main);
+  }
+  
+  // Custom arrow styles
+  &__arrow {
+    background: var(--neutral-white-90);
+    
+    &:hover {
+      background: var(--neutral-white);
+    }
+  }
+}
+```
+
+### Best Practices
+
+1. **Always provide meaningful alt text** for all images
+2. **Use appropriate variant** for your use case
+3. **Consider autoplay carefully** - avoid for critical content
+4. **Test touch interactions** on mobile devices
+5. **Provide sufficient contrast** for overlay text in hero variant
+6. **Keep slide counts reasonable** for performance
+7. **Use lazy loading** for images when appropriate
+8. **Test keyboard navigation** thoroughly
+9. **Ensure sufficient time** for users to read content when using autoplay
+10. **Provide pause controls** when autoplay is enabled
+
+---
+
 ## Browser Support
 
 - Chrome/Edge 90+
