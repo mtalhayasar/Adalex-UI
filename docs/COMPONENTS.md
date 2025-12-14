@@ -2734,7 +2734,7 @@ Interactive image carousel/slider with multiple variants, touch support, keyboar
 | `show_arrows` | boolean | True | No | Show navigation arrows |
 | `loop` | boolean | True | No | Enable continuous loop navigation |
 | `slides_per_view` | number | 1 | No | Number of slides visible at once (1, 2, or 3) |
-| `variant` | string | 'default' | No | Carousel variant (default, hero, card, thumbnail) |
+| `variant` | string | 'default' | No | Carousel variant (default, hero, card, text-card, thumbnail) |
 | `aria_label` | string | 'Image carousel' | No | Accessibility label for the carousel |
 
 ### Item Structure
@@ -2743,11 +2743,15 @@ Each item in the `items` list should have:
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `image_url` | string | Yes | URL of the image to display |
-| `alt` | string | Yes | Alternative text for the image |
+| `image_url` | string | Conditional | URL of the image to display (required for default, hero, card, thumbnail variants) |
+| `alt` | string | Conditional | Alternative text for the image (required when image_url is provided) |
 | `title` | string | No | Title text (displayed in some variants) |
 | `description` | string | No | Description text (displayed in some variants) |
+| `metadata` | string | No | Additional metadata text (displayed in text-card variant) |
+| `button_text` | string | No | Custom text for action buttons (defaults to "Learn More") |
 | `link` | string | No | Optional link URL |
+
+**Note:** For the `text-card` variant, `image_url` and `alt` are not required as this variant displays text content only.
 
 ### Variants
 
@@ -2788,6 +2792,20 @@ Carousel displaying multiple card components simultaneously. Great for product s
   items=products
   variant='card'
   slides_per_view=3
+  show_indicators=True
+  show_arrows=True
+%}
+```
+
+#### Text Card
+Card-based carousel without images, displaying text content only. Perfect for testimonials, quotes, or content cards.
+
+```django
+{% include 'components/carousel.html' with 
+  id='testimonials-carousel'
+  items=testimonials
+  variant='text-card'
+  slides_per_view=2
   show_indicators=True
   show_arrows=True
 %}

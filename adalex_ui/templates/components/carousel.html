@@ -67,6 +67,30 @@
                         </div>
                     </div>
                     
+                {% elif variant == 'text-card' %}
+                    <div class="a-carousel__slide-text-card">
+                        <div class="a-card a-card--text">
+                            <div class="a-card__body">
+                                {% if item.title %}
+                                <h3 class="a-card__title">{{ item.title }}</h3>
+                                {% endif %}
+                                {% if item.description %}
+                                <div class="a-card__content">{{ item.description }}</div>
+                                {% endif %}
+                                {% if item.metadata %}
+                                <div class="a-card__metadata">{{ item.metadata }}</div>
+                                {% endif %}
+                            </div>
+                            {% if item.link %}
+                            <div class="a-card__footer">
+                                <a href="{{ item.link }}" class="a-carousel__text-card-link">
+                                    {% include 'components/button.html' with text=item.button_text|default:'Learn More' variant='primary' size='sm' %}
+                                </a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
                 {% elif variant == 'thumbnail' %}
                     <div class="a-carousel__slide-thumbnail">
                         <img src="{{ item.image_url }}" 
@@ -104,7 +128,7 @@
             {% endfor %}
         </div>
         
-        {% if show_arrows|default:True %}
+        {% if show_arrows != False %}
         <button class="a-carousel__arrow a-carousel__arrow--prev"
                 aria-label="Previous slide"
                 type="button">
@@ -132,7 +156,7 @@
         {% endif %}
     </div>
     
-    {% if show_indicators|default:True %}
+    {% if show_indicators != False %}
     <div class="a-carousel__indicators" role="tablist">
         {% for item in items %}
         <button class="a-carousel__indicator {% if forloop.first %}a-carousel__indicator--active{% endif %}"

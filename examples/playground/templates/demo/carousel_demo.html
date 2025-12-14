@@ -106,6 +106,13 @@
   </div>
 
   <div class="demo-section">
+    <h2>Text Card Carousel</h2>
+    <p>Card-based carousel without images, perfect for testimonials and quotes</p>
+    
+    {% include 'components/carousel.html' with id='carousel-text-cards' items=text_card_items variant='text-card' slides_per_view=2 show_indicators=True show_arrows=True loop=True %}
+  </div>
+
+  <div class="demo-section">
     <h2>Thumbnail Carousel</h2>
     <p>Gallery carousel with thumbnail navigation at the bottom</p>
     
@@ -127,11 +134,18 @@
   </div>
 
   <div class="demo-section">
+    <h2>Arrow-less Carousel</h2>
+    <p>Clean carousel with indicators only, no navigation arrows</p>
+    
+    {% include 'components/carousel.html' with id='carousel-no-arrows' items=text_card_items variant='text-card' slides_per_view=1 show_indicators=True show_arrows=False autoplay=True autoplay_interval=4000 loop=True %}
+  </div>
+
+  <div class="demo-section">
     <h2>Features</h2>
     <ul class="demo-features">
       <li>Touch/swipe support for mobile devices</li>
       <li>Keyboard navigation (Arrow Left/Right, Space for play/pause)</li>
-      <li>Multiple variants: default, hero, card, thumbnail</li>
+      <li>Multiple variants: default, hero, card, text-card, thumbnail</li>
       <li>Autoplay with customizable interval</li>
       <li>Loop option for continuous navigation</li>
       <li>Multiple slides per view option</li>

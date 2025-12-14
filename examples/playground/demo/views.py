@@ -959,12 +959,52 @@ def carousel_demo(request):
         },
     ]
     
+    # Text card carousel items (without images)
+    text_card_items = [
+        {
+            'title': 'Customer Review',
+            'description': '"Adalex UI has completely transformed how we build our Django applications. The components are beautifully designed and incredibly easy to integrate."',
+            'metadata': 'Sarah Johnson - Lead Developer',
+            'button_text': 'Read More',
+            'link': '#review-1',
+        },
+        {
+            'title': 'Performance Boost',
+            'description': '"We reduced our development time by 40% after implementing Adalex UI. The consistent design system made our workflow much more efficient."',
+            'metadata': 'Mike Chen - CTO',
+            'button_text': 'View Case Study',
+            'link': '#case-study-1',
+        },
+        {
+            'title': 'Team Testimonial',
+            'description': '"The accessibility features are outstanding. Our applications now meet WCAG 2.1 AA standards out of the box. Highly recommended!"',
+            'metadata': 'Alex Rodriguez - UX Designer',
+            'button_text': 'Learn More',
+            'link': '#testimonial-1',
+        },
+        {
+            'title': 'Success Story',
+            'description': '"From prototype to production in record time. Adalex UI components helped us launch our MVP three weeks ahead of schedule."',
+            'metadata': 'Jessica Wang - Product Manager',
+            'button_text': 'View Story',
+            'link': '#success-1',
+        },
+        {
+            'title': 'Developer Experience',
+            'description': '"The documentation is comprehensive and the components just work. No more fighting with CSS or wondering about browser compatibility."',
+            'metadata': 'David Smith - Frontend Developer',
+            'button_text': 'Explore Docs',
+            'link': '#docs',
+        },
+    ]
+    
     context = {
         'title': 'Carousel Component',
         'description': 'Interactive image carousel with multiple variants and features',
         'default_items': default_items,
         'hero_items': hero_items,
         'card_items': card_items,
+        'text_card_items': text_card_items,
         'thumbnail_items': thumbnail_items,
     }
     return render(request, 'demo/carousel_demo.html', context)
