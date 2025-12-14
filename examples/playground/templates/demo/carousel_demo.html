@@ -141,6 +141,13 @@
   </div>
 
   <div class="demo-section">
+    <h2>Autoplay Without Controls</h2>
+    <p>Autoplay enabled but play/pause button hidden for cleaner interface</p>
+    
+    {% include 'components/carousel.html' with id='carousel-autoplay-hidden' items=default_items variant='default' autoplay=True autoplay_interval=3500 show_play_button=False show_indicators=True show_arrows=True loop=True %}
+  </div>
+
+  <div class="demo-section">
     <h2>Features</h2>
     <ul class="demo-features">
       <li>Touch/swipe support for mobile devices</li>

@@ -3,7 +3,7 @@
 <div class="a-carousel a-carousel--{{ variant|default:'default' }}" 
      id="{{ id }}"
      data-autoplay="{{ autoplay|default:False|lower }}"
-     data-autoplay-interval="{{ autoplay_interval|default:5000 }}"
+     data-auto play-interval="{{ autoplay_interval|default:5000 }}"
      data-loop="{{ loop|default:True|lower }}"
      data-slides-per-view="{{ slides_per_view|default:1 }}"
      role="region"
@@ -141,7 +141,7 @@
         </button>
         {% endif %}
         
-        {% if autoplay %}
+        {% if autoplay and show_play_button != False %}
         <button class="a-carousel__play-pause"
                 aria-label="Pause carousel"
                 data-playing="true"

@@ -2732,6 +2732,7 @@ Interactive image carousel/slider with multiple variants, touch support, keyboar
 | `autoplay_interval` | number | 5000 | No | Autoplay interval in milliseconds |
 | `show_indicators` | boolean | True | No | Show slide indicator dots |
 | `show_arrows` | boolean | True | No | Show navigation arrows |
+| `show_play_button` | boolean | True | No | Show autoplay control button (only when autoplay=True) |
 | `loop` | boolean | True | No | Enable continuous loop navigation |
 | `slides_per_view` | number | 1 | No | Number of slides visible at once (1, 2, or 3) |
 | `variant` | string | 'default' | No | Carousel variant (default, hero, card, text-card, thumbnail) |
