@@ -1,0 +1,51 @@
+<div
+  class="a-dropdown a-dropdown--{{ variant|default:'default' }}"
+  data-dropdown
+  id="{{ id }}"
+>
+  <button
+    class="a-dropdown__trigger"
+    type="button"
+    aria-haspopup="true"
+    aria-expanded="false"
+    aria-controls="{{ id }}-menu"
+    data-dropdown-trigger
+  >
+    {% if trigger_icon %}
+      <span class="a-dropdown__trigger-icon">
+        {% include "components/icon.html" with name=trigger_icon size="20" %}
+      </span>
+    {% endif %}
+    <span class="a-dropdown__trigger-text">{{ trigger_text }}</span>
+    <span class="a-dropdown__chevron" aria-hidden="true">
+      {% include "components/icon.html" with name="chevron-down" size="16" %}
+    </span>
+  </button>
+  <div
+    class="a-dropdown__menu a-dropdown__menu--{{ position|default:'bottom-start' }}"
+    id="{{ id }}-menu"
+    role="menu"
+    aria-labelledby="{{ id }}"
+    hidden
+  >
+    {% for item in items %}
+      {% if item.divider %}
+        <div class="a-dropdown__divider" role="separator"></div>
+      {% else %}
+        <a
+          href="{{ item.url|default:'#' }}"
+          class="a-dropdown__item{% if item.disabled %} a-dropdown__item--disabled{% endif %}"
+          role="menuitem"
+          {% if item.disabled %}aria-disabled="true" tabindex="-1"{% else %}tabindex="0"{% endif %}
+        >
+          {% if item.icon %}
+            <span class="a-dropdown__item-icon">
+              {% include "components/icon.html" with name=item.icon size="16" %}
+            </span>
+          {% endif %}
+          <span class="a-dropdown__item-text">{{ item.text }}</span>
+        </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>

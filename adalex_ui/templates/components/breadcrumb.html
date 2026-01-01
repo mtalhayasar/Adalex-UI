@@ -1,0 +1,19 @@
+<nav
+  class="a-breadcrumb"
+  aria-label="{{ aria_label|default:'Breadcrumb' }}"
+>
+  <ol class="a-breadcrumb__list">
+    {% for item in items %}
+      <li class="a-breadcrumb__item{% if item.active %} a-breadcrumb__item--active{% endif %}">
+        {% if item.active %}
+          <span class="a-breadcrumb__text" aria-current="page">{{ item.text }}</span>
+        {% else %}
+          <a href="{{ item.url }}" class="a-breadcrumb__link">{{ item.text }}</a>
+        {% endif %}
+        {% if not forloop.last %}
+          <span class="a-breadcrumb__separator" aria-hidden="true">{{ separator|default:'/' }}</span>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ol>
+</nav>

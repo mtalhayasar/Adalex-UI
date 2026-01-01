@@ -23,8 +23,11 @@
 
 /* === Components === */
 /* Component styles will be imported here as they are created */
+@use 'components/accordion';
 @use 'components/alert';
+@use 'components/avatar';
 @use 'components/badge';
+@use 'components/breadcrumb';
 @use 'components/button';
 @use 'components/card';
 @use 'components/carousel';
@@ -33,6 +36,8 @@
 @use 'components/datepicker';
 @use 'components/detail_view';
 @use 'components/drawer';
+@use 'components/dropdown';
+@use 'components/empty_state';
 @use 'components/file_upload';
 @use 'components/filter_bar';
 @use 'components/form';
@@ -43,16 +48,21 @@
 @use 'components/navbar';
 @use 'components/notification';
 @use 'components/pagination';
+@use 'components/progress';
 @use 'components/radio';
 @use 'components/register_form';
 @use 'components/select';
 @use 'components/sidebar';
 @use 'components/spinner';
+@use 'components/stat_card';
+@use 'components/stepper';
 @use 'components/switch';
 @use 'components/table';
 @use 'components/tabs';
+@use 'components/tag';
 @use 'components/text_input';
 @use 'components/textarea';
+@use 'components/timeline';
 @use 'components/tooltip';
 @use 'components/loading' as loading;
 

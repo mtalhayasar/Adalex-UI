@@ -1,0 +1,19 @@
+<div class="a-avatar a-avatar--{{ size|default:'md' }} a-avatar--{{ variant|default:'circle' }}{% if status %} a-avatar--has-status{% endif %}">
+  {% if src %}
+    <img
+      src="{{ src }}"
+      alt="{{ alt|default:'Avatar' }}"
+      class="a-avatar__image"
+      loading="lazy"
+    />
+  {% elif initials %}
+    <span class="a-avatar__initials" aria-label="{{ alt|default:initials }}">{{ initials }}</span>
+  {% else %}
+    <span class="a-avatar__placeholder" aria-label="User avatar">
+      {% include "components/icon.html" with name="user" size="24" %}
+    </span>
+  {% endif %}
+  {% if status %}
+    <span class="a-avatar__status a-avatar__status--{{ status }}" aria-label="{{ status }}"></span>
+  {% endif %}
+</div>

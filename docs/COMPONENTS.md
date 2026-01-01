@@ -70,6 +70,22 @@ Complete API reference for all Adalex UI components.
 ### Navigation Components
 - [Navbar](#navbar)
 - [Sidebar](#sidebar)
+- [Breadcrumb](#breadcrumb)
+- [Stepper](#stepper)
+
+### User Components
+- [Avatar](#avatar)
+- [Tag (Chip)](#tag-chip)
+
+### Feedback Components
+- [Progress](#progress)
+- [Timeline](#timeline)
+- [Stat Card](#stat-card)
+- [Empty State](#empty-state)
+
+### Interactive Components
+- [Accordion](#accordion)
+- [Dropdown](#dropdown)
 
 ### Data Components
 - [Table](#table)
@@ -2982,6 +2998,485 @@ The carousel component uses design tokens for all colors and styling:
 8. **Test keyboard navigation** thoroughly
 9. **Ensure sufficient time** for users to read content when using autoplay
 10. **Provide pause controls** when autoplay is enabled
+
+---
+
+## Navigation Components (Extended)
+
+### Breadcrumb
+
+Navigation hierarchy indicator for page structure.
+
+**Template Path:** `components/breadcrumb.html`
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `items` | list | Yes | - | List of breadcrumb item objects (see below) |
+| `separator` | string | No | `"/"` | Separator character between items |
+| `aria_label` | string | No | `"Breadcrumb"` | ARIA label for navigation |
+
+**Item Object:**
+
+| Key | Type | Required | Description |
+|-----|------|----------|-------------|
+| `text` | string | Yes | Link/item text |
+| `url` | string | Conditional | URL (not needed for active item) |
+| `active` | boolean | No | Marks as current page |
+
+**Usage:**
+
+```django
+{% include "components/breadcrumb.html" with
+  items=breadcrumb_items
+  separator="›"
+%}
+```
+
+```python
+# In views.py
+breadcrumb_items = [
+    {'text': 'Home', 'url': '/'},
+    {'text': 'Products', 'url': '/products/'},
+    {'text': 'Electronics', 'url': '/products/electronics/'},
+    {'text': 'Laptops', 'active': True},
+]
+```
+
+**Accessibility:**
+- Uses semantic `<nav>` with `aria-label`
+- Active item has `aria-current="page"`
+- Ordered list structure
+
+---
+
+### Avatar
+
+User profile image or initials display with optional status indicator.
+
+**Template Path:** `components/avatar.html`
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `src` | string | No | - | Image URL |
+| `alt` | string | No | `"Avatar"` | Alternative text for image |
+| `initials` | string | No | - | Initials to display (if no src) |
+| `size` | string | No | `"md"` | Size: `sm`, `md`, `lg`, `xl` |
+| `variant` | string | No | `"circle"` | Shape: `circle`, `square` |
+| `status` | string | No | - | Status indicator: `online`, `offline`, `away`, `busy` |
+
+**Usage:**
+
+```django
+{% include "components/avatar.html" with
+  src="https://example.com/user.jpg"
+  alt="John Doe"
+  size="lg"
+  status="online"
+%}
+
+{% include "components/avatar.html" with
+  initials="JD"
+  size="md"
+  variant="square"
+%}
+```
+
+**Accessibility:**
+- Images have proper `alt` text
+- Status indicators have `aria-label`
+- Initials have `aria-label` fallback
+
+---
+
+### Progress
+
+Horizontal progress bar indicator.
+
+**Template Path:** `components/progress.html`
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `value` | number | Yes | `0` | Current value (0-100) |
+| `max` | number | No | `100` | Maximum value |
+| `variant` | string | No | `"primary"` | Color: `primary`, `secondary`, `success`, `error`, `warning`, `info` |
+| `size` | string | No | `"md"` | Height: `sm`, `md`, `lg` |
+| `show_label` | boolean | No | `False` | Show percentage label |
+| `striped` | boolean | No | `False` | Striped pattern |
+| `animated` | boolean | No | `False` | Animate stripes |
+| `aria_label` | string | No | `"Progress"` | Accessibility label |
+
+**Usage:**
+
+```django
+{% include "components/progress.html" with
+  value=75
+  variant="success"
+  size="md"
+  show_label=True
+%}
+
+{% include "components/progress.html" with
+  value=50
+  variant="primary"
+  striped=True
+  animated=True
+%}
+```
+
+**Accessibility:**
+- Uses `role="progressbar"`
+- Includes `aria-valuenow`, `aria-valuemin`, `aria-valuemax`
+
+---
+
+### Accordion
+
+Expandable/collapsible content panels.
+
+**Template Path:** `components/accordion.html`
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `items` | list | Yes | - | List of accordion item objects |
+| `multiple` | boolean | No | `False` | Allow multiple panels open |
+| `variant` | string | No | `"default"` | Style: `default`, `bordered`, `separated` |
+
+**Item Object:**
+
+| Key | Type | Required | Description |
+|-----|------|----------|-------------|
+| `id` | string | Yes | Unique identifier |
+| `title` | string | Yes | Header text |
+| `content` | string | Yes | Panel content (HTML) |
+| `icon` | string | No | Icon name for header |
+| `open` | boolean | No | Initially open state |
+
+**Usage:**
+
+```django
+{% include "components/accordion.html" with
+  items=accordion_items
+  multiple=True
+  variant="separated"
+%}
+```
+
+```python
+accordion_items = [
+    {
+        'id': 'faq-1',
+        'title': 'How do I get started?',
+        'content': '<p>Follow the installation guide...</p>',
+        'open': True,
+    },
+    {
+        'id': 'faq-2',
+        'title': 'What are the requirements?',
+        'content': '<p>Django 4.x+ and Python 3.9+</p>',
+        'icon': 'info',
+    },
+]
+```
+
+**Keyboard Navigation:**
+- `Arrow Up/Down`: Navigate between headers
+- `Home/End`: First/last header
+- `Enter/Space`: Toggle panel
+
+**JavaScript API:**
+
+```javascript
+// Open/close all
+AdalexUI.Accordion.openAll(accordionElement);
+AdalexUI.Accordion.closeAll(accordionElement);
+```
+
+**JavaScript Required:** `accordion.js`
+
+---
+
+### Dropdown
+
+Button-triggered dropdown menu.
+
+**Template Path:** `components/dropdown.html`
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `id` | string | Yes | - | Unique identifier |
+| `trigger_text` | string | Yes | - | Button text |
+| `trigger_icon` | string | No | - | Icon before text |
+| `items` | list | Yes | - | Menu items |
+| `position` | string | No | `"bottom-start"` | Position: `bottom-start`, `bottom-end`, `top-start`, `top-end` |
+| `variant` | string | No | `"default"` | Style: `default`, `compact` |
+
+**Item Object:**
+
+| Key | Type | Required | Description |
+|-----|------|----------|-------------|
+| `text` | string | Conditional | Item text (not for divider) |
+| `url` | string | No | Item URL |
+| `icon` | string | No | Item icon |
+| `divider` | boolean | No | Render as divider |
+| `disabled` | boolean | No | Disable item |
+
+**Usage:**
+
+```django
+{% include "components/dropdown.html" with
+  id="user-menu"
+  trigger_text="Account"
+  trigger_icon="user"
+  items=dropdown_items
+  position="bottom-end"
+%}
+```
+
+```python
+dropdown_items = [
+    {'text': 'Profile', 'url': '/profile/', 'icon': 'user'},
+    {'text': 'Settings', 'url': '/settings/', 'icon': 'settings'},
+    {'divider': True},
+    {'text': 'Logout', 'url': '/logout/', 'icon': 'logout'},
+]
+```
+
+**Keyboard Navigation:**
+- `Arrow Up/Down`: Navigate items
+- `Home/End`: First/last item
+- `Escape`: Close menu
+- `Enter`: Activate item
+
+**JavaScript Required:** `dropdown.js`
+
+---
+
+### Stepper
+
+Multi-step process indicator.
+
+**Template Path:** `components/stepper.html`
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `steps` | list | Yes | - | List of step objects |
+| `current` | number | No | - | Current step index (0-based) |
+| `variant` | string | No | `"horizontal"` | Layout: `horizontal`, `vertical` |
+| `size` | string | No | `"md"` | Size: `sm`, `md` |
+| `aria_label` | string | No | `"Progress steps"` | Navigation label |
+
+**Step Object:**
+
+| Key | Type | Required | Description |
+|-----|------|----------|-------------|
+| `label` | string | Yes | Step label |
+| `description` | string | No | Additional description |
+| `icon` | string | No | Icon instead of number |
+| `status` | string | No | Status: `completed`, `current`, `pending`, `error` |
+
+**Usage:**
+
+```django
+{% include "components/stepper.html" with
+  steps=checkout_steps
+  current=1
+  variant="horizontal"
+%}
+```
+
+```python
+checkout_steps = [
+    {'label': 'Cart', 'status': 'completed'},
+    {'label': 'Shipping', 'status': 'current', 'description': 'Enter address'},
+    {'label': 'Payment', 'status': 'pending'},
+    {'label': 'Confirm', 'status': 'pending'},
+]
+```
+
+**Accessibility:**
+- Uses semantic ordered list
+- Current step has `aria-current="step"`
+
+---
+
+### Tag (Chip)
+
+Labels for categorization and filtering.
+
+**Template Path:** `components/tag.html`
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `text` | string | Yes | - | Tag text |
+| `variant` | string | No | `"default"` | Color: `default`, `primary`, `secondary`, `success`, `error`, `warning`, `info` |
+| `size` | string | No | `"md"` | Size: `sm`, `md` |
+| `icon` | string | No | - | Left icon |
+| `dismissible` | boolean | No | `False` | Show dismiss button |
+| `id` | string | Conditional | - | Required if dismissible |
+
+**Usage:**
+
+```django
+{% include "components/tag.html" with
+  text="Featured"
+  variant="primary"
+  icon="star"
+%}
+
+{% include "components/tag.html" with
+  text="Remove me"
+  variant="success"
+  dismissible=True
+  id="tag-1"
+%}
+```
+
+**Events:**
+
+```javascript
+document.addEventListener('tag:dismiss', (e) => {
+  console.log('Tag dismissed:', e.detail.id);
+});
+```
+
+**JavaScript Required:** `tag.js` (for dismissible)
+
+---
+
+### Timeline
+
+Vertical chronological event display.
+
+**Template Path:** `components/timeline.html`
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `items` | list | Yes | - | List of timeline item objects |
+| `variant` | string | No | `"default"` | Style: `default`, `alternate` |
+| `size` | string | No | `"md"` | Size: `sm`, `md` |
+| `aria_label` | string | No | `"Timeline"` | List label |
+
+**Item Object:**
+
+| Key | Type | Required | Description |
+|-----|------|----------|-------------|
+| `title` | string | Yes | Event title |
+| `description` | string | No | Event description |
+| `date` | string | No | Date/time |
+| `icon` | string | No | Marker icon |
+| `variant` | string | No | Color: `default`, `primary`, `success`, `error`, `warning`, `info` |
+| `content` | string | No | Additional HTML content |
+
+**Usage:**
+
+```django
+{% include "components/timeline.html" with
+  items=order_history
+  variant="default"
+%}
+```
+
+```python
+order_history = [
+    {
+        'title': 'Order Placed',
+        'description': 'Order #12345 confirmed',
+        'date': '2024-01-15',
+        'icon': 'check',
+        'variant': 'success',
+    },
+    {
+        'title': 'Shipped',
+        'description': 'Package on the way',
+        'date': '2024-01-16',
+        'variant': 'info',
+    },
+]
+```
+
+**Accessibility:**
+- Uses `role="list"` and `role="listitem"`
+- Semantic time elements
+
+---
+
+### Stat Card
+
+Statistics display card with trend indicator.
+
+**Template Path:** `components/stat_card.html`
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `value` | string | Yes | - | Main statistic value |
+| `label` | string | Yes | - | Descriptive label |
+| `icon` | string | No | - | Icon name |
+| `trend` | string | No | - | Trend direction: `up`, `down`, `neutral` |
+| `trend_value` | string | No | - | Trend percentage (e.g., "+12%") |
+| `variant` | string | No | `"default"` | Style: `default`, `primary`, `success`, `error` |
+
+**Usage:**
+
+```django
+{% include "components/stat_card.html" with
+  value="1,234"
+  label="Total Users"
+  icon="user"
+  trend="up"
+  trend_value="+12%"
+  variant="success"
+%}
+```
+
+---
+
+### Empty State
+
+Placeholder for empty content areas.
+
+**Template Path:** `components/empty_state.html`
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `icon` | string | No | - | Center icon |
+| `title` | string | No | - | Heading text |
+| `description` | string | No | - | Description text |
+| `action_text` | string | No | - | Button text |
+| `action_url` | string | No | - | Button URL |
+| `action_variant` | string | No | `"primary"` | Button variant |
+| `size` | string | No | `"md"` | Size: `sm`, `md`, `lg` |
+
+**Usage:**
+
+```django
+{% include "components/empty_state.html" with
+  icon="search"
+  title="No results found"
+  description="Try adjusting your search or filters."
+  action_text="Clear Filters"
+  action_url="#"
+%}
+```
 
 ---
 

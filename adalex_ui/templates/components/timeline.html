@@ -1,0 +1,32 @@
+<div
+  class="a-timeline a-timeline--{{ variant|default:'default' }} a-timeline--{{ size|default:'md' }}"
+  role="list"
+  aria-label="{{ aria_label|default:'Timeline' }}"
+>
+  {% for item in items %}
+    <div class="a-timeline__item a-timeline__item--{{ item.variant|default:'default' }}" role="listitem">
+      <div class="a-timeline__marker">
+        {% if item.icon %}
+          {% include "components/icon.html" with name=item.icon size="16" %}
+        {% else %}
+          <span class="a-timeline__dot"></span>
+        {% endif %}
+      </div>
+      <div class="a-timeline__connector" aria-hidden="true"></div>
+      <div class="a-timeline__content">
+        <div class="a-timeline__header">
+          <h3 class="a-timeline__title">{{ item.title }}</h3>
+          {% if item.date %}
+            <time class="a-timeline__date" datetime="{{ item.date }}">{{ item.date }}</time>
+          {% endif %}
+        </div>
+        {% if item.description %}
+          <p class="a-timeline__description">{{ item.description }}</p>
+        {% endif %}
+        {% if item.content %}
+          <div class="a-timeline__body">{{ item.content|safe }}</div>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+</div>

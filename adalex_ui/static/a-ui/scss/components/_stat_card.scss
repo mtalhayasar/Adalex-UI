@@ -1,0 +1,105 @@
+/**
+ * Stat Card Component
+ *
+ * Statistics display card with optional trend indicator.
+ */
+
+.a-stat-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  background-color: var(--neutral-white);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  font-family: var(--font-family-base);
+  transition: all var(--transition-fast);
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 3rem;
+    height: 3rem;
+    border-radius: var(--radius-md);
+    background-color: var(--neutral-100);
+    color: var(--text-secondary);
+  }
+
+  &__content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__value {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+    line-height: var(--line-height-tight);
+  }
+
+  &__label {
+    font-size: var(--font-size-sm);
+    color: var(--text-tertiary);
+    margin-top: var(--spacing-xs);
+  }
+
+  &__trend {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    flex-shrink: 0;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+
+    &--up {
+      background-color: var(--success-light);
+      color: var(--success-main);
+    }
+
+    &--down {
+      background-color: var(--error-light);
+      color: var(--error-dark);
+    }
+
+    &--neutral {
+      background-color: var(--neutral-100);
+      color: var(--text-tertiary);
+    }
+  }
+
+  &__trend-value {
+    font-variant-numeric: tabular-nums;
+  }
+
+  // Variant: primary
+  &--primary {
+    .a-stat-card__icon {
+      background-color: var(--primary-light);
+      color: var(--secondary-main);
+    }
+  }
+
+  // Variant: success
+  &--success {
+    .a-stat-card__icon {
+      background-color: var(--success-light);
+      color: var(--success-icon);
+    }
+  }
+
+  // Variant: error
+  &--error {
+    .a-stat-card__icon {
+      background-color: var(--error-light);
+      color: var(--error-icon);
+    }
+  }
+}

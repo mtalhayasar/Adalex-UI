@@ -1,0 +1,111 @@
+/**
+ * Progress Component
+ *
+ * Horizontal progress bar indicator.
+ */
+
+.a-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  width: 100%;
+  font-family: var(--font-family-base);
+
+  &__track {
+    flex: 1;
+    background-color: var(--neutral-200);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+  }
+
+  &__bar {
+    height: 100%;
+    border-radius: var(--radius-full);
+    transition: width var(--transition-base);
+  }
+
+  &__label {
+    flex-shrink: 0;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--text-secondary);
+    min-width: 3rem;
+    text-align: right;
+  }
+
+  // Size variants
+  &--sm {
+    .a-progress__track {
+      height: 0.25rem;
+    }
+    .a-progress__label {
+      font-size: var(--font-size-xs);
+    }
+  }
+
+  &--md {
+    .a-progress__track {
+      height: 0.5rem;
+    }
+  }
+
+  &--lg {
+    .a-progress__track {
+      height: 0.75rem;
+    }
+  }
+
+  // Color variants
+  &--primary .a-progress__bar {
+    background-color: var(--secondary-main);
+  }
+
+  &--secondary .a-progress__bar {
+    background-color: var(--neutral-500);
+  }
+
+  &--success .a-progress__bar {
+    background-color: var(--success-icon);
+  }
+
+  &--error .a-progress__bar {
+    background-color: var(--error-icon);
+  }
+
+  &--warning .a-progress__bar {
+    background-color: var(--warning-icon);
+  }
+
+  &--info .a-progress__bar {
+    background-color: var(--info-icon);
+  }
+
+  // Striped variant
+  &--striped .a-progress__bar {
+    background-image: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.15) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.15) 50%,
+      rgba(255, 255, 255, 0.15) 75%,
+      transparent 75%,
+      transparent
+    );
+    background-size: 1rem 1rem;
+  }
+
+  // Animated variant
+  &--animated .a-progress__bar {
+    animation: progress-stripes 1s linear infinite;
+  }
+}
+
+@keyframes progress-stripes {
+  from {
+    background-position: 1rem 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}

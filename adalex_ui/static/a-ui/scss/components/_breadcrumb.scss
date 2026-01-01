@@ -1,0 +1,61 @@
+/**
+ * Breadcrumb Component
+ *
+ * Navigation hierarchy indicator.
+ */
+
+.a-breadcrumb {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-xs);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+
+    &--active {
+      .a-breadcrumb__text {
+        color: var(--text-primary);
+        font-weight: var(--font-weight-medium);
+      }
+    }
+  }
+
+  &__link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+
+    &:hover {
+      color: var(--secondary-main);
+      text-decoration: underline;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: var(--focus-ring-primary);
+      border-radius: var(--radius-sm);
+    }
+  }
+
+  &__text {
+    color: var(--text-tertiary);
+  }
+
+  &__separator {
+    color: var(--text-tertiary);
+    user-select: none;
+  }
+}

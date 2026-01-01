@@ -1,0 +1,23 @@
+<div class="a-stat-card a-stat-card--{{ variant|default:'default' }}">
+  {% if icon %}
+    <div class="a-stat-card__icon">
+      {% include "components/icon.html" with name=icon size="24" %}
+    </div>
+  {% endif %}
+  <div class="a-stat-card__content">
+    <div class="a-stat-card__value">{{ value }}</div>
+    <div class="a-stat-card__label">{{ label }}</div>
+  </div>
+  {% if trend %}
+    <div class="a-stat-card__trend a-stat-card__trend--{{ trend }}">
+      {% if trend == 'up' %}
+        {% include "components/icon.html" with name="chevron-up" size="16" %}
+      {% elif trend == 'down' %}
+        {% include "components/icon.html" with name="chevron-down" size="16" %}
+      {% endif %}
+      {% if trend_value %}
+        <span class="a-stat-card__trend-value">{{ trend_value }}</span>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>

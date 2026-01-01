@@ -31,11 +31,13 @@
   const componentScripts = [
     'utils/error-handler.js',
     'utils/keyboard-nav.js',
+    'components/accordion.js',
     'components/alert.js',
     'components/auth.js',
     'components/carousel.js',
     'components/confirm.js',
     'components/drawer.js',
+    'components/dropdown.js',
     'components/file_upload.js',
     'components/form.js',
     'components/loading.js',
@@ -45,6 +47,7 @@
     'components/sidebar.js',
     'components/table.js',
     'components/tabs.js',
+    'components/tag.js',
     'components/tooltip.js'
   ];
 
@@ -70,13 +73,15 @@
     
     // Define components to initialize with their safe initialization
     const components = [
+      { name: 'Accordion', init: () => window.AdalexUI.Accordion?.init?.() },
       { name: 'Alert', init: () => window.AdalexUI.Alert?.init?.() },
       { name: 'Auth', init: () => window.AdalexUI.Auth?.init?.() },
       { name: 'Carousel', init: () => window.initCarousels?.() },
       { name: 'ConfirmDialog', init: () => window.AdalexUI.ConfirmDialog?.init?.() },
       { name: 'Drawer', init: () => window.AdalexUI.Drawer?.init?.() },
-      { 
-        name: 'FileUpload', 
+      { name: 'Dropdown', init: () => window.AdalexUI.Dropdown?.init?.() },
+      {
+        name: 'FileUpload',
         init: () => {
           if (window.AdalexUI?.initFileUpload) {
             document.querySelectorAll('[data-file-upload]').forEach(window.AdalexUI.initFileUpload);
@@ -91,6 +96,7 @@
       { name: 'Sidebar', init: () => window.AdalexUI.Sidebar?.init?.() },
       { name: 'Table', init: () => window.AdalexUI.Table?.init?.() },
       { name: 'Tabs', init: () => window.AdalexUI.Tabs?.init?.() },
+      { name: 'Tag', init: () => window.AdalexUI.Tag?.init?.() },
       { name: 'Notification', init: () => window.AdalexUI.Notification?.init?.() }
     ];
     

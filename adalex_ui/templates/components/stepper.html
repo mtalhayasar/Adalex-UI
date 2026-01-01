@@ -1,0 +1,32 @@
+<div
+  class="a-stepper a-stepper--{{ variant|default:'horizontal' }} a-stepper--{{ size|default:'md' }}"
+  role="navigation"
+  aria-label="{{ aria_label|default:'Progress steps' }}"
+>
+  <ol class="a-stepper__list">
+    {% for step in steps %}
+      <li class="a-stepper__item a-stepper__item--{{ step.status|default:'pending' }}{% if forloop.counter0 == current %} a-stepper__item--current{% endif %}">
+        <div class="a-stepper__marker">
+          {% if step.status == 'completed' %}
+            {% include "components/icon.html" with name="check" size="16" %}
+          {% elif step.icon %}
+            {% include "components/icon.html" with name=step.icon size="16" %}
+          {% else %}
+            <span class="a-stepper__number">{{ forloop.counter }}</span>
+          {% endif %}
+        </div>
+        <div class="a-stepper__content">
+          <span class="a-stepper__label"{% if forloop.counter0 == current %} aria-current="step"{% endif %}>
+            {{ step.label }}
+          </span>
+          {% if step.description %}
+            <span class="a-stepper__description">{{ step.description }}</span>
+          {% endif %}
+        </div>
+        {% if not forloop.last %}
+          <div class="a-stepper__connector" aria-hidden="true"></div>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ol>
+</div>

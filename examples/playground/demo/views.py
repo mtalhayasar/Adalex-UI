@@ -1008,3 +1008,103 @@ def carousel_demo(request):
         'thumbnail_items': thumbnail_items,
     }
     return render(request, 'demo/carousel_demo.html', context)
+
+
+def new_components_demo(request):
+    """
+    Demo view for new components (Breadcrumb, Avatar, Progress, Accordion,
+    Dropdown, Stepper, Tag, Timeline, Stat Card, Empty State).
+
+    Args:
+        request: Django HTTP request object
+
+    Returns:
+        Rendered template showcasing new components
+    """
+    # Breadcrumb items
+    breadcrumb_items = [
+        {'text': 'Home', 'url': '#'},
+        {'text': 'Products', 'url': '#'},
+        {'text': 'Electronics', 'url': '#'},
+        {'text': 'Laptops', 'active': True},
+    ]
+
+    # Accordion items
+    accordion_items = [
+        {
+            'id': 'acc-1',
+            'title': 'What is Adalex UI?',
+            'content': '<p>Adalex UI is a comprehensive Django UI component library that provides reusable, accessible components for building modern web applications.</p>',
+            'open': True,
+        },
+        {
+            'id': 'acc-2',
+            'title': 'How do I install it?',
+            'content': '<p>You can install Adalex UI via pip: <code>pip install adalex-ui</code>. Then add "adalex_ui" to your INSTALLED_APPS.</p>',
+            'icon': 'download',
+        },
+        {
+            'id': 'acc-3',
+            'title': 'Is it accessible?',
+            'content': '<p>Yes! All components are built with WCAG 2.1 AA compliance in mind, including keyboard navigation and screen reader support.</p>',
+            'icon': 'check',
+        },
+    ]
+
+    # Dropdown items
+    dropdown_items = [
+        {'text': 'Profile', 'url': '#profile', 'icon': 'user'},
+        {'text': 'Settings', 'url': '#settings', 'icon': 'settings'},
+        {'divider': True},
+        {'text': 'Help', 'url': '#help', 'icon': 'info'},
+        {'text': 'Logout', 'url': '#logout', 'icon': 'logout'},
+    ]
+
+    # Stepper steps
+    stepper_steps = [
+        {'label': 'Cart', 'description': 'Review items', 'status': 'completed'},
+        {'label': 'Shipping', 'description': 'Enter address', 'status': 'current'},
+        {'label': 'Payment', 'description': 'Add payment', 'status': 'pending'},
+        {'label': 'Confirm', 'description': 'Place order', 'status': 'pending'},
+    ]
+
+    # Timeline items
+    timeline_items = [
+        {
+            'title': 'Order Placed',
+            'description': 'Your order #12345 has been placed successfully.',
+            'date': '2024-01-15',
+            'icon': 'check',
+            'variant': 'success',
+        },
+        {
+            'title': 'Payment Confirmed',
+            'description': 'Payment of $299.99 has been processed.',
+            'date': '2024-01-15',
+            'icon': 'star',
+            'variant': 'primary',
+        },
+        {
+            'title': 'Shipped',
+            'description': 'Your package is on its way. Tracking: TRK123456789',
+            'date': '2024-01-16',
+            'variant': 'info',
+        },
+        {
+            'title': 'Out for Delivery',
+            'description': 'Package will be delivered today.',
+            'date': '2024-01-17',
+            'variant': 'warning',
+        },
+    ]
+
+    context = {
+        'title': 'New Components',
+        'description': 'Breadcrumb, Avatar, Progress, Accordion, Dropdown, Stepper, Tag, Timeline, Stat Card, and Empty State',
+        'breadcrumb_items': breadcrumb_items,
+        'accordion_items': accordion_items,
+        'dropdown_items': dropdown_items,
+        'stepper_steps': stepper_steps,
+        'timeline_items': timeline_items,
+    }
+    return render(request, 'demo/new_components_demo.html', context)

@@ -1,0 +1,22 @@
+<span
+  class="a-tag a-tag--{{ variant|default:'default' }} a-tag--{{ size|default:'md' }}"
+  {% if id %}id="{{ id }}"{% endif %}
+  {% if dismissible %}data-tag-dismissible{% endif %}
+>
+  {% if icon %}
+    <span class="a-tag__icon">
+      {% include "components/icon.html" with name=icon size="14" %}
+    </span>
+  {% endif %}
+  <span class="a-tag__text">{{ text }}</span>
+  {% if dismissible %}
+    <button
+      type="button"
+      class="a-tag__dismiss"
+      aria-label="Remove {{ text }}"
+      data-tag-dismiss
+    >
+      {% include "components/icon.html" with name="close" size="12" %}
+    </button>
+  {% endif %}
+</span>

@@ -263,6 +263,19 @@
         {% include "components/badge.html" with text="Thumbnails" variant="success" size="sm" %}
       </div>
     </a>
+
+    <!-- New Components -->
+    <a href="{% url 'demo:new_components_demo' %}" class="component-card">
+      <h2>New Components</h2>
+      <p>Breadcrumb, Avatar, Progress, Accordion, Dropdown, Stepper, Tag, Timeline, Stat Card, and Empty State.</p>
+      <div class="badge-list">
+        {% include "components/badge.html" with text="Breadcrumb" variant="primary" size="sm" %}
+        {% include "components/badge.html" with text="Avatar" variant="primary" size="sm" %}
+        {% include "components/badge.html" with text="Progress" variant="success" size="sm" %}
+        {% include "components/badge.html" with text="Accordion" variant="success" size="sm" %}
+        {% include "components/badge.html" with text="+ 6 more" variant="secondary" size="sm" %}
+      </div>
+    </a>
   </div>
 
   <div class="footer">

@@ -1,0 +1,18 @@
+<div
+  class="a-progress a-progress--{{ size|default:'md' }} a-progress--{{ variant|default:'primary' }}{% if striped %} a-progress--striped{% endif %}{% if animated %} a-progress--animated{% endif %}"
+  role="progressbar"
+  aria-valuenow="{{ value|default:0 }}"
+  aria-valuemin="0"
+  aria-valuemax="{{ max|default:100 }}"
+  aria-label="{{ aria_label|default:'Progress' }}"
+>
+  <div class="a-progress__track">
+    <div
+      class="a-progress__bar"
+      style="width: {% widthratio value max|default:100 100 %}%;"
+    ></div>
+  </div>
+  {% if show_label %}
+    <span class="a-progress__label">{% widthratio value max|default:100 100 %}%</span>
+  {% endif %}
+</div>

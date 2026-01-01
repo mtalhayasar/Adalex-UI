@@ -1,0 +1,18 @@
+<div class="a-empty-state a-empty-state--{{ size|default:'md' }}">
+  {% if icon %}
+    <div class="a-empty-state__icon">
+      {% include "components/icon.html" with name=icon size="48" %}
+    </div>
+  {% endif %}
+  {% if title %}
+    <h3 class="a-empty-state__title">{{ title }}</h3>
+  {% endif %}
+  {% if description %}
+    <p class="a-empty-state__description">{{ description }}</p>
+  {% endif %}
+  {% if action_text %}
+    <div class="a-empty-state__action">
+      {% include "components/button.html" with text=action_text href=action_url variant=action_variant|default:'primary' %}
+    </div>
+  {% endif %}
+</div>
