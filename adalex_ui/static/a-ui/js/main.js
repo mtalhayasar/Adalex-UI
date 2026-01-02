@@ -26,8 +26,8 @@
     console.warn('[AdalexUI.Main] Keyboard navigation utility not available. Accessibility features may be limited.');
   }
 
-  // Load all component scripts dynamically
-  // This ensures all components are available when main.js runs
+  // Component scripts should be loaded before main.js
+  // This list is for reference only - scripts should be included in HTML
   const componentScripts = [
     'utils/error-handler.js',
     'utils/keyboard-nav.js',
@@ -50,19 +50,6 @@
     'components/tag.js',
     'components/tooltip.js'
   ];
-
-  // Function to load scripts dynamically
-  function loadComponentScripts() {
-    return Promise.all(componentScripts.map(script => {
-      return new Promise((resolve, reject) => {
-        const scriptElement = document.createElement('script');
-        scriptElement.src = `/static/a-ui/js/${script}`;
-        scriptElement.onload = resolve;
-        scriptElement.onerror = reject;
-        document.head.appendChild(scriptElement);
-      });
-    }));
-  }
 
   /**
    * Initialize all components
@@ -147,20 +134,11 @@
       }
     ) : initializeComponents;
 
-  // Load scripts and then initialize
-  async function initializeWhenReady() {
-    try {
-      await loadComponentScripts();
-      safeInitializeComponents();
-    } catch (error) {
-      console.error('[AdalexUI.Main] Failed to load component scripts:', error);
-    }
-  }
-
+  // Initialize components when DOM is ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeWhenReady);
+    document.addEventListener('DOMContentLoaded', safeInitializeComponents);
   } else {
-    initializeWhenReady();
+    safeInitializeComponents();
   }
 
   // Re-initialize after HTMX swaps
